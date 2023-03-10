@@ -1,12 +1,24 @@
 <template>
-  <h1>
-    this is a index page
-  </h1>
+  <q-btn push
+         color="primary"
+         label="Push"
+  @click="toDoc">
+    this is a push
+  </q-btn>
 </template>
 
 <script>
 export default {
-  name: "AdminIndex"
+  name: "AdminIndex",
+
+  methods: {
+    toDoc() {
+      this.$router.push({
+        name: 'adminDoc',
+      })
+    }
+  }
+
 }
 </script>
 

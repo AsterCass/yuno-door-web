@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
-import AdminIndex from "@/pages/AdminIndex.vue";
 import AdminDoc from "@/pages/AdminDoc.vue";
+import AdminIndex from "@/pages/AdminIndex.vue";
 
 const router = createRouter({
     history: createWebHistory(),
