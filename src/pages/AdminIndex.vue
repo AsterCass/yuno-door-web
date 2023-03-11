@@ -4,7 +4,7 @@
     <q-header :modelValue="headerVisible" class="index-header">
       <q-toolbar>
         <q-toolbar-title>Cask Admin</q-toolbar-title>
-        <q-btn flat round dense icon="whatshot"/>
+        <q-btn flat dense icon="menu_book" label="article" @click="toArticle"/>
       </q-toolbar>
     </q-header>
 
@@ -24,7 +24,7 @@
           <p v-for="n in 100" :key="n">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci,
             dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus
-            commodi perferendis voluptate? 字体观察
+            commodi perferendis voluptate? 字体观察 备案 即使 网站
           </p>
 
         </q-page>
@@ -44,24 +44,32 @@
             alt=""/>
       </div>
     </q-page-sticky>
+
+    <q-page-sticky position="left" :offset="[25, 25]">
+      <CaskWebFab/>
+    </q-page-sticky>
+
   </q-layout>
 </template>
 
 <script>
 import {ref} from 'vue'
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
+import CaskWebFab from "@/components/CaskWebFab.vue";
+import {useRouter} from 'vue-router'
 import 'animate.css';
 
 
 export default {
   name: "AdminIndex",
-  components: {CopyrightFooter},
+  components: {CopyrightFooter, CaskWebFab},
   setup() {
 
 // https://quasar.dev/vue-directives/intersection
 // https://quasar.dev/vue-directives/scroll-fire
     let headerVisible = ref(false)
     let rollerGuideHidden = ref(false)
+    const router = useRouter()
 
     function onIntersection(entry) {
       headerVisible.value = entry.isIntersecting
@@ -83,8 +91,13 @@ export default {
     //   window.removeEventListener('scroll', doScroll)
     // })
 
+    //router
+    const toArticle = () => {
+      router.push('/article')
+    }
 
     return {
+      toArticle,
       headerVisible,
       rollerGuideHidden,
       onIntersection,
@@ -121,10 +134,11 @@ export default {
   top: 20px
   margin: auto
   width: 80%
+  color: $cask_base_black
   text-align: center
-  opacity: 0.7
-  background: white
-  color: black
+  background-color: rgba(255, 255, 255, 0.8)
+  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
+  backdrop-filter: saturate(200%) blur(30px)
   border-radius: 15px
 
 

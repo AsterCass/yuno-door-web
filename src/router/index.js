@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import AdminDoc from "@/pages/AdminDoc.vue";
 import AdminIndex from "@/pages/AdminIndex.vue";
 import AdminWx from "@/pages/AdminWx.vue";
+import AdminArticle from "@/pages/AdminArticle.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -20,6 +21,11 @@ const router = createRouter({
             path: "/wx",
             name: "adminWx",
             component: AdminWx,
+        },
+        {
+            path: "/article",
+            name: "adminArticle",
+            component: AdminArticle,
         },
     ],
 });
