@@ -1,8 +1,9 @@
 <template>
   <q-header :modelValue="headerVisible" class="index-header">
     <q-toolbar>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" @click="toHome"/>
       <q-toolbar-title>Cask Admin</q-toolbar-title>
-      <q-btn flat dense icon="fa-solid fa-book" label="article" @click="toArticle"/>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" @click="toArticle"/>
     </q-toolbar>
   </q-header>
 </template>
@@ -18,10 +19,14 @@ export default {
   setup() {
     const router = useRouter()
     const toArticle = () => {
-      router.push('/article/list')
+      router.push('/article/detail')
+    }
+    const toHome = () => {
+      router.push('/')
     }
     return {
-      toArticle
+      toArticle,
+      toHome
     }
   }
 
@@ -44,5 +49,10 @@ export default {
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
   backdrop-filter: saturate(200%) blur(30px)
   border-radius: 15px
+
+  .headerBtn
+    font-size: 0.8rem
+    padding-top: 0.8rem
+    font-weight: bold
 
 </style>

@@ -14,7 +14,7 @@
                     to="/" icon="fa-solid fa-house"/>
       <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                     label="Article" hide-label external-label
-                    to="/article/list" icon="fa-solid fa-book"/>
+                    to="/article/detail" icon="fa-solid fa-book"/>
 
 
       <!--The default padding for QFab is “md” and for QFabAction is “sm”.

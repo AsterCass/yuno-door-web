@@ -11,6 +11,9 @@
 
       <div class="article-context">
         <!--        </q-page>-->
+        <h2>this is a h2</h2>
+        <h3>this is a h3</h3>
+        <h4>this is a h4</h4>
         <p v-for="n in 5" :key="n">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci,
           dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus
@@ -70,7 +73,7 @@ onUnmounted(() => {
     line-height: 1.375
     font-weight: 600
     color: white
-    margin-bottom: 0
+    margin-bottom: 1rem
     margin-top: 0
     font-family: Roboto Slab, sans-serif
     //letter-spacing: -.05rem
@@ -85,6 +88,7 @@ onUnmounted(() => {
 
 
 .article-context
+  font-size: 1.5rem
   padding: 3rem
   min-height: 800px
 
