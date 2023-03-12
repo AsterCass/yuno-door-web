@@ -2,7 +2,8 @@ import {createRouter, createWebHistory} from "vue-router";
 import AdminDoc from "@/pages/AdminDoc.vue";
 import AdminIndex from "@/pages/AdminIndex.vue";
 import AdminWx from "@/pages/AdminWx.vue";
-import AdminArticle from "@/pages/AdminArticle.vue";
+import AdminArticleList from "@/pages/AdminArticleList.vue";
+import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -24,9 +25,25 @@ const router = createRouter({
         },
         {
             path: "/article",
-            name: "adminArticle",
-            component: AdminArticle,
+            children: [
+                {
+                    path: 'detail',
+                    name: "adminArticleDetail",
+                    component: AdminArticleDetail
+                },
+                {
+                    path: 'list',
+                    name: "adminArticleList",
+                    component: AdminArticleList
+                }
+            ]
         },
+        // {
+        //     path:'/article/detail',
+        //     name: "adminArticleDetail",
+        //     component:AdminArticleDetail,
+        // },
+
     ],
 });
 
