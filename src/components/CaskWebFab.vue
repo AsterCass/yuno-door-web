@@ -11,10 +11,10 @@
 
       <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                     label="Home" hide-label external-label
-                    @click="toHome" icon="fa-solid fa-house"/>
+                    to="/" icon="fa-solid fa-house"/>
       <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                     label="Article" hide-label external-label
-                    @click="toArticle" icon="fa-solid fa-book"/>
+                    to="/article" icon="fa-solid fa-book"/>
 
 
       <!--The default padding for QFab is “md” and for QFabAction is “sm”.
@@ -27,19 +27,16 @@
       不知道这个问题后续会不会修复-->
       <q-fab
           label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-          :label="gameName" hide-label :external-label="gameExternalLabelVisible"
+          :label="gameName" :external-label="gameExternalLabelVisible"
           icon="fa-solid fa-trophy" direction="right" padding="sm"
           @update:modelValue="updateGameFab"
       >
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled" padding="5px 20px"
-                      label="Home" hide-label external-label label-position="bottom"
-                      @click="toHome" icon="fa-solid fa-house"/>
+                      label="Hextris" hide-label external-label label-position="bottom"
+                      @click="toHex" icon="mdi-hexagon-slice-6"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled" padding="5px 20px"
-                      label="Article" hide-label external-label label-position="bottom"
-                      @click="toArticle" icon="fa-solid fa-book"/>
-        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled" padding="5px 20px"
-                      label="Game" hide-label external-label label-position="bottom"
-                      @click="toArticle" icon="fa-solid fa-trophy"/>
+                      label="Mikutap" hide-label external-label label-position="bottom"
+                      @click="toMik" icon="fa-solid fa-music"/>
       </q-fab>
     </q-fab>
   </div>
@@ -47,22 +44,21 @@
 
 <script setup>
 import {ref} from 'vue'
-import {useRouter} from 'vue-router'
 
 let gameExternalLabelVisible = ref(true)
 let gameName = ref("Game")
-const router = useRouter()
 
-function toHome() {
-  router.push('/')
+function toHex() {
+  window.open('https://game.astercasc.com/G-Hextris/', "_blank");
 }
 
-function toArticle() {
-  router.push('/article')
+function toMik() {
+  window.open('https://game.astercasc.com/G-Mikutap/', "_blank");
 }
+
 
 function updateGameFab(isActionsVisible) {
-  if(isActionsVisible) {
+  if (isActionsVisible) {
     gameName.value = ""
   } else {
     gameName.value = "Game"
