@@ -5,16 +5,15 @@
         <a target="_blank" href="https://beian.miit.gov.cn/">浙ICP备2022023127号</a>
       </li>
       <li>
-        <q-icon name="fa-brands fa-weibo" />
+        <q-icon name="fa-brands fa-weibo"/>
         新浪微博: <a target="_blank" href="https://weibo.com/u/5177219464">AsterCass</a>
       </li>
       <li>
-        <q-icon name="eva-github" />
+        <q-icon name="eva-github"/>
         Github: <a target="_blank" href="https://github.com/AsterCass?tab=repositories">AsterCass</a>
       </li>
     </ul>
   </div>
-
 </template>
 
 <script>
@@ -27,7 +26,8 @@ export default {
 @import "@/styles/cask.sass";
 
 .footer {
-  background: $cask_dune;
+  //background: $cask_dune;
+  background-color: $cask_dark_jungle_green;
   padding: 0.5em 0 1.5em 0;
 
   a {

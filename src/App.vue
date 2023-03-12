@@ -8,6 +8,7 @@ import {RouterView} from "vue-router";
 
 <style lang="sass">
 @import "@/styles/cask.sass"
+@import "@fontsource/roboto-slab/index.css"
 
 body
   background: white
