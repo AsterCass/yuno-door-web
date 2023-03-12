@@ -4,7 +4,7 @@
     <q-header :modelValue="headerVisible" class="index-header">
       <q-toolbar>
         <q-toolbar-title>Cask Admin</q-toolbar-title>
-        <q-btn flat dense icon="menu_book" label="article" @click="toArticle"/>
+        <q-btn flat dense icon="fa-solid fa-book" label="article" @click="toArticle"/>
       </q-toolbar>
     </q-header>
 

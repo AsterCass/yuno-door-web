@@ -4,7 +4,14 @@
       <li>&copy; 2020-2023 astercasc.com 版权所有 互联网ICP备案：
         <a target="_blank" href="https://beian.miit.gov.cn/">浙ICP备2022023127号</a>
       </li>
-      <li>新浪微博: <a target="_blank" href="https://weibo.com/u/5177219464">AsterCass</a></li>
+      <li>
+        <q-icon name="fa-brands fa-weibo" />
+        新浪微博: <a target="_blank" href="https://weibo.com/u/5177219464">AsterCass</a>
+      </li>
+      <li>
+        <q-icon name="eva-github" />
+        Github: <a target="_blank" href="https://github.com/AsterCass?tab=repositories">AsterCass</a>
+      </li>
     </ul>
   </div>
 
