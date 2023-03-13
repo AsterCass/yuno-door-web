@@ -12,6 +12,10 @@
         <q-icon name="eva-github"/>
         Github: <a target="_blank" href="https://github.com/AsterCass?tab=repositories">AsterCass</a>
       </li>
+      <li>
+        <q-icon name="fa-brands fa-qq"/>
+        QQ: 404919617
+      </li>
     </ul>
   </div>
 </template>

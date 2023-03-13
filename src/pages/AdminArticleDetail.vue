@@ -11,7 +11,7 @@
 
       <div class="article-context">
         <!--        </q-page>-->
-        <h2>this is a h2</h2>
+        <div v-html="markdownToHtml"></div>
         <h3>this is a h3</h3>
         <h4>this is a h4</h4>
         <p v-for="n in 5" :key="n">
@@ -33,11 +33,18 @@
 </template>
 
 <script setup>
+import {marked} from 'marked';
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {onMounted, onUnmounted} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 
+
+let markdown = ref("## hellow world")
+
+const markdownToHtml = computed(() => {
+  return marked(markdown.value)
+})
 
 onMounted(() => {
   document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
