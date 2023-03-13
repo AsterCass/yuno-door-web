@@ -22,6 +22,10 @@
       </div>
     </div>
 
+    <q-btn @click="isHealth">
+      this a btn
+    </q-btn>
+
 
     <q-page-sticky position="left" :offset="[25, 25]">
       <CaskWebFab/>
@@ -38,9 +42,22 @@ import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
+import {health} from '@/api/base'
 
 
 let markdown = ref("## hellow world")
+
+function isHealth() {
+
+  let baseCellInput = "123"
+  health({inputText: baseCellInput}).then(res => {
+    if (res.status === 200) {
+      markdown.value = res.data.data;
+    }
+  })
+
+}
+
 
 const markdownToHtml = computed(() => {
   return marked(markdown.value)
