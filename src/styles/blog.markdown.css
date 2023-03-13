@@ -1,0 +1,59 @@
+.blogMarkDown {
+    font-size: 1.2rem;
+}
+
+.blogMarkDown h1 {
+    font-size: 2.5rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+
+.blogMarkDown h2 {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+    font-family: Roboto Slab, sans-serif;
+}
+
+.blogMarkDown h3 {
+    font-size: 1.7rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+    font-family: Roboto Slab, sans-serif;
+}
+
+.blogMarkDown h4 {
+    font-size: 1.6rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+    font-family: Roboto Slab, sans-serif;
+}
+
+.blogMarkDown h5 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+    font-family: Roboto Slab, sans-serif;
+}
+
+.blogMarkDown h6 {
+    font-size: 1.4rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+    font-family: Roboto Slab, sans-serif;
+}
+
+.blogMarkDown p {
+    margin-bottom: 0.5rem;
+}
+
+.blogMarkDown code {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+
+.blogMarkDown strong {
+    color: #B56536
+}

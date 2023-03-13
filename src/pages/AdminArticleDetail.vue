@@ -10,7 +10,7 @@
       </div>
 
       <div class="article-context">
-        <div v-html="markdownToHtml"></div>
+        <div v-html="markdownToHtml" class="blogMarkDown"></div>
       </div>
     </div>
 
@@ -74,6 +74,7 @@ onUnmounted(() => {
 <!--代码样式选择 https://highlightjs.org/static/demo/-->
 
 <style lang="scss" scoped>
+@import "@/styles/blog.markdown.css";
 @import "@/styles/cask.sass";
 @import "~highlight.js/styles/hybrid.css";
 
@@ -117,8 +118,7 @@ onUnmounted(() => {
 }
 
 .article-context {
-  font-size: 1.5rem;
-  padding: 3rem;
+  padding: 0 3rem 3rem 3rem;
   min-height: 800px;
 }
 
