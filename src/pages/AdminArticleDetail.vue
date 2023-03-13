@@ -53,7 +53,7 @@ function getBlogContentMethod() {
 const markdownToHtml = computed(() => {
   return marked(blogContent.value,
       {
-        highlight: function (markdown) {
+        "highlight": function (markdown) {
           return hljs.highlightAuto(markdown).value
         }
       }
@@ -61,8 +61,15 @@ const markdownToHtml = computed(() => {
 })
 
 onMounted(() => {
+  //markdown代码渲染
   hljs.highlightAll()
+  //底色渲染
   document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
+  //该页面所有链接均打开新标签，不在本页面打开，目的兼容markdown语法
+  let base = document.createElement("base")
+  base.setAttribute("target", "_blank")
+  document.querySelector('head').append(base)
+  //获取文章信息
   getBlogContentMethod()
 })
 onUnmounted(() => {
