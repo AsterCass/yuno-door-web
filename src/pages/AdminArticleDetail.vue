@@ -10,15 +10,7 @@
       </div>
 
       <div class="article-context">
-        <!--        </q-page>-->
         <div v-html="markdownToHtml"></div>
-        <h3>this is a h3</h3>
-        <h4>this is a h4</h4>
-        <p v-for="n in 5" :key="n">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci,
-          dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus
-          commodi perferendis voluptate?
-        </p>
       </div>
     </div>
 
@@ -31,8 +23,9 @@
 
   </q-layout>
 </template>
-
+<!--marked document https://marked.js.org/using_advanced#options.-->
 <script setup>
+import hljs from "highlight.js";
 import {marked} from 'marked';
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
@@ -56,11 +49,19 @@ function getBlogContentMethod() {
   );
 }
 
+
 const markdownToHtml = computed(() => {
-  return marked(blogContent.value)
+  return marked(blogContent.value,
+      {
+        highlight: function (markdown) {
+          return hljs.highlightAuto(markdown).value
+        }
+      }
+  )
 })
 
 onMounted(() => {
+  hljs.highlightAll()
   document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
   getBlogContentMethod()
 })
@@ -70,49 +71,56 @@ onUnmounted(() => {
 
 </script>
 
-<style lang="sass" scoped>
-@import "@/styles/cask.sass"
+<!--代码样式选择 https://highlightjs.org/static/demo/-->
 
-.article-body
-  margin: 12rem auto
-  width: 60%
-  background-color: white
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05)
-  border-radius: 0.5rem
+<style lang="scss" scoped>
+@import "@/styles/cask.sass";
+@import "~highlight.js/styles/hybrid.css";
 
-.article-title
-  padding: 1.5rem
-  text-align: left
-  transform: translateY(-15%)
-  margin: -2rem 1rem 0
-  background-image: linear-gradient(195deg, #42424a, #191919)
-  color: $cask_base_white
-  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(64, 64, 64, .4)
-  border-radius: 0.5rem
+.article-body {
+  margin: 12rem auto;
+  width: 60%;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+  border-radius: 0.5rem;
+}
 
-  h3
-    font-size: 1.875rem
-    line-height: 1.375
-    font-weight: 600
-    color: white
-    margin-bottom: 1rem
-    margin-top: 0
-    font-family: Roboto Slab, sans-serif
+.article-title {
+  padding: 1.5rem;
+  text-align: left;
+  transform: translateY(-15%);
+  margin: -2rem 1rem 0;
+  background-image: linear-gradient(195deg, #42424a, #191919);
+  color: $cask_base_white;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(64, 64, 64, .4);
+  border-radius: 0.5rem;
+
+  h3 {
+    font-size: 1.875rem;
+    line-height: 1.375;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    font-family: Roboto Slab, sans-serif;
     //letter-spacing: -.05rem
-    text-transform: unset
+    text-transform: unset;
+  }
 
-  p
-    margin: 0
-    opacity: 0.8
-    font-size: 1rem
-    line-height: 1.625
-    font-weight: 300
+  p {
+    margin: 0;
+    opacity: 0.8;
+    font-size: 1rem;
+    line-height: 1.625;
+    font-weight: 300;
+  }
+}
 
-
-.article-context
-  font-size: 1.5rem
-  padding: 3rem
-  min-height: 800px
+.article-context {
+  font-size: 1.5rem;
+  padding: 3rem;
+  min-height: 800px;
+}
 
 
 </style>

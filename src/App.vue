@@ -91,20 +91,23 @@ blockquote
   padding: 0.5em 0 0.5em 2em
 
 code
-  background: rgba(144, 144, 144, 0.075)
+  background: $cask_dark_jungle_green
+  color: $cask_base_white
   border-radius: 6px
-  border: solid 1px rgba(144, 144, 144, 0.25)
-  font-family: "Courier New", monospace
+  font-family: "Segoe Print", monospace !important
   font-size: 0.9em
   margin: 0 0.25em
   padding: 0.25em 0.65em
 
 pre
+  background: $cask_dark_jungle_green
+  color: $cask_base_white
   -webkit-overflow-scrolling: touch
   font-family: "Courier New", monospace
   font-size: 0.9em
   margin: 0 0 2em 0
   overflow-x: auto
+  border-radius: 0.5rem
 
   code
     display: block
