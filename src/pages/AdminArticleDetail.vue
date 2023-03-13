@@ -10,7 +10,9 @@
       </div>
 
       <div class="article-context">
-        <div v-html="markdownToHtml" class="blogMarkDown"></div>
+        <div>
+          <div v-html="markdownToHtml" class="blogMarkDown"></div>
+        </div>
       </div>
     </div>
 
@@ -33,7 +35,7 @@ import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {getBlogContent} from '@/api/base'
 
-let blogContent = ref("loading...")
+let blogContent = ref("")
 
 function getBlogContentMethod() {
   const reader = new FileReader();
