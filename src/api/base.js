@@ -1,11 +1,12 @@
 import {serviceShiro} from '@/utils/request'
 
 
-export function health(params) {
+export function getBlogContent(params) {
     return serviceShiro({
-        url: '/tool-kit/text',
+        url: '/tool-kit/blog',
         method: 'get',
-        params: params
+        params: params,
+        responseType: "blob"
     })
 }
 

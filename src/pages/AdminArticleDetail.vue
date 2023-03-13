@@ -22,10 +22,6 @@
       </div>
     </div>
 
-    <q-btn @click="isHealth">
-      this a btn
-    </q-btn>
-
 
     <q-page-sticky position="left" :offset="[25, 25]">
       <CaskWebFab/>
@@ -42,29 +38,31 @@ import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
-import {health} from '@/api/base'
+import {getBlogContent} from '@/api/base'
 
+let blogContent = ref("loading...")
 
-let markdown = ref("## hellow world")
-
-function isHealth() {
-
-  let baseCellInput = "123"
-  health({inputText: baseCellInput}).then(res => {
-    if (res.status === 200) {
-      markdown.value = res.data.data;
-    }
+function getBlogContentMethod() {
+  const reader = new FileReader();
+  getBlogContent({inputText: "123"}).then(res => {
+    reader.readAsText(res.data, 'UTF-8')
   })
-
+  reader.addEventListener(
+      "load",
+      () => {
+        blogContent.value = reader.result
+      },
+      false
+  );
 }
 
-
 const markdownToHtml = computed(() => {
-  return marked(markdown.value)
+  return marked(blogContent.value)
 })
 
 onMounted(() => {
   document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
+  getBlogContentMethod()
 })
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
