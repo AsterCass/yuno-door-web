@@ -2,18 +2,30 @@
   <q-layout view="lHh lpr lFf" container:false>
     <CaskWebHeader :headerVisible="true"/>
 
-    <div class="article-body">
-      <div class="article-title">
-        <h3>Privacy & Policy</h3>
-        <p>更新时间: 2023年1月9日</p>
-        <p>创建时间: 2022年12月20日</p>
+    <div class="row justify-center article-layout">
+
+
+      <div :hidden="false" class="article-anchors">
+        <p>this is a anchor</p>
+        <q-btn @click="togo">this a btn</q-btn>
+
       </div>
 
-      <div class="article-context">
-        <div>
-          <div v-html="markdownToHtml" class="blogMarkDown"></div>
+      <div class="article-body">
+        <div class="article-title">
+          <h3>Privacy & Policy</h3>
+          <p>创建时间: 2022年12月20日</p>
+          <p>更新时间: 2023年1月9日</p>
+        </div>
+
+        <div class="article-context">
+          <div>
+            <div v-html="markdownToHtml" class="blogMarkDown"></div>
+          </div>
         </div>
       </div>
+
+
     </div>
 
 
@@ -36,6 +48,26 @@ import {computed, onMounted, onUnmounted, ref} from "vue";
 import {getBlogContent} from '@/api/base'
 
 let blogContent = ref("")
+let anchorTree = ref("")
+
+console.log(anchorTree)
+
+
+function togo() {
+  const mainRoot = document.getElementById("cicd配置");
+  mainRoot.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "nearest",
+  });
+}
+
+//锚点
+// function getAnchorTree() {
+//   let anchorTree = document.querySelectorAll('h1, h2, h3')
+//   console.log(anchorTree)
+// }
+
 
 function getBlogContentMethod() {
   const reader = new FileReader();
@@ -74,6 +106,7 @@ onMounted(() => {
   //获取文章信息
   getBlogContentMethod()
 })
+
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
 })
@@ -87,9 +120,26 @@ onUnmounted(() => {
 @import "@/styles/cask.sass";
 @import "~highlight.js/styles/hybrid.css";
 
+
+.article-layout {
+  padding: 12rem;
+}
+
+.article-anchors {
+  margin-right: 1rem;
+  margin-bottom: 5rem;
+  width: 25rem;
+  height: 300px;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+  border-radius: 0.5rem;
+  padding: 2rem;
+
+}
+
 .article-body {
-  margin: 12rem auto;
-  width: 60%;
+  margin-left: 1rem;
+  width: 60rem;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
   border-radius: 0.5rem;

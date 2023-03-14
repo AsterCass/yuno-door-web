@@ -4,6 +4,7 @@ import AdminIndex from "@/pages/AdminIndex.vue";
 import AdminWx from "@/pages/AdminWx.vue";
 import AdminArticleList from "@/pages/AdminArticleList.vue";
 import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
+import AdminFlexBox from "@/pages/AdminFlexBox.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -38,11 +39,11 @@ const router = createRouter({
                 }
             ]
         },
-        // {
-        //     path:'/article/detail',
-        //     name: "adminArticleDetail",
-        //     component:AdminArticleDetail,
-        // },
+        {
+            path: "/flexBox",
+            name: "flexBox",
+            component: AdminFlexBox
+        },
 
     ],
 });
