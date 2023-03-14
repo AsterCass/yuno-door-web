@@ -4,31 +4,44 @@
 
     <div class="row justify-center article-layout">
 
+      <div class="col-4 row justify-end">
 
-      <div :hidden="false" class="article-anchors">
-        <!--        <q-btn @click="togo">this is a btn</q-btn>-->
-        <ul
-            v-for="item in anchorTreeBackend"
-            :key="item.value"
-            @click="togo(item.value)"
-        >
-          {{ item.value }}
-        </ul>
-      </div>
-
-      <div class="article-body">
-        <div class="article-title">
-          <h1>Privacy & Policy</h1>
-          <p>创建时间: 2022年12月20日</p>
-          <p>更新时间: 2023年1月9日</p>
+        <div :hidden="false" class="article-anchors">
+          <!--        <q-btn @click="togo">this is a btn</q-btn>-->
+          <ul
+              v-for="item in anchorTreeBackend"
+              :key="item.value"
+              @click="togo(item.value)"
+          >
+            {{ item.value }}
+          </ul>
         </div>
 
-        <div class="article-context">
-          <div>
-            <div v-html="markdownToHtml" class="blogMarkDown"></div>
+
+
+      </div>
+
+      <div class="col-8 row justify-start">
+
+        <div class="article-body">
+          <div class="article-title">
+            <h1>Privacy & Policy</h1>
+            <p>创建时间: 2022年12月20日</p>
+            <p>更新时间: 2023年1月9日</p>
+          </div>
+
+          <div class="article-context">
+            <div>
+              <div v-html="markdownToHtml" class="blogMarkDown"></div>
+            </div>
           </div>
         </div>
+
+
       </div>
+
+
+
 
 
     </div>
@@ -124,24 +137,28 @@ onUnmounted(() => {
 
 
 .article-layout {
-  padding: 12rem;
+  padding: 12rem 2%
 }
 
 .article-anchors {
   margin-right: 1rem;
   margin-bottom: 5rem;
   width: 25rem;
-  height: 300px;
+  height: 30rem;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
   border-radius: 0.5rem;
   padding: 2rem;
 
+  position: fixed;
+  //top: 25rem;
+  //left: 10rem ;
+
 }
 
 .article-body {
   margin-left: 1rem;
-  width: 60rem;
+  width: 80%;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
   border-radius: 0.5rem;
