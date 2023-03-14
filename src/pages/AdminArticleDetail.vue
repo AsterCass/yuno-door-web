@@ -5,37 +5,46 @@
     <div class="row justify-center article-layout">
 
       <div class="col-4 row justify-end">
+        <div class="article-anchors">
 
-        <div :hidden="false" class="article-anchors">
-          <ul
-              v-for="item in anchorTreeBackend"
-              :key="item.text"
-              @click="togo(item.value)">
-            <li>{{ item.text }}</li>
-          </ul>
+          <h1>导航</h1>
+          <q-list>
+            <q-item clickable v-ripple
+                    v-for="item in anchorTreeBackend"
+                    :key="item.text"
+                    @click="togo(item.value)">
+              <q-item-section>{{ item.text }}</q-item-section>
+            </q-item>
+          </q-list>
+
+          <q-separator spaced="1.5rem" size="0.05rem"/>
+
+          <h1>相关文章</h1>
+
+          <!--          <q-list >-->
+          <!--            <q-item clickable v-ripple-->
+          <!--                    v-for="item in anchorTreeBackend"-->
+          <!--                    :key="item.text"-->
+          <!--                    @click="togo(item.value)">-->
+          <!--              <q-item-section>{{ item.text }}</q-item-section>-->
+          <!--            </q-item>-->
+          <!--          </q-list>-->
         </div>
       </div>
-
       <div class="col-8 row justify-start">
-
         <div class="article-body">
           <div class="article-title">
             <h1>Privacy & Policy</h1>
             <p>创建时间: 2022年12月20日</p>
             <p>更新时间: 2023年1月9日</p>
           </div>
-
           <div class="article-context">
             <div>
               <div v-html="markdownToHtml" class="blogMarkDown"></div>
             </div>
           </div>
         </div>
-
-
       </div>
-
-
     </div>
 
 
@@ -70,6 +79,8 @@ function togo(id) {
     inline: "nearest",
   });
 }
+
+console.log(togo)
 
 //请求后端获取文章内容
 function getBlogContentMethod() {
@@ -140,10 +151,24 @@ onUnmounted(() => {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
   border-radius: 0.5rem;
   padding: 2rem;
-
   position: fixed;
-  //top: 25rem;
-  //left: 10rem ;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  line-height: 1.625;
+  font-weight: 300;
+  font-family: Roboto Slab, sans-serif;
+
+  h1 {
+    font-size: 1.875rem;
+    line-height: 1.375;
+    font-weight: 600;
+    color: $cask_dark_jungle_green;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    font-family: Roboto Slab, sans-serif;
+    //letter-spacing: -.05rem
+    text-transform: unset;
+  }
 
 }
 

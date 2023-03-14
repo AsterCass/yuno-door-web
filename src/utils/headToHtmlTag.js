@@ -35,9 +35,9 @@ export function headToHtmlTag(heads) {
             headTag.level = heads[index].level
             //text
             headTag.text = ""
-            let count = 4 * (heads[index].level - 1)
+            let count = heads[index].level - 1
             while (count > 0) {
-                headTag.text += "~"
+                headTag.text += "\xa0\xa0\xa0\xa0"
                 --count
             }
             headTag.text += heads[index].text

@@ -1,5 +1,5 @@
 .blogMarkDown {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .blogMarkDown h1 {
@@ -46,6 +46,8 @@
 
 .blogMarkDown p {
     margin-bottom: 0.5rem;
+    opacity: 0.9;
+    line-height: 1.625;
 }
 
 .blogMarkDown code {
