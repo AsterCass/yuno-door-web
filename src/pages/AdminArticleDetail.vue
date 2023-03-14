@@ -6,14 +6,19 @@
 
 
       <div :hidden="false" class="article-anchors">
-        <p>this is a anchor</p>
-        <q-btn @click="togo">this a btn</q-btn>
-
+        <!--        <q-btn @click="togo">this is a btn</q-btn>-->
+        <ul
+            v-for="item in anchorTree"
+            :key="item.id"
+            @click="togo(item.id)"
+        >
+          {{ item.id }}
+        </ul>
       </div>
 
       <div class="article-body">
         <div class="article-title">
-          <h3>Privacy & Policy</h3>
+          <h1>Privacy & Policy</h1>
           <p>创建时间: 2022年12月20日</p>
           <p>更新时间: 2023年1月9日</p>
         </div>
@@ -44,17 +49,16 @@ import {marked} from 'marked';
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, nextTick} from "vue";
 import {getBlogContent} from '@/api/base'
 
 let blogContent = ref("")
-let anchorTree = ref("")
-
-console.log(anchorTree)
+let anchorTree = ref()
 
 
-function togo() {
-  const mainRoot = document.getElementById("cicd配置");
+function togo(id) {
+  console.log(id)
+  const mainRoot = document.getElementById(id);
   mainRoot.scrollIntoView({
     behavior: "smooth",
     block: "center",
@@ -62,13 +66,7 @@ function togo() {
   });
 }
 
-//锚点
-// function getAnchorTree() {
-//   let anchorTree = document.querySelectorAll('h1, h2, h3')
-//   console.log(anchorTree)
-// }
-
-
+//请求后端获取文章内容
 function getBlogContentMethod() {
   const reader = new FileReader();
   getBlogContent({inputText: "123"}).then(res => {
@@ -84,15 +82,27 @@ function getBlogContentMethod() {
 }
 
 
+//markdown转html
 const markdownToHtml = computed(() => {
-  return marked(blogContent.value,
+  const markdownToHtmlDoc = marked(blogContent.value,
       {
         "highlight": function (markdown) {
           return hljs.highlightAuto(markdown).value
         }
       }
-  )
+  );
+  //等到document渲染完成获取标签树
+  //todo 这里直接在算markdown里面算会不会更好更快
+  nextTick(() => {
+    getAnchorTree()
+  })
+  return markdownToHtmlDoc
 })
+
+//获取文章标题锚点
+function getAnchorTree() {
+  anchorTree.value = document.querySelectorAll('h2, h3, h4, h5, h6')
+}
 
 onMounted(() => {
   //markdown代码渲染
@@ -155,7 +165,7 @@ onUnmounted(() => {
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(64, 64, 64, .4);
   border-radius: 0.5rem;
 
-  h3 {
+  h1 {
     font-size: 1.875rem;
     line-height: 1.375;
     font-weight: 600;
