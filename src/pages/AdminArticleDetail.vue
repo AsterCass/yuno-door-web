@@ -5,7 +5,8 @@
     <div class="row justify-center article-layout">
 
       <div class="col-4 row justify-end">
-        <div class="article-anchors">
+        <q-scroll-area class="article-anchors" delay="100">
+
 
           <h1>导航</h1>
           <q-list>
@@ -13,23 +14,46 @@
                     v-for="item in anchorTreeBackend"
                     :key="item.text"
                     @click="togo(item.value)">
-              <q-item-section>{{ item.text }}</q-item-section>
+              <q-item-section>
+                <p>
+                  {{ item.text }}
+                </p>
+
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <q-separator spaced="1.5rem" size="0.05rem"/>
+          <h1>相关文章</h1>
+          <q-list>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <a href="https://www.baidu.com">母猪的产后护理（上）</a>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <a href="https://www.baidu.com">母猪的产后护理（中）</a>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <a href="https://www.baidu.com">母猪的产后护理（下）</a>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <a href="https://www.baidu.com">母猪的产前抑郁处理办法</a>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <a href="https://www.baidu.com">公猪的产后护理</a>
+              </q-item-section>
             </q-item>
           </q-list>
 
-          <q-separator spaced="1.5rem" size="0.05rem"/>
 
-          <h1>相关文章</h1>
-
-          <!--          <q-list >-->
-          <!--            <q-item clickable v-ripple-->
-          <!--                    v-for="item in anchorTreeBackend"-->
-          <!--                    :key="item.text"-->
-          <!--                    @click="togo(item.value)">-->
-          <!--              <q-item-section>{{ item.text }}</q-item-section>-->
-          <!--            </q-item>-->
-          <!--          </q-list>-->
-        </div>
+        </q-scroll-area>
       </div>
       <div class="col-8 row justify-start">
         <div class="article-body">
@@ -138,25 +162,26 @@ onUnmounted(() => {
 @import "~highlight.js/styles/hybrid.css";
 
 
-.article-layout {
-  padding: 12rem 2%
-}
-
 .article-anchors {
   margin-right: 1rem;
   margin-bottom: 5rem;
-  width: 25rem;
-  height: 30rem;
+  width: 20%;
+  height: 60%;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
   border-radius: 0.5rem;
   padding: 2rem;
   position: fixed;
   opacity: 0.8;
-  font-size: 0.9rem;
-  line-height: 1.625;
-  font-weight: 300;
-  font-family: Roboto Slab, sans-serif;
+
+  p, a {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.625;
+    font-weight: 300;
+    font-family: Roboto Slab, sans-serif;
+  }
+
 
   h1 {
     font-size: 1.875rem;
@@ -170,6 +195,10 @@ onUnmounted(() => {
     text-transform: unset;
   }
 
+}
+
+.article-layout {
+  padding: 12% 2% 5% 2%
 }
 
 .article-body {
