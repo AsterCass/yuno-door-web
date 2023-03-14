@@ -3,27 +3,27 @@ export function headToHtmlTag(heads) {
     heads = [
         {
             level: 2,
-            value: "前言"
+            text: "前言"
         },
         {
             level: 2,
-            value: "CICD配置"
+            text: "CICD配置"
         },
         {
             level: 3,
-            value: "docker-compose.yml"
+            text: "docker-compose.yml"
         },
         {
             level: 3,
-            value: "Dockerfile"
+            text: "Dockerfile"
         },
         {
             level: 3,
-            value: "gitlab-ci.yml"
+            text: "gitlab-ci.yml"
         },
         {
             level: 2,
-            value: "nginx配置"
+            text: "nginx配置"
         },
     ]
 
@@ -31,8 +31,18 @@ export function headToHtmlTag(heads) {
     if (null !== heads && undefined !== heads) {
         for (let index in heads) {
             let headTag = {}
+            //level
             headTag.level = heads[index].level
-            headTag.value = heads[index].value.replace(".", "").toLowerCase()
+            //text
+            headTag.text = ""
+            let count = 4 * (heads[index].level - 1)
+            while (count > 0) {
+                headTag.text += "~"
+                --count
+            }
+            headTag.text += heads[index].text
+            //value
+            headTag.value = heads[index].text.replace(".", "").toLowerCase()
             headTags.push(headTag)
         }
     }

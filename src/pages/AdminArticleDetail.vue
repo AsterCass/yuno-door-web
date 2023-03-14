@@ -7,18 +7,13 @@
       <div class="col-4 row justify-end">
 
         <div :hidden="false" class="article-anchors">
-          <!--        <q-btn @click="togo">this is a btn</q-btn>-->
           <ul
               v-for="item in anchorTreeBackend"
-              :key="item.value"
-              @click="togo(item.value)"
-          >
-            {{ item.value }}
+              :key="item.text"
+              @click="togo(item.value)">
+            <li>{{ item.text }}</li>
           </ul>
         </div>
-
-
-
       </div>
 
       <div class="col-8 row justify-start">
@@ -39,9 +34,6 @@
 
 
       </div>
-
-
-
 
 
     </div>
@@ -71,7 +63,6 @@ let anchorTreeBackend = ref([])
 
 //跳转
 function togo(id) {
-  console.log(id)
   const target = document.getElementById(id);
   target.scrollIntoView({
     behavior: "smooth",
