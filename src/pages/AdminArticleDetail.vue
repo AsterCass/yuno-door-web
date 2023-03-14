@@ -8,11 +8,11 @@
       <div :hidden="false" class="article-anchors">
         <!--        <q-btn @click="togo">this is a btn</q-btn>-->
         <ul
-            v-for="item in anchorTree"
-            :key="item.id"
-            @click="togo(item.id)"
+            v-for="item in anchorTreeBackend"
+            :key="item.value"
+            @click="togo(item.value)"
         >
-          {{ item.id }}
+          {{ item.value }}
         </ul>
       </div>
 
@@ -49,17 +49,18 @@ import {marked} from 'marked';
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {computed, onMounted, onUnmounted, ref, nextTick} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 import {getBlogContent} from '@/api/base'
+import {headToHtmlTag} from '@/utils/headToHtmlTag'
 
 let blogContent = ref("")
-let anchorTree = ref()
+let anchorTreeBackend = ref([])
 
-
+//跳转
 function togo(id) {
   console.log(id)
-  const mainRoot = document.getElementById(id);
-  mainRoot.scrollIntoView({
+  const target = document.getElementById(id);
+  target.scrollIntoView({
     behavior: "smooth",
     block: "center",
     inline: "nearest",
@@ -84,25 +85,14 @@ function getBlogContentMethod() {
 
 //markdown转html
 const markdownToHtml = computed(() => {
-  const markdownToHtmlDoc = marked(blogContent.value,
+  return marked(blogContent.value,
       {
         "highlight": function (markdown) {
           return hljs.highlightAuto(markdown).value
         }
       }
-  );
-  //等到document渲染完成获取标签树
-  //todo 这里直接在算markdown里面算会不会更好更快
-  nextTick(() => {
-    getAnchorTree()
-  })
-  return markdownToHtmlDoc
+  )
 })
-
-//获取文章标题锚点
-function getAnchorTree() {
-  anchorTree.value = document.querySelectorAll('h2, h3, h4, h5, h6')
-}
 
 onMounted(() => {
   //markdown代码渲染
@@ -115,6 +105,8 @@ onMounted(() => {
   document.querySelector('head').append(base)
   //获取文章信息
   getBlogContentMethod()
+  //请求标题信息并渲染，这里暂时先只渲染
+  anchorTreeBackend.value = headToHtmlTag()
 })
 
 onUnmounted(() => {
