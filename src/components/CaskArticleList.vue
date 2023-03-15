@@ -21,7 +21,7 @@
     </div>
     <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center">
       <q-intersection transition="scale" once
-          v-for="(item, index) in items" :key="index" class="col-3">
+                      v-for="(item, index) in items" :key="index" class="col-3">
         <CaskArticleListCard :intro="item"/>
       </q-intersection>
       <template v-slot:loading>
@@ -47,7 +47,6 @@ const items = ref([{key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {
 
 
 function onLoad(index, done) {
-  console.log(items)
   setTimeout(() => {
     items.value.push({key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
         {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value})

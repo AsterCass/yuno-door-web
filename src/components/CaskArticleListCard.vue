@@ -14,9 +14,21 @@
       {{ intro.key }}
     </q-card-section>
     <q-separator spaced=".25rem" size="0.05rem"/>
+    <q-card-section class="row justify-between">
+      <div class="col-8">
+        <div class="text-subtitle2">创建时间：2022年12月23日</div>
+        <div class="text-subtitle2">更新时间：2023年1月13日</div>
+      </div>
+      <div class="col-4">
+        <q-btn class="admin-article-list-card-in">Go</q-btn>
+      </div>
+    </q-card-section>
     <q-card-section>
-      <div class="text-subtitle2">by John Doe</div>
-      <div class="text-subtitle2">by John Doe</div>
+      <div class="col admin-article-list-card-tag">
+        <q-icon name="fa-solid fa-bookmark" size="2rem" color="blue-5"></q-icon>
+        <q-icon name="fa-solid fa-bookmark" size="2rem" color="red-5"></q-icon>
+        <q-icon name="fa-solid fa-bookmark" size="2rem" color="green-5"></q-icon>
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -41,7 +53,7 @@ defineProps({
   border-radius: 1rem
   font-size: 1rem
   line-height: 1.625
-  margin: 5%
+  margin: 6%
 
 .admin-article-list-card-title
   padding: 1rem
@@ -60,5 +72,19 @@ defineProps({
     margin: 0
     font-family: Roboto Slab, sans-serif
     text-transform: unset
+
+.admin-article-list-card-tag
+  height: 2rem
+  margin: 0 0 -2rem 0
+
+.admin-article-list-card-in
+  text-align: center
+  color: white
+  background-image: linear-gradient(195deg, #42424a, #191919)
+  margin-bottom: -3rem
+  width: 80%
+  height: 100%
+  border-radius: 2rem
+
 
 </style>
