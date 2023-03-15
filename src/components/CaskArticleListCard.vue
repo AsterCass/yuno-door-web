@@ -20,7 +20,7 @@
         <div class="text-subtitle2">更新时间：2023年1月13日</div>
       </div>
       <div class="col-4">
-        <q-btn class="admin-article-list-card-in">Go</q-btn>
+        <q-btn class="admin-article-list-card-in" to="/article/detail">Go</q-btn>
       </div>
     </q-card-section>
     <q-card-section>

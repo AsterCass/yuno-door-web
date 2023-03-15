@@ -89,7 +89,7 @@ export default {
 
     //router
     const toArticle = () => {
-      router.push('/article/detail')
+      router.push('/article/list')
     }
 
     return {

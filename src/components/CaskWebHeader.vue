@@ -19,7 +19,7 @@ export default {
   setup() {
     const router = useRouter()
     const toArticle = () => {
-      router.push('/article/detail')
+      router.push('/article/list')
     }
     const toHome = () => {
       router.push('/')
