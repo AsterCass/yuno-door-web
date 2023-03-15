@@ -20,9 +20,10 @@
       </div>
     </div>
     <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center">
-      <div v-for="(item, index) in items" :key="index" class="col-3">
+      <q-intersection transition="scale" once
+          v-for="(item, index) in items" :key="index" class="col-3">
         <CaskArticleListCard :intro="item"/>
-      </div>
+      </q-intersection>
       <template v-slot:loading>
         <div class="row justify-center" style="margin: 2rem">
           <q-spinner-cube color="dark" size="2rem"/>
