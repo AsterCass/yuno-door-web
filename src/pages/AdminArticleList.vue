@@ -11,24 +11,7 @@
       </q-img>
     </div>
 
-    <div class="row justify-center article-list-search">
-      <q-input
-          rounded
-          outlined
-          placeholder="输入查询文章关键词"
-          v-model="text"
-          class="col-9 article-list-base article-list-search-input"
-          standout="bg-white text-grey-10"
-      >
-      </q-input>
-
-      <div class="col-2">
-        <q-btn
-            push round size="1rem"
-            class="col-1 article-list-search-btn" icon="fa-solid fa-magnifying-glass"/>
-      </div>
-
-    </div>
+    <CaskSearch/>
 
     <div class="article-list-base article-list-main">
       <q-page-container>
@@ -54,9 +37,7 @@
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import {onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
-import {ref} from 'vue'
-
-let text = ref("")
+import CaskSearch from "@/components/CaskSearch.vue";
 
 onMounted(() => {
   //底色渲染
@@ -76,31 +57,11 @@ onUnmounted(() => {
 .index-img
   z-index: -1
 
-
-.article-list-base
-  background-color: rgba(255, 255, 255, 0.8)
-  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
-  backdrop-filter: saturate(200%) blur(30px)
-
-.article-list-search-btn
-  background-image: linear-gradient(195deg, #42424a, #191919)
-  color: $cask_base_white
-
-
-.article-list-search-input
-  border-radius: 30px
-  font-size: 1rem
-  line-height: 1.625
-  height: 2rem
-  margin-right: 1rem
-
-
-.article-list-search
-  align-items: center
-  margin: -11% 35% 0 35%
-
 .article-list-main
   margin: 5rem 2rem 5rem 2rem
   border-radius: 15px
+  background-color: rgba(255, 255, 255, 0.8)
+  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
+  backdrop-filter: saturate(200%) blur(30px)
 
 </style>
