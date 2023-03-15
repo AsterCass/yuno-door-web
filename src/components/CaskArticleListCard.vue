@@ -13,7 +13,7 @@
     <q-card-section>
       {{ intro.key }}
     </q-card-section>
-    <q-separator spaced=".25rem" size="0.05rem"/>
+    <q-separator spaced=".25rem" size="0.05rem" inset/>
     <q-card-section class="row justify-between">
       <div class="col-8">
         <div class="text-subtitle2">创建时间：2022年12月23日</div>

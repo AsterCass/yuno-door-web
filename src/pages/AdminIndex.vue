@@ -14,16 +14,7 @@
     </div>
 
     <div class="index-main">
-      <q-page-container v-intersection="onIntersection">
-        <q-page class="q-pa-md">
-          <p v-for="n in 100" :key="n">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci,
-            dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus
-            commodi perferendis voluptate? 字体观察 备案 即使 网站
-          </p>
-
-        </q-page>
-      </q-page-container>
+      <CaskAdminShow v-intersection="onIntersection"/>
     </div>
 
     <CopyrightFooter/>
@@ -54,11 +45,12 @@ import CaskWebHeader from '@/components/CaskWebHeader.vue'
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import {useRouter} from 'vue-router'
 import 'animate.css';
+import CaskAdminShow from "@/components/CaskAdminShow.vue";
 
 
 export default {
   name: "AdminIndex",
-  components: {CopyrightFooter, CaskWebHeader, CaskWebFab},
+  components: {CaskAdminShow, CopyrightFooter, CaskWebHeader, CaskWebFab},
   setup() {
 
 // https://quasar.dev/vue-directives/intersection
