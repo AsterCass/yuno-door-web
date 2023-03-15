@@ -10,21 +10,12 @@
              :fit="'cover'">
       </q-img>
     </div>
-
     <CaskSearch/>
 
-    <div class="article-list-base article-list-main">
-      <q-page-container>
-        <q-page class="q-pa-md">
-          <p v-for="n in 10" :key="n">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci,
-            dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus
-            commodi perferendis voluptate? 字体观察 备案 即使 网站
-          </p>
-        </q-page>
-      </q-page-container>
-    </div>
 
+    <div class="article-list-base article-list-main">
+      <CaskArticleList/>
+    </div>
 
     <CopyrightFooter/>
     <q-page-sticky position="left" :offset="[25, 25]">
@@ -38,6 +29,7 @@ import CaskWebFab from "@/components/CaskWebFab.vue";
 import {onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskSearch from "@/components/CaskSearch.vue";
+import CaskArticleList from "@/components/CaskArticleList.vue";
 
 onMounted(() => {
   //底色渲染
@@ -63,5 +55,6 @@ onUnmounted(() => {
   background-color: rgba(255, 255, 255, 0.8)
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
   backdrop-filter: saturate(200%) blur(30px)
+  min-height: 600px
 
 </style>
