@@ -1,8 +1,13 @@
 <template>
   <q-card class="admin-article-list-card">
-    <q-card-section>
-      <div class="admin-article-list-card-title">
+    <q-card-section class="row">
+      <div class="col-8 admin-article-list-card-title">
         <h6>CICD-FRONTEND</h6>
+      </div>
+      <div class="col-4 row justify-end">
+        <q-avatar class="admin-article-list-card-head">
+          <q-img :src="require('../assets/img/head.jpg')"/>
+        </q-avatar>
       </div>
     </q-card-section>
     <q-card-section>
@@ -42,7 +47,7 @@ defineProps({
   padding: 1rem
   text-align: left
   transform: translateY(-15%)
-  margin: -1.5rem 50% 0rem  -2rem
+  margin: -1.5rem 5% 0  -2rem
   background-image: linear-gradient(195deg, #42424a, #191919)
   color: $cask_base_white
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(64, 64, 64, .4)
