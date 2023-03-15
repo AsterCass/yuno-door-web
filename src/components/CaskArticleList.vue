@@ -9,36 +9,42 @@
         文章列表
       </div>
       <div class="justify-end admin-article-list-head-tag">
-        <q-toggle color="blue" label="Blue" v-model="selection" val="blue"/>
-        <q-toggle color="yellow" label="Yellow" v-model="selection" val="yellow"/>
-        <q-toggle color="green" label="Green" v-model="selection" val="green"/>
-        <q-toggle color="red" label="Red" v-model="selection" val="red"/>
-        <q-toggle color="blue" label="Blue" v-model="selection" val="blue"/>
-        <q-toggle color="yellow" label="Yellow" v-model="selection" val="yellow"/>
-        <q-toggle color="green" label="Green" v-model="selection" val="green"/>
-        <q-toggle color="red" label="Red" v-model="selection" val="red"/>
+        <q-toggle color="dark" label="Docker" v-model="selection" val="Docker"/>
+        <q-toggle color="dark" label="Linux" v-model="selection" val="Linux"/>
+        <q-toggle color="dark" label="Windows" v-model="selection" val="Windows"/>
+        <q-toggle color="dark" label="Java" v-model="selection" val="Java"/>
+        <q-toggle color="dark" label="C/C++" v-model="selection" val="CCPlus"/>
+        <q-toggle color="dark" label="Yellow" v-model="selection" val="yellow"/>
+        <q-toggle color="dark" label="ML" v-model="selection" val="ML"/>
+        <q-toggle color="dark" label="Sql" v-model="selection" val="Sql"/>
       </div>
     </div>
+    <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center">
+      <div v-for="(item, index) in items" :key="index" class="col-3">
 
-    <div class="col-3" v-for="count in 30" :key="count">
-      <q-card class="my-card bg-secondary text-white">
-        <q-card-section>
-          <div class="text-h6">Our Changing Planet</div>
-          <div class="text-subtitle2">by John Doe</div>
-        </q-card-section>
+        <q-card class="admin-article-list-card bg-secondary text-white">
+          <q-card-section>
+            <div class="text-h6">Our Changing Planet</div>
+            <div class="text-subtitle2">by John Doe</div>
+          </q-card-section>
+          <q-card-section>
+            {{ item.key }}
+          </q-card-section>
+          <q-separator dark/>
+          <q-card-actions>
+            <q-btn flat>Action 1</q-btn>
+            <q-btn flat>Action 2</q-btn>
+          </q-card-actions>
+        </q-card>
+      </div>
 
-        <q-card-section>
-          {{ lorem }}
-        </q-card-section>
+      <template v-slot:loading>
+        <div class="row justify-center" style="margin: 2rem">
+          <q-spinner-cube color="dark" size="2rem"/>
+        </div>
+      </template>
+    </q-infinite-scroll>
 
-        <q-separator dark/>
-
-        <q-card-actions>
-          <q-btn flat>Action 1</q-btn>
-          <q-btn flat>Action 2</q-btn>
-        </q-card-actions>
-      </q-card>
-    </div>
   </div>
 
 </template>
@@ -46,8 +52,23 @@
 <script setup>
 import {ref} from "vue";
 
+const lorem = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
+    'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')
 let selection = ref(['yellow', 'red'])
-let lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+const items = ref([{key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
+  {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value}])
+
+
+function onLoad(index, done) {
+  console.log(items)
+  setTimeout(() => {
+    items.value.push({key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
+        {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value})
+    done()
+  }, 1000)
+}
+
+
 </script>
 
 <style lang="sass" scoped>
@@ -73,12 +94,7 @@ let lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiu
 .admin-article-list-base
   padding: 1%
 
-.my-card-2
-  padding: 1%
-  width: 50%
-  max-width: 300px
-
-.my-card
+.admin-article-list-card
   margin: 5%
 
 </style>
