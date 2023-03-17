@@ -1,11 +1,10 @@
 import {serviceShiro} from '@/utils/request'
 
 
-export function getBlogContent(params) {
+export function getBlogContent(path) {
     return serviceShiro({
-        url: '/tool-kit/blog',
+        url: `/article/${path.id}/content`,
         method: 'get',
-        params: params,
         responseType: "blob"
     })
 }

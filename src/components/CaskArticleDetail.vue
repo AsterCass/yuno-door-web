@@ -68,7 +68,7 @@ function togo(id) {
 //请求后端获取文章内容
 function getBlogContentMethod() {
   const reader = new FileReader();
-  getBlogContent({inputText: "123"}).then(res => {
+  getBlogContent({id: "AT1636609972538314"}).then(res => {
     reader.readAsText(res.data, 'UTF-8')
   })
   reader.addEventListener(
@@ -192,7 +192,6 @@ onMounted(() => {
   padding: 0 3rem 3rem 3rem;
   min-height: 800px;
 }
-
 
 
 </style>
