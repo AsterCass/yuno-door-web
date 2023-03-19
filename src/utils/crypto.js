@@ -11,9 +11,9 @@ import CryptoJS from "crypto-js";
 // http://www.jasypt.org/encrypting-texts.html
 // https://stackoverflow.com/questions/72984983/how-to-create-a-function-in-javascript-to-simulate-the-same-functionality-of-pbe
 export function decrypt(blob) {
-    var passphrase = "My Passphrase";
-    var saltWA = CryptoJS.enc.Hex.parse("000102030405060708090a0b0c0d0e0f"); // static only for test!
-    var ivWA = CryptoJS.enc.Hex.parse("101112131415161718191a1b1c1d1e1f"); // static only for test!
+    var passphrase = "ASTER_cass_NO_el_mind_auth_company";
+    var saltWA = CryptoJS.enc.Hex.parse("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"); // static only for test!
+    var ivWA = CryptoJS.enc.Hex.parse("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"); // static only for test!
     var iterations = 10000;
     var keyWA = CryptoJS.PBKDF2(passphrase, saltWA, {
         keySize: 256 / 32,
