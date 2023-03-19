@@ -51,6 +51,7 @@ import {getBlogContent} from "@/api/base";
 import {marked} from "marked";
 import hljs from "highlight.js";
 import {headToHtmlTag} from "@/utils/headToHtmlTag";
+import {decrypt} from '@/utils/crypto'
 
 let blogContent = ref("")
 let anchorTreeBackend = ref([])
@@ -67,17 +68,12 @@ function togo(id) {
 
 //请求后端获取文章内容
 function getBlogContentMethod() {
-  const reader = new FileReader();
   getBlogContent({id: "AT1636609972538314"}).then(res => {
-    reader.readAsText(res.data, 'UTF-8')
+    decrypt(res.data).then(text => {
+          blogContent.value = text
+        }
+    )
   })
-  reader.addEventListener(
-      "load",
-      () => {
-        blogContent.value = reader.result
-      },
-      false
-  );
 }
 
 
