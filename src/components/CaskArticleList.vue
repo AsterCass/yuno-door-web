@@ -21,11 +21,11 @@
     </div>
     <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center">
       <q-intersection transition="scale" once
-                      v-for="(item, index) in items" :key="index" class="col-3">
+                      v-for="(item, index) in items" :key="index" class="col-5">
         <CaskArticleListCard :intro="item"/>
       </q-intersection>
       <template v-slot:loading>
-        <div class="row justify-center" style="margin: 2rem">
+        <div class="row justify-center" style="margin: 2rem 20rem">
           <q-spinner-cube color="dark" size="2rem"/>
         </div>
       </template>
@@ -40,7 +40,7 @@ import {ref} from "vue";
 import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
 
 const lorem = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
-    'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')
+    'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 123')
 let selection = ref(['yellow', 'red'])
 const items = ref([{key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
   {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value}])
