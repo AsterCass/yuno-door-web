@@ -9,3 +9,10 @@ export function getBlogContent(path) {
     })
 }
 
+export function getBlogMeta(path) {
+    return serviceShiro({
+        url: `/article/${path.id}/meta`,
+        method: 'get',
+    })
+}
+

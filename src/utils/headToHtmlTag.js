@@ -1,51 +1,28 @@
-export function headToHtmlTag(heads) {
+export function headToHtmlTag(meta) {
 
-    heads = [
-        {
-            level: 2,
-            text: "前言"
-        },
-        {
-            level: 2,
-            text: "CICD配置"
-        },
-        {
-            level: 3,
-            text: "docker-compose.yml"
-        },
-        {
-            level: 3,
-            text: "Dockerfile"
-        },
-        {
-            level: 3,
-            text: "gitlab-ci.yml"
-        },
-        {
-            level: 2,
-            text: "nginx配置"
-        },
-    ]
+    let heads = meta.articleChildTitleList;
 
     let headTags = []
     if (null !== heads && undefined !== heads) {
         for (let index in heads) {
             let headTag = {}
-            //level
-            headTag.level = heads[index].level
-            //text
-            headTag.text = ""
-            let count = heads[index].level - 1
+            //titleLevel
+            headTag.titleLevel = heads[index].titleLevel
+            //title
+            headTag.title = ""
+            let count = heads[index].titleLevel - 1
             while (count > 0) {
-                headTag.text += "\xa0\xa0\xa0\xa0"
+                headTag.title += "\xa0\xa0\xa0\xa0"
                 --count
             }
-            headTag.text += heads[index].text
+            headTag.title += heads[index].title
             //value
-            headTag.value = heads[index].text.replace(".", "").toLowerCase()
+            headTag.value = heads[index].title.replace(".", "").toLowerCase()
             headTags.push(headTag)
         }
     }
     return headTags
+
+
 }
 

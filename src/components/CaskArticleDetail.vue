@@ -6,13 +6,12 @@
         <q-list>
           <q-item clickable v-ripple
                   v-for="item in anchorTreeBackend"
-                  :key="item.text"
+                  :key="item.title"
                   @click="togo(item.value)">
             <q-item-section>
               <p>
-                {{ item.text }}
+                {{ item.title }}
               </p>
-
             </q-item-section>
           </q-item>
         </q-list>
@@ -30,9 +29,9 @@
     <div class="col-8 row justify-start">
       <div class="article-body">
         <div class="article-title">
-          <h1>Privacy & Policy</h1>
-          <p>创建时间: 2022年12月20日</p>
-          <p>更新时间: 2023年1月9日</p>
+          <h1>{{ blogMeta.articleTitle }}</h1>
+          <p>创建时间: {{ blogMeta.createTime }}</p>
+          <p>更新时间: {{ blogMeta.updateTime }}</p>
         </div>
         <div class="article-context">
           <div>
@@ -44,58 +43,87 @@
   </div>
 </template>
 
-<script setup>
-
-import {computed, onMounted, ref} from "vue";
-import {getBlogContent} from "@/api/base";
+<script>
+import {computed, ref, onMounted} from "vue";
+import {getBlogContent, getBlogMeta} from "@/api/base";
 import {marked} from "marked";
 import hljs from "highlight.js";
-import {headToHtmlTag} from "@/utils/headToHtmlTag";
 import {decrypt} from '@/utils/crypto'
+import {headToHtmlTag} from "@/utils/headToHtmlTag";
 
-let blogContent = ref("")
-let anchorTreeBackend = ref([])
+export default {
+  name: "CaskArticleDetail",
+  props: {
+    articleId: {
+      type: String,
+      default: "AT1637653540015050"
+    }
+  },
+  setup(props) {
+    let blogContent = ref("")
+    let blogMeta = ref({
+      articleTitle: "Not found",
+      createTime: "1970-01-01",
+      updateTime: "1970-01-01",
+    })
+    let anchorTreeBackend = ref([])
 
-//跳转
-function togo(id) {
-  const target = document.getElementById(id);
-  target.scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-    inline: "nearest",
-  });
-}
+
+    //跳转
+    function togo(id) {
+      const target = document.getElementById(id);
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
 
 //请求后端获取文章内容
-function getBlogContentMethod() {
-  getBlogContent({id: "AT1636609972538314"}).then(res => {
-    decrypt(res.data).then(text => {
-          blogContent.value = text
-        }
-    )
-  })
-}
+    function getBlogContentMethod() {
+      getBlogContent({id: props.articleId}).then(res => {
+        decrypt(res.data).then(text => {
+              blogContent.value = text
+            }
+        )
+      })
+    }
 
+    //请求后端获取文章meta
+    function getBlogMetaMethod() {
+      getBlogMeta({id: props.articleId}).then(res => {
+        blogMeta.value = res.data.data
+        //请求标题信息并渲染，这里暂时先只渲染
+        anchorTreeBackend.value = headToHtmlTag(blogMeta.value)
+      })
+    }
 
 //markdown转html
-const markdownToHtml = computed(() => {
-  return marked(blogContent.value,
-      {
-        "highlight": function (markdown) {
-          return hljs.highlightAuto(markdown).value
-        }
-      }
-  )
-})
+    const markdownToHtml = computed(() => {
+      return marked(blogContent.value,
+          {
+            "highlight": function (markdown) {
+              return hljs.highlightAuto(markdown).value
+            }
+          }
+      )
+    })
 
-onMounted(() => {
-  //markdown代码渲染
-  hljs.highlightAll()
-  //获取文章信息
-  getBlogContentMethod()
-  //请求标题信息并渲染，这里暂时先只渲染
-  anchorTreeBackend.value = headToHtmlTag()
-})
+    onMounted(() => {
+      //markdown代码渲染
+      hljs.highlightAll()
+      //获取文章信息
+      getBlogContentMethod()
+      //获取文章元数据
+      getBlogMetaMethod()
+    })
+
+
+    return {
+      togo, markdownToHtml, anchorTreeBackend, blogMeta
+    }
+  }
+}
 
 </script>
 
