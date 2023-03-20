@@ -21,13 +21,14 @@
 
 <script setup>
 import {ref} from "vue";
-import emitter from '@/utils/mitt';
+import emitter from '@/utils/bus';
 
 let text = ref("")
 
 function search() {
   emitter.emit('searchArticleList', text.value)
 }
+
 
 </script>
 

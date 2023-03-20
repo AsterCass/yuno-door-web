@@ -21,11 +21,11 @@
     </div>
     <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center">
       <q-intersection transition="scale" once
-                      v-for="(item, index) in items" :key="index" class="col-5">
+                      v-for="(item, index) in articleList" :key="index" class="col-5">
         <CaskArticleListCard :intro="item"/>
       </q-intersection>
       <template v-slot:loading>
-        <div class="row justify-center" style="margin: 2rem 20rem">
+        <div class="row justify-center" style="margin: 2rem 50rem">
           <q-spinner-cube color="dark" size="2rem"/>
         </div>
       </template>
@@ -37,14 +37,19 @@
 
 <script setup>
 import {onMounted, onUnmounted, ref} from "vue";
-import emitter from '@/utils/mitt';
+import emitter from '@/utils/bus';
 import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
+import {getBlogList} from "@/api/base";
+import {simplePage} from "@/utils/page";
 
 const lorem = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
     'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 123')
 let selection = ref(['yellow', 'red'])
 const items = ref([{key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
   {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value}])
+
+let articleList = ref([])
+let currentPage = ref(1)
 
 
 function onLoad(index, done) {
@@ -56,11 +61,15 @@ function onLoad(index, done) {
 }
 
 function searchArticleListMethod(param) {
-  console.log(param)
+  let requestParam = {keyword: param}
+  getBlogList(simplePage(requestParam, currentPage.value)).then(res => {
+    articleList.value = res.data.data
+  })
 }
 
 onMounted(() => {
   emitter.on('searchArticleList', searchArticleListMethod)
+  searchArticleListMethod()
 })
 
 onUnmounted(() => {

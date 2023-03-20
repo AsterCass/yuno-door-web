@@ -1,8 +1,10 @@
 <template>
   <q-card class="admin-article-list-card">
     <q-card-section class="row">
-      <div class="col-8 admin-article-list-card-title">
-        <h6>CICD-FRONTEND</h6>
+      <div class="col-8">
+        <div class="admin-article-list-card-title">
+          <h6> {{ intro.articleTitle }}</h6>
+        </div>
       </div>
       <div class="col-4 row justify-end">
         <q-avatar class="admin-article-list-card-head">
@@ -11,13 +13,16 @@
       </div>
     </q-card-section>
     <q-card-section>
-      {{ intro.key }}
+      <div class="admin-article-list-card-brief">
+        {{ intro.articleBrief }}
+      </div>
+
     </q-card-section>
     <q-separator spaced=".25rem" size="0.05rem" inset/>
     <q-card-section class="row justify-between">
       <div class="col-8">
-        <div class="text-subtitle2">创建时间：2022年12月23日</div>
-        <div class="text-subtitle2">更新时间：2023年1月13日</div>
+        <div class="text-subtitle2">创建时间：{{ intro.createTime }}</div>
+        <div class="text-subtitle2">更新时间：{{ intro.updateTime }}</div>
       </div>
       <div class="col-4">
         <q-btn class="admin-article-list-card-in" to="/article/detail">Go</q-btn>
@@ -42,7 +47,12 @@
 import {defineProps} from "vue";
 
 defineProps({
-  intro: {},
+  intro: {
+    articleTitle: "",
+    articleBrief: "",
+    createTime: "",
+    updateTime: "",
+  },
 });
 
 
@@ -60,11 +70,20 @@ defineProps({
   line-height: 1.625
   margin: 6%
 
+.admin-article-list-card-brief
+  word-wrap: break-word
+  -webkit-box-orient: vertical
+  overflow: hidden
+  display: -webkit-box
+  -webkit-line-clamp: 3
+
+
 .admin-article-list-card-title
   padding: 1rem
   text-align: left
   transform: translateY(-15%)
-  margin: -1.5rem 5% 0  -2rem
+  margin: -1.5rem 0 0  -2rem
+  width: fit-content
   background-image: linear-gradient(195deg, #42424a, #191919)
   color: $cask_base_white
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(64, 64, 64, .4)

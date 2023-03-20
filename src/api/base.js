@@ -16,3 +16,11 @@ export function getBlogMeta(path) {
     })
 }
 
+export function getBlogList(param) {
+    return serviceShiro({
+        url: `/article/list`,
+        method: 'get',
+        params: param
+    })
+}
+
