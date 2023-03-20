@@ -36,7 +36,8 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
+import emitter from '@/utils/mitt';
 import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
 
 const lorem = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
@@ -53,6 +54,18 @@ function onLoad(index, done) {
     done()
   }, 1000)
 }
+
+function searchArticleListMethod(param) {
+  console.log(param)
+}
+
+onMounted(() => {
+  emitter.on('searchArticleList', searchArticleListMethod)
+})
+
+onUnmounted(() => {
+  emitter.off('searchArticleList')
+})
 
 
 </script>

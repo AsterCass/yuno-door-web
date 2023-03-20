@@ -10,6 +10,7 @@
         outlined
         placeholder="输入查询文章关键词"
         v-model="text"
+        @keyup.enter="search"
         class="col-12 article-list-base article-list-search-input"
         standout="bg-white text-grey-10"
     >
@@ -20,8 +21,14 @@
 
 <script setup>
 import {ref} from "vue";
+import emitter from '@/utils/mitt';
 
 let text = ref("")
+
+function search() {
+  emitter.emit('searchArticleList', text.value)
+}
+
 </script>
 
 <style lang="sass" scoped>
