@@ -19,13 +19,13 @@
         <q-toggle color="dark" label="Sql" v-model="selection" val="Sql"/>
       </div>
     </div>
-    <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center">
+    <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center" :disable="scrollDisable">
       <q-intersection transition="scale" once
                       v-for="(item, index) in articleList" :key="index" class="col-5">
         <CaskArticleListCard :intro="item"/>
       </q-intersection>
       <template v-slot:loading>
-        <div class="row justify-center" style="margin: 2rem 50rem">
+        <div class="row justify-center admin-article-list-loading">
           <q-spinner-cube color="dark" size="2rem"/>
         </div>
       </template>
@@ -42,28 +42,34 @@ import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
 import {getBlogList} from "@/api/base";
 import {simplePage} from "@/utils/page";
 
-const lorem = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
-    'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 123')
 let selection = ref(['yellow', 'red'])
-const items = ref([{key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
-  {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value}])
-
 let articleList = ref([])
-let currentPage = ref(1)
+let currentPage = ref(0)
+let currentParam = ref({})
+let scrollDisable = ref(false)
 
 
 function onLoad(index, done) {
-  setTimeout(() => {
-    items.value.push({key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value},
-        {key: lorem.value}, {key: lorem.value}, {key: lorem.value}, {key: lorem.value})
-    done()
-  }, 1000)
+  ++currentPage.value
+  getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
+    if (null != res.data.data && 0 !== res.data.data.length) {
+      articleList.value.push(...res.data.data)
+      done()
+    } else {
+      scrollDisable.value = true
+    }
+  })
 }
 
 function searchArticleListMethod(param) {
-  let requestParam = {keyword: param}
-  getBlogList(simplePage(requestParam, currentPage.value)).then(res => {
-    articleList.value = res.data.data
+  //数据重置
+  currentPage.value = 1
+  scrollDisable.value = false
+  articleList.value.splice(0)
+  //参数插入
+  currentParam.value = {keyword: param}
+  getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
+    articleList.value.push(...res.data.data)
   })
 }
 
@@ -101,5 +107,8 @@ onUnmounted(() => {
 
 .admin-article-list-base
   padding: 1%
+
+.admin-article-list-loading
+  margin: 2rem 50rem
 
 </style>
