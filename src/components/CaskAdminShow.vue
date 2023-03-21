@@ -126,7 +126,7 @@ const lorem = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
     'sed do eiusmod tempor incididunt ut labore et dolore magna aliquafdasfdasfsdafda fasdfjdlsaf' +
     'lafjldasjflasdfjdsjf fljadslfjdslajfl fldsjafldsj fl lfjasdlfjdsal f fdlasjfldasj  fljdsaldfj flasjfdlj' +
     'fdasljfldsa lfjasdlf lafjl flsajf ldsajfl fjslafj lasjfl lfj lsa flajf la.')
-const items = ref([{key: lorem.value}, {key: lorem.value}, {key: lorem.value}])
+const items = ref([{articleBrief: lorem.value}, {articleBrief: lorem.value}, {articleBrief: lorem.value}])
 
 
 </script>

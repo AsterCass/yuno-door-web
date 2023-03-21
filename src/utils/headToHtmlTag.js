@@ -17,7 +17,10 @@ export function headToHtmlTag(meta) {
             }
             headTag.title += heads[index].title
             //value
-            headTag.value = heads[index].title.replace(".", "").toLowerCase()
+            headTag.value = heads[index]
+                .title.replace(".", "")
+                .replace(/[@$]/g, "")
+                .toLowerCase()
             headTags.push(headTag)
         }
     }
