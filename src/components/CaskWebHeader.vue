@@ -2,7 +2,7 @@
   <q-header :modelValue="headerVisible" class="index-header">
     <q-toolbar>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" @click="toHome"/>
-      <q-toolbar-title>Cask Admin</q-toolbar-title>
+      <q-toolbar-title>Aster Cass</q-toolbar-title>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" @click="toArticle"/>
     </q-toolbar>
   </q-header>
