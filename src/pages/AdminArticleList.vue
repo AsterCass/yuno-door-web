@@ -4,7 +4,7 @@
     <div>
       <q-img class="index-img"
              :no-native-menu="false"
-             :src="require('../assets/img/backgroud-half.png')"
+             :src="require('../assets/img/bg1-half.jpg')"
              alt=""
              :ratio="3"
              :fit="'cover'">

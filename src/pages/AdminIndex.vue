@@ -6,7 +6,7 @@
     <div>
       <q-img class="index-img"
              :no-native-menu="false"
-             :src="require('../assets/img/backgroud.png')"
+             :src="require('../assets/img/backgroud.jpg')"
              alt=""
              :ratio="16/9"
              :fit="'cover'">

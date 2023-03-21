@@ -6,6 +6,7 @@ import AdminArticleList from "@/pages/AdminArticleList.vue";
 import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
 import AdminFlexBox from "@/pages/AdminFlexBox.vue";
 import AdminArticleUpload from "@/pages/AdminArticleUpload.vue";
+import AdminEssayList from "@/pages/AdminEssayList.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -42,6 +43,11 @@ const router = createRouter({
                     component: AdminArticleList
                 }
             ]
+        },
+        {
+            path: '/essay/list',
+            name: "adminEssayList",
+            component: AdminEssayList
         },
         {
             path: "/flexBox",
