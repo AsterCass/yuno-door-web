@@ -14,7 +14,7 @@
 
 
     <div class="article-list-base article-list-main">
-      <CaskArticleList/>
+      <CaskArticleList list-name="文章列表" :list-type="1" :hide-tag-enum="false"/>
     </div>
 
     <CopyrightFooter/>

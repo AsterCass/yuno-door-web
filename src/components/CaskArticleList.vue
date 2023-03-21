@@ -6,9 +6,9 @@
     <div class="col-12 row justify-between admin-article-list-head">
       <div>
         <q-icon name="style" size="1em"/>
-        文章列表
+        {{ listName }}
       </div>
-      <div class="justify-end admin-article-list-head-tag">
+      <div class="justify-end admin-article-list-head-tag" :hidden="hideTagEnum">
         <q-toggle color="dark" label="Docker" v-model="selection" val="Docker"/>
         <q-toggle color="dark" label="Linux" v-model="selection" val="Linux"/>
         <q-toggle color="dark" label="Windows" v-model="selection" val="Windows"/>
@@ -36,18 +36,33 @@
 </template>
 
 <script setup>
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, defineProps} from "vue";
 import emitter from '@/utils/bus';
 import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
 import {getBlogList} from "@/api/base";
 import {simplePage} from "@/utils/page";
+
+const props = defineProps({
+  listName: {
+    type: String,
+    default: "列表"
+  },
+  listType: {
+    type: Number,
+    default: 1
+  },
+  hideTagEnum: {
+    type: Boolean,
+    default: true
+  }
+})
+
 
 let selection = ref(['yellow', 'red'])
 let articleList = ref([])
 let currentPage = ref(0)
 let currentParam = ref({})
 let scrollDisable = ref(false)
-
 
 function onLoad(index, done) {
   ++currentPage.value
@@ -67,7 +82,7 @@ function searchArticleListMethod(param) {
   scrollDisable.value = false
   articleList.value.splice(0)
   //参数插入
-  currentParam.value = {keyword: param}
+  currentParam.value = {keyword: param, articleType: props.listType}
   getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
     articleList.value.push(...res.data.data)
   })

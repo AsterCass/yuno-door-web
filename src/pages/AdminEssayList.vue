@@ -14,7 +14,7 @@
 
 
     <div class="article-list-base article-list-main">
-      <CaskArticleList/>
+      <CaskArticleList list-name="题记列表" :list-type="2"/>
     </div>
 
     <CopyrightFooter/>
