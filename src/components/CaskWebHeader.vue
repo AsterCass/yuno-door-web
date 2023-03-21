@@ -1,34 +1,21 @@
 <template>
   <q-header :modelValue="headerVisible" class="index-header">
     <q-toolbar>
-      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" @click="toHome"/>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" to="/"/>
       <q-toolbar-title>Aster Cass</q-toolbar-title>
-      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" @click="toArticle"/>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book-bookmark" label="essay" to="/essay/list"/>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" to="/article/list"/>
     </q-toolbar>
   </q-header>
 </template>
 
 <script>
-import {useRouter} from "vue-router";
 
 export default {
   name: 'AdminArticleDetail',
   props: {
     headerVisible: Boolean
   },
-  setup() {
-    const router = useRouter()
-    const toArticle = () => {
-      router.push('/article/list')
-    }
-    const toHome = () => {
-      router.push('/')
-    }
-    return {
-      toArticle,
-      toHome
-    }
-  }
 
 }
 

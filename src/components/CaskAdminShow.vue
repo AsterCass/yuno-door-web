@@ -3,7 +3,7 @@
 
     <div class="column admin-show-base-row">
       <div class="col-2 admin-show-base-title">
-        <q-icon name="style" size="1em"/>
+        <q-icon name="fa-solid fa-book" size="1em"/>
         技术备录
       </div>
       <div class="row col-10">

@@ -13,6 +13,9 @@
                     label="Home" hide-label external-label
                     to="/" icon="fa-solid fa-house"/>
       <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                    label="Essay" hide-label external-label
+                    to="/essay/list" icon="fa-solid fa-book-bookmark"/>
+      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                     label="Article" hide-label external-label
                     to="/article/list" icon="fa-solid fa-book"/>
 
