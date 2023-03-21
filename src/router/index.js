@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 import AdminDoc from "@/pages/AdminDoc.vue";
 import AdminIndex from "@/pages/AdminIndex.vue";
 import AdminWx from "@/pages/AdminWx.vue";
@@ -9,7 +9,7 @@ import AdminArticleUpload from "@/pages/AdminArticleUpload.vue";
 import AdminEssayList from "@/pages/AdminEssayList.vue";
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(process.env.BASE_URL),
     routes: [
         {
             path: "/",
