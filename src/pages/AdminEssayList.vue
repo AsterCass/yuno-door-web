@@ -5,6 +5,7 @@
       <q-img class="index-img"
              :no-native-menu="false"
              :src="require('../assets/img/bg2-half.jpg')"
+             :placeholder-src="require('../assets/img/bg2-half-dim.jpg')"
              alt=""
              :ratio="3"
              :fit="'cover'">
