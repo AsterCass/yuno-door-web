@@ -25,7 +25,9 @@
         <div class="text-subtitle2">更新时间：{{ intro.updateTime }}</div>
       </div>
       <div class="col-4">
-        <q-btn class="admin-article-list-card-in" to="/article/detail">Go</q-btn>
+        <q-btn class="admin-article-list-card-in"
+               :to="`/article/detail?articleId=${intro.id}`">Go
+        </q-btn>
       </div>
     </q-card-section>
     <q-card-section>
@@ -48,6 +50,7 @@ import {defineProps} from "vue";
 
 defineProps({
   intro: {
+    id: "",
     articleTitle: "",
     articleBrief: "",
     createTime: "",

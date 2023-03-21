@@ -3,8 +3,8 @@ import {extend} from 'quasar'
 function simplePage(param, pageNo) {
     let pageParam = {}
     extend(true, pageParam, param)
-    pageParam.offset = (pageNo - 1) * 2
-    pageParam.limit = 2
+    pageParam.offset = (pageNo - 1) * 4
+    pageParam.limit = 4
     return pageParam
 }
 
@@ -20,5 +20,4 @@ function customPage(param, offset, limit) {
 export {
     simplePage, customPage
 }
-
 

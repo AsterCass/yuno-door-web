@@ -31,7 +31,10 @@ const router = createRouter({
                 {
                     path: 'detail',
                     name: "adminArticleDetail",
-                    component: AdminArticleDetail
+                    component: AdminArticleDetail,
+                    props: ($route) => ({
+                        articleId: $route.query.articleId,
+                    })
                 },
                 {
                     path: 'list',

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh lpr lFf" container:false>
     <CaskWebHeader :headerVisible="true"/>
-    <CaskArticleDetail/>
+    <CaskArticleDetail :article-id="articleId"/>
     <q-page-sticky position="left" :offset="[25, 25]">
       <CaskWebFab/>
     </q-page-sticky>
@@ -14,8 +14,15 @@
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, defineProps} from "vue";
 import CaskArticleDetail from "@/components/CaskArticleDetail.vue";
+
+defineProps({
+  articleId: {
+    type: String,
+    default: "AT123"
+  }
+})
 
 let baseElement = ref({})
 
@@ -33,6 +40,7 @@ onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
   document.querySelector('head').removeChild(baseElement)
 })
+
 
 </script>
 
