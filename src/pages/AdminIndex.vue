@@ -7,6 +7,7 @@
       <q-img class="index-img"
              :no-native-menu="false"
              src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/backgroud.jpg"
+             placeholder-src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg4-dim.jpg"
              alt=""
              :ratio="16/9"
              :fit="'cover'">
