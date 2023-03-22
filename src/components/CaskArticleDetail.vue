@@ -55,120 +55,113 @@
   </div>
 </template>
 
-<script>
-import {computed, ref, onMounted} from "vue";
+<script setup>
+import {computed, ref, onMounted, defineProps} from "vue";
 import {getBlogContent, getBlogMeta} from "@/api/base";
 import {marked} from "marked";
 import hljs from "highlight.js";
 import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/headToHtmlTag";
 
-export default {
-  name: "CaskArticleDetail",
-  props: {
-    articleId: {
-      type: String,
-      default: "AT1637653540015050"
-    }
-  },
 
-  setup(props) {
-    let blogContent = ref("")
-    let blogMeta = ref({
-      articleTitle: "Not found",
-      createTime: "1970-01-01",
-      updateTime: "1970-01-01",
-      refArticleIdList: []
-    })
+const props = defineProps({
+  articleId: {
+    type: String,
+    default:
+        "AT123"
+  }
+})
 
-    //导航信息
-    let titleAnchorsNum = ref(0)
-    let titleAnchorData = ref([])
-    let hiddenTitleAnchors = ref(false)
-    //推荐文章信息
-    let titleRefNum = ref(0)
-    let titleRefData = ref([])
-    //剩余容量
-    let shortfallAnchorsNum = ref(0)
-    //当没有推荐文章和剩余容量时候不展示标签
-    let hiddenRefAnchors = ref(false)
-    //是否隐藏分隔符
-    let hiddenSep = ref(false)
 
-    //跳转
-    function togo(id) {
-      const target = document.getElementById(id);
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-    }
+let blogContent = ref("")
+let blogMeta = ref({
+  articleTitle: "Not found",
+  createTime: "1970-01-01",
+  updateTime: "1970-01-01",
+  refArticleIdList: []
+})
+
+//导航信息
+let titleAnchorsNum = ref(0)
+let titleAnchorData = ref([])
+let hiddenTitleAnchors = ref(false)
+//推荐文章信息
+let titleRefNum = ref(0)
+let titleRefData = ref([])
+//剩余容量
+let shortfallAnchorsNum = ref(0)
+//当没有推荐文章和剩余容量时候不展示标签
+let hiddenRefAnchors = ref(false)
+//是否隐藏分隔符
+let hiddenSep = ref(false)
+
+//跳转
+function togo(id) {
+  const target = document.getElementById(id);
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "nearest",
+  });
+}
 
 //请求后端获取文章内容
-    function getBlogContentMethod() {
-      getBlogContent({id: props.articleId}).then(res => {
-        decrypt(res.data).then(text => {
-              blogContent.value = text
-            }
-        )
-      })
-    }
+function getBlogContentMethod() {
+  getBlogContent({id: props.articleId}).then(res => {
+    decrypt(res.data).then(text => {
+          blogContent.value = text
+        }
+    )
+  })
+}
 
-    //请求后端获取文章meta
-    function getBlogMetaMethod() {
-      getBlogMeta({id: props.articleId}).then(res => {
-        blogMeta.value = res.data.data
-        //渲染左栏导航信息
-        titleAnchorData.value = headToHtmlTag(blogMeta.value)
-        titleAnchorsNum.value = titleAnchorData.value.length
-        if (0 === titleAnchorsNum.value) {
-          hiddenTitleAnchors.value = true
-        }
-        //渲染左栏推荐信息
-        titleRefData.value = blogMeta.value.refArticleIdList
-        if (null !== titleRefData.value) {
-          titleRefNum.value = titleRefData.value.length
-        }
-        //剩余容量 容量最小值10
-        let remain = 10 - titleAnchorsNum.value - titleRefNum.value
-        if (remain > 0) {
-          shortfallAnchorsNum.value = remain
-        }
-        //没有推荐文章和剩余容量时候不展示标签
-        hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
-        //当标题或者推荐任意一个隐藏时，隐藏分隔符
-        hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
-      })
+//请求后端获取文章meta
+function getBlogMetaMethod() {
+  getBlogMeta({id: props.articleId}).then(res => {
+    blogMeta.value = res.data.data
+    //渲染左栏导航信息
+    titleAnchorData.value = headToHtmlTag(blogMeta.value)
+    titleAnchorsNum.value = titleAnchorData.value.length
+    if (0 === titleAnchorsNum.value) {
+      hiddenTitleAnchors.value = true
     }
+    //渲染左栏推荐信息
+    titleRefData.value = blogMeta.value.refArticleIdList
+    if (null !== titleRefData.value) {
+      titleRefNum.value = titleRefData.value.length
+    }
+    //剩余容量 容量最小值10
+    let remain = 10 - titleAnchorsNum.value - titleRefNum.value
+    if (remain > 0) {
+      shortfallAnchorsNum.value = remain
+    }
+    //没有推荐文章和剩余容量时候不展示标签
+    hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
+    //当标题或者推荐任意一个隐藏时，隐藏分隔符
+    hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
+  })
+}
 
 //markdown转html
-    const markdownToHtml = computed(() => {
-      return marked(blogContent.value,
-          {
-            "highlight": function (markdown) {
-              return hljs.highlightAuto(markdown).value
-            }
-          }
-      )
-    })
+const markdownToHtml = computed(() => {
+  return marked(blogContent.value,
+      {
+        "highlight": function (markdown) {
+          return hljs.highlightAuto(markdown).value
+        }
+      }
+  )
+})
 
-    onMounted(() => {
-      //markdown代码渲染
-      hljs.highlightAll()
-      //获取文章信息
-      getBlogContentMethod()
-      //获取文章元数据
-      getBlogMetaMethod()
-    })
+onMounted(() => {
+  //markdown代码渲染
+  hljs.highlightAll()
+  //获取文章信息
+  getBlogContentMethod()
+  //获取文章元数据
+  getBlogMetaMethod()
+})
 
-
-    return {
-      togo, markdownToHtml, titleAnchorData, blogMeta, shortfallAnchorsNum, hiddenTitleAnchors, titleRefData,
-      hiddenRefAnchors, hiddenSep
-    }
-  }
-}
 
 </script>
 

@@ -1,12 +1,9 @@
 import {createRouter, createWebHashHistory} from "vue-router";
-import AdminDoc from "@/pages/AdminDoc.vue";
 import AdminIndex from "@/pages/AdminIndex.vue";
-import AdminWx from "@/pages/AdminWx.vue";
 import AdminArticleList from "@/pages/AdminArticleList.vue";
 import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
-import AdminFlexBox from "@/pages/AdminFlexBox.vue";
-import AdminArticleUpload from "@/pages/AdminArticleUpload.vue";
 import AdminEssayList from "@/pages/AdminEssayList.vue";
+import NotFound from "@/pages/NotFound.vue";
 
 const router = createRouter({
     history: createWebHashHistory(process.env.BASE_URL),
@@ -15,16 +12,6 @@ const router = createRouter({
             path: "/",
             name: "adminIndex",
             component: AdminIndex,
-        },
-        {
-            path: "/doc",
-            name: "adminDoc",
-            component: AdminDoc,
-        },
-        {
-            path: "/wx",
-            name: "adminWx",
-            component: AdminWx,
         },
         {
             path: "/article",
@@ -50,21 +37,10 @@ const router = createRouter({
             component: AdminEssayList
         },
         {
-            path: "/flexBox",
-            name: "flexBox",
-            component: AdminFlexBox
+            path: "/:catchAll(.*)",
+            name: "notFound",
+            component: NotFound
         },
-        {
-            path: "/admin",
-            children: [
-                {
-                    path: 'upload',
-                    name: "adminArticleUpload",
-                    component: AdminArticleUpload
-                },
-            ]
-        },
-
     ],
 });
 

@@ -3,12 +3,13 @@ module.exports = defineConfig({
     transpileDependencies: [
         'quasar'
     ],
-
     pluginOptions: {
         quasar: {
             importStrategy: 'kebab',
             rtlSupport: false
         }
     },
-    publicPath: './'
+
+    publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
+
 })
