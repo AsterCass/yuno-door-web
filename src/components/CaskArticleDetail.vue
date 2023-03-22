@@ -2,28 +2,40 @@
   <div class="row justify-center article-layout">
     <div class="col-4 row justify-end">
       <q-scroll-area class="article-anchors" delay="100">
-        <h1>导航</h1>
-        <q-list>
-          <q-item clickable v-ripple
-                  v-for="item in anchorTreeBackend"
-                  :key="item.title"
-                  @click="togo(item.value)">
-            <q-item-section>
-              <p>
-                {{ item.title }}
-              </p>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <q-separator spaced="1.5rem" size="0.05rem"/>
-        <h1>相关文章</h1>
-        <q-list>
-          <q-item clickable v-ripple v-for="n in 5" :key="n">
-            <q-item-section>
-              <a href="https://www.baidu.com">母猪的产后护理</a>
-            </q-item-section>
-          </q-item>
-        </q-list>
+        <div :hidden="hiddenTitleAnchors">
+          <h1>导航</h1>
+          <q-list>
+            <q-item clickable v-ripple
+                    v-for="item in titleAnchorData"
+                    :key="item.title"
+                    @click="togo(item.value)">
+              <q-item-section>
+                <p>
+                  {{ item.title }}
+                </p>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+        <div :hidden="hiddenSep">
+          <q-separator spaced="1.5rem" size="0.05rem"/>
+        </div>
+
+        <div :hidden="hiddenRefAnchors">
+          <h1>相关文章</h1>
+          <q-list>
+            <q-item clickable v-ripple v-for="item in titleRefData" :key="item">
+              <q-item-section>
+                <a :href="`/article/detail?articleId=${item}`">母猪的产后护理1</a>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-for="n in shortfallAnchorsNum" :key="n">
+              <q-item-section>
+                <a href="https://www.baidu.com">母猪的产后护理</a>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
       </q-scroll-area>
     </div>
     <div class="col-8 row justify-start">
@@ -59,15 +71,29 @@ export default {
       default: "AT1637653540015050"
     }
   },
+
   setup(props) {
     let blogContent = ref("")
     let blogMeta = ref({
       articleTitle: "Not found",
       createTime: "1970-01-01",
       updateTime: "1970-01-01",
+      refArticleIdList: []
     })
-    let anchorTreeBackend = ref([])
 
+    //导航信息
+    let titleAnchorsNum = ref(0)
+    let titleAnchorData = ref([])
+    let hiddenTitleAnchors = ref(false)
+    //推荐文章信息
+    let titleRefNum = ref(0)
+    let titleRefData = ref([])
+    //剩余容量
+    let shortfallAnchorsNum = ref(0)
+    //当没有推荐文章和剩余容量时候不展示标签
+    let hiddenRefAnchors = ref(false)
+    //是否隐藏分隔符
+    let hiddenSep = ref(false)
 
     //跳转
     function togo(id) {
@@ -93,8 +119,26 @@ export default {
     function getBlogMetaMethod() {
       getBlogMeta({id: props.articleId}).then(res => {
         blogMeta.value = res.data.data
-        //请求标题信息并渲染，这里暂时先只渲染
-        anchorTreeBackend.value = headToHtmlTag(blogMeta.value)
+        //渲染左栏导航信息
+        titleAnchorData.value = headToHtmlTag(blogMeta.value)
+        titleAnchorsNum.value = titleAnchorData.value.length
+        if (0 === titleAnchorsNum.value) {
+          hiddenTitleAnchors.value = true
+        }
+        //渲染左栏推荐信息
+        titleRefData.value = blogMeta.value.refArticleIdList
+        if (null !== titleRefData.value) {
+          titleRefNum.value = titleRefData.value.length
+        }
+        //剩余容量 容量最小值10
+        let remain = 10 - titleAnchorsNum.value - titleRefNum.value
+        if (remain > 0) {
+          shortfallAnchorsNum.value = remain
+        }
+        //没有推荐文章和剩余容量时候不展示标签
+        hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
+        //当标题或者推荐任意一个隐藏时，隐藏分隔符
+        hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
       })
     }
 
@@ -120,7 +164,8 @@ export default {
 
 
     return {
-      togo, markdownToHtml, anchorTreeBackend, blogMeta
+      togo, markdownToHtml, titleAnchorData, blogMeta, shortfallAnchorsNum, hiddenTitleAnchors, titleRefData,
+      hiddenRefAnchors, hiddenSep
     }
   }
 }
