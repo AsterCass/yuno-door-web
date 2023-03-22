@@ -9,14 +9,8 @@
         {{ listName }}
       </div>
       <div class="justify-end admin-article-list-head-tag" :hidden="hideTagEnum">
-        <q-toggle color="dark" label="Docker" v-model="selection" val="Docker"/>
-        <q-toggle color="dark" label="Linux" v-model="selection" val="Linux"/>
-        <q-toggle color="dark" label="Windows" v-model="selection" val="Windows"/>
-        <q-toggle color="dark" label="Java" v-model="selection" val="Java"/>
-        <q-toggle color="dark" label="C/C++" v-model="selection" val="CCPlus"/>
-        <q-toggle color="dark" label="Mybatis" v-model="selection" val="Mybatis"/>
-        <q-toggle color="dark" label="ML" v-model="selection" val="ML"/>
-        <q-toggle color="dark" label="Sql" v-model="selection" val="Sql"/>
+        <q-toggle v-for="(item, index) in articleTagEnums" :key="index" keep-color
+                  :color="item.color" :label="item.name" v-model="selection" :val="item.code"/>
       </div>
     </div>
     <q-infinite-scroll @load="onLoad" :offset="250" class="col-12 row justify-center" :disable="scrollDisable">
@@ -41,6 +35,7 @@ import emitter from '@/utils/bus';
 import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
 import {getBlogList} from "@/api/base";
 import {simplePage} from "@/utils/page";
+import {articleTagEnums} from '@/utils/article-tag'
 
 const props = defineProps({
   listName: {
@@ -57,8 +52,7 @@ const props = defineProps({
   }
 })
 
-
-let selection = ref(['yellow', 'red'])
+let selection = ref([])
 let articleList = ref([])
 let currentPage = ref(0)
 let currentParam = ref({})
@@ -77,6 +71,9 @@ function onLoad(index, done) {
 }
 
 function searchArticleListMethod(param) {
+
+  console.log(selection.value)
+
   //数据重置
   currentPage.value = 1
   scrollDisable.value = false
@@ -108,7 +105,6 @@ onUnmounted(() => {
   font-size: 1rem
   color: $cask_dark_jungle_green
   margin-bottom: 1rem
-  opacity: 0.8
   font-weight: 400
   max-width: 30%
 

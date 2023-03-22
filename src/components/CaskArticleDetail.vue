@@ -61,7 +61,7 @@ import {getBlogContent, getBlogMeta} from "@/api/base";
 import {marked} from "marked";
 import hljs from "highlight.js";
 import {decrypt} from '@/utils/crypto'
-import {headToHtmlTag} from "@/utils/headToHtmlTag";
+import {headToHtmlTag} from "@/utils/head-to-html-tag";
 
 
 const props = defineProps({

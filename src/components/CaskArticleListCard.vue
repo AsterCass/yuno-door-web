@@ -32,31 +32,35 @@
     </q-card-section>
     <q-card-section>
       <div class="col admin-article-list-card-tag">
-        <q-icon name="fa-solid fa-bookmark" size="2rem" color="blue-5">
+        <q-icon v-for="(item, index) in articleTagDesList" :key="index" name="fa-solid fa-bookmark" size="2rem"
+                :color="item.color">
           <q-tooltip transition-show="rotate" transition-hide="rotate"
-                     anchor="top middle" self="top middle" style="color:white;background-color: #42a5f5">
-            docker
+                     anchor="top middle" self="top middle"
+                     :style="`color:white;background-color: ${item.rbg}`">
+            {{ item.name }}
           </q-tooltip>
         </q-icon>
-        <q-icon name="fa-solid fa-bookmark" size="2rem" color="red-5"></q-icon>
-        <q-icon name="fa-solid fa-bookmark" size="2rem" color="green-5"></q-icon>
       </div>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup>
-import {defineProps} from "vue";
+import {defineProps, ref} from "vue";
+import {getArticleTagDescList} from "@/utils/article-tag";
 
-defineProps({
+const props = defineProps({
   intro: {
     id: "",
     articleTitle: "",
     articleBrief: "",
+    articleTagList: [],
     createTime: "",
     updateTime: "",
   },
 });
+
+let articleTagDesList = ref(getArticleTagDescList(props.intro.articleTagList))
 
 
 </script>
