@@ -6,8 +6,7 @@
     <div>
       <q-img class="index-img"
              :no-native-menu="false"
-             :src="require('../assets/img/backgroud.jpg')"
-             :placeholder-src="require('../assets/img/bg4-dim.jpg')"
+             src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/backgroud.jpg"
              alt=""
              :ratio="16/9"
              :fit="'cover'">

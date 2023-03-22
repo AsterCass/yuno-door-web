@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import {onMounted, onUnmounted, ref, defineProps} from "vue";
+import {onMounted, onUnmounted, ref, defineProps, watch} from "vue";
 import emitter from '@/utils/bus';
 import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
 import {getBlogList} from "@/api/base";
@@ -58,6 +58,10 @@ let currentPage = ref(0)
 let currentParam = ref({})
 let scrollDisable = ref(false)
 
+watch(selection, () => {
+  searchArticleListMethod()
+})
+
 function onLoad(index, done) {
   ++currentPage.value
   getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
@@ -70,16 +74,18 @@ function onLoad(index, done) {
   })
 }
 
-function searchArticleListMethod(param) {
-
-  console.log(selection.value)
-
+function searchArticleListMethod(keywordParam) {
   //数据重置
   currentPage.value = 1
   scrollDisable.value = false
   articleList.value.splice(0)
   //参数插入
-  currentParam.value = {keyword: param, articleType: props.listType}
+  currentParam.value = {keyword: keywordParam, articleType: props.listType}
+  //标签参数
+  if (0 !== selection.value.length) {
+    // Object.defineProperty(currentParam.value, tags, )
+    currentParam.value.tags = selection.value.join()
+  }
   getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
     articleList.value.push(...res.data.data)
   })
