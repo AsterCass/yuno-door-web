@@ -56,7 +56,7 @@ function toHex() {
 }
 
 function toMik() {
-  window.open('https://game.astercasc.com/G-Mikutap/', "_blank");
+  window.open('https://aidn.jp/mikutap/', "_blank");
 }
 
 
