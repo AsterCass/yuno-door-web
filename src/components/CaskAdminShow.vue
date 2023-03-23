@@ -6,12 +6,15 @@
         <q-icon name="fa-solid fa-book" size="1em"/>
         技术备录
       </div>
-      <div class="row col-10" style="padding: 2rem">
-        <div v-for="(item, index) in articleList" :key="index" style="width: 28rem">
-          <CaskArticleListCard :intro="item"/>
+      <div class="row col-12 justify-center">
+        <div class="row col-11">
+          <div v-for="(item, index) in articleList" :key="index"
+               class="col-sm-12 col-lg-4" style="padding: 0.5rem">
+            <CaskArticleListCard :intro="item"/>
+          </div>
         </div>
-        <div class="col-1 column justify-center">
-          <q-btn label="更多" to="/article/list" class="admin-show-base-go"/>
+        <div class="col-sm-4 col-lg-1 column justify-center">
+          <q-btn label="更多" to="/article/list" class="col-sm-12 col-lg-2 admin-show-base-go"/>
         </div>
       </div>
     </div>
@@ -21,15 +24,18 @@
 
     <div class="column admin-show-base-row">
       <div class="col-2 admin-show-base-title">
-        <q-icon name="fa-solid fa-book-bookmark" size="1em"/>
+        <q-icon name="fa-solid fa-book" size="1em"/>
         生活题记
       </div>
-      <div class="row col-10" style="padding: 2rem">
-        <div v-for="(item, index) in essayList" :key="index" style="width: 28rem">
-          <CaskArticleListCard :intro="item"/>
+      <div class="row col-12 justify-center">
+        <div class="row col-11">
+          <div v-for="(item, index) in essayList" :key="index"
+               class="col-sm-12 col-lg-4" style="padding: 0.5rem">
+            <CaskArticleListCard :intro="item"/>
+          </div>
         </div>
-        <div class="col-1 column justify-center">
-          <q-btn label="更多" to="/essay/list" class="admin-show-base-go"/>
+        <div class="col-sm-4 col-lg-1 column justify-center">
+          <q-btn label="更多" to="/article/list" class="col-sm-12 col-lg-2 admin-show-base-go"/>
         </div>
       </div>
     </div>
@@ -105,9 +111,7 @@ onMounted(() => {
 
 
 .admin-show-base-go
-  margin-left: 30%
-  height: 4rem
-  width: 8rem
+  margin: 0.5rem
   text-align: center
   color: white
   background-image: linear-gradient(195deg, #42424a, #191919)
@@ -116,6 +120,7 @@ onMounted(() => {
 
 .admin-show-base-game-content
   height: 30rem
+  width: 100%
 
 
 </style>

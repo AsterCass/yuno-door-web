@@ -111,7 +111,7 @@ export default {
 //这里猫猫队踩大坑 backdrop-filter或者filter相关元素是和opacity冲突的，无法达到预期预期效果
 //离谱的是如果希望达到不透明的效果需要 background-color: white 中来调整a的比例
 .index-main
-  margin: -5rem 5rem 5rem 5rem
+  margin: -5% 2% 5% 2%
   //background-color: white
   //opacity: 0.8
   background-color: rgba(255, 255, 255, 0.8)

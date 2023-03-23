@@ -4,8 +4,8 @@
     <div>
       <q-img class="index-img"
              :no-native-menu="false"
-             :src="require('../assets/img/bg1-half.jpg')"
-             :placeholder-src="require('../assets/img/bg1-half-dim.jpg')"
+             src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg2-half.jpg"
+             placeholder-src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg2-half.jpg"
              alt=""
              :ratio="3"
              :fit="'cover'">

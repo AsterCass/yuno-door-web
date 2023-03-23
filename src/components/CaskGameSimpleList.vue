@@ -1,6 +1,6 @@
 <template>
-  <div class="row justify-start admin-show-game-out">
-    <div class="col-4 row admin-show-game-cell">
+  <div class="row justify-center admin-show-game-out">
+    <div class="col-xs-8 col-lg-4 row admin-show-game-cell" >
       <q-btn @click="changeHex" :ripple="false" unelevated class="col-12 admin-show-game-btn">
         <q-carousel
             transition-prev="scale"
@@ -31,7 +31,7 @@
     </div>
 
 
-    <div class="col-4 row admin-show-game-cell">
+    <div class="col-xs-8 col-lg-4 row admin-show-game-cell">
       <q-btn @click="changeMik" :ripple="false" unelevated class="col-12 admin-show-game-btn">
         <q-carousel
             transition-prev="scale"

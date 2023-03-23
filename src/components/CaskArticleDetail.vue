@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center article-layout">
     <div class="col-4 row justify-end">
-      <q-scroll-area class="article-anchors" delay="100">
+      <q-scroll-area class="article-anchors" delay="100" :hidden="!extendVisible">
         <div :hidden="hiddenTitleAnchors">
           <h1>导航</h1>
           <q-list>
@@ -38,8 +38,8 @@
         </div>
       </q-scroll-area>
     </div>
-    <div class="col-8 row justify-start">
-      <div class="article-body">
+    <div class="col-xs-12 col-lg-8 row justify-lg-start justify-xs-center">
+      <div class="col-xs-12 col-lg-10 article-body">
         <div class="article-title">
           <h1>{{ blogMeta.articleTitle }}</h1>
           <p>创建时间: {{ blogMeta.createTime }}</p>
@@ -51,6 +51,7 @@
           </div>
         </div>
       </div>
+      <div class="col-xs-0 col-lg-2"></div>
     </div>
   </div>
 </template>
@@ -69,6 +70,10 @@ const props = defineProps({
     type: String,
     default:
         "AT123"
+  },
+  extendVisible: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -160,6 +165,9 @@ onMounted(() => {
   getBlogContentMethod()
   //获取文章元数据
   getBlogMetaMethod()
+  //
+  console.log("11")
+  console.log(props.extendVisible)
 })
 
 
@@ -213,7 +221,6 @@ onMounted(() => {
 
 .article-body {
   margin-left: 1rem;
-  width: 80%;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
   border-radius: 0.5rem;
