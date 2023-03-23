@@ -9,12 +9,12 @@
              src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/backgroud.jpg"
              placeholder-src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg4-dim.jpg"
              alt=""
-             :ratio="16/9"
+             :ratio="4/3"
              :fit="'cover'">
       </q-img>
     </div>
 
-    <div class="index-main">
+    <div id="indexMain" class="index-main">
       <CaskAdminShow v-intersection="onIntersection"/>
     </div>
 
@@ -22,12 +22,12 @@
 
 
     <!--        https://animate.style/-->
-    <q-page-sticky position="bottom" :offset="[0, 100]">
+    <q-page-sticky position="bottom" :offset="[0, 100]" @click="togo('indexMain')">
       <div :hidden="rollerGuideHidden">
         <q-img
             class="roller-guide"
             :src="require('../assets/ico/downward_line.png')"
-            style="height: 150px; width: 150px;"
+            style="height: 150px; width: 150px; cursor: pointer"
             alt=""/>
       </div>
     </q-page-sticky>
@@ -44,7 +44,6 @@ import {ref} from 'vue'
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskWebHeader from '@/components/CaskWebHeader.vue'
 import CaskWebFab from "@/components/CaskWebFab.vue";
-import {useRouter} from 'vue-router'
 import 'animate.css';
 import CaskAdminShow from "@/components/CaskAdminShow.vue";
 
@@ -58,7 +57,6 @@ export default {
 // https://quasar.dev/vue-directives/scroll-fire
     let headerVisible = ref(false)
     let rollerGuideHidden = ref(false)
-    const router = useRouter()
 
     function onIntersection(entry) {
       headerVisible.value = entry.isIntersecting
@@ -80,13 +78,18 @@ export default {
     //   window.removeEventListener('scroll', doScroll)
     // })
 
-    //router
-    const toArticle = () => {
-      router.push('/article/list')
+    function togo(id) {
+      const target = document.getElementById(id);
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
     }
 
+
     return {
-      toArticle,
+      togo,
       headerVisible,
       rollerGuideHidden,
       onIntersection,
