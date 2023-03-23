@@ -22,7 +22,7 @@
               <p v-for="count in gameInfo.hexDesc.desc" :key="count">
                 {{ count }}
               </p>
-              <q-btn href="https://game.astercasc.com/G-Mikutap/" target="_blank" label="Go Play"/>
+              <q-btn href="https://game.astercasc.com/G-Hextris/" target="_blank" label="Go Play"/>
             </div>
           </q-carousel-slide>
         </q-carousel>
@@ -53,7 +53,7 @@
               <p v-for="count in gameInfo.mikDesc.desc" :key="count">
                 {{ count }}
               </p>
-              <q-btn href="https://game.astercasc.com/G-Hextris/" target="_blank" label="Go Play"/>
+              <q-btn href="https://game.astercasc.com/G-Mikutap/" target="_blank" label="Go Play"/>
             </div>
           </q-carousel-slide>
         </q-carousel>

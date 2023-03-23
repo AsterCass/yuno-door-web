@@ -165,9 +165,6 @@ onMounted(() => {
   getBlogContentMethod()
   //获取文章元数据
   getBlogMetaMethod()
-  //
-  console.log("11")
-  console.log(props.extendVisible)
 })
 
 
