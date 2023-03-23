@@ -4,7 +4,7 @@
         class="q-fab-bt"
         label-position="bottom"
         glossy
-        icon="keyboard_arrow_down"
+        icon="fa-solid fa-flag-checkered"
         direction="down"
         hide-label
     >

@@ -6,11 +6,11 @@
         <q-icon name="fa-solid fa-book" size="1em"/>
         技术备录
       </div>
-      <div class="row col-10">
-        <div v-for="(item, index) in articleList" :key="index" class="col-3" style="margin: 1rem">
+      <div class="row col-10" style="padding: 2rem">
+        <div v-for="(item, index) in articleList" :key="index" style="width: 28rem">
           <CaskArticleListCard :intro="item"/>
         </div>
-        <div class="col-2 column justify-center" style="margin: 1rem">
+        <div class="col-1 column justify-center">
           <q-btn label="更多" to="/article/list" class="admin-show-base-go"/>
         </div>
       </div>
@@ -24,11 +24,11 @@
         <q-icon name="fa-solid fa-book-bookmark" size="1em"/>
         生活题记
       </div>
-      <div class="row col-10">
-        <div v-for="(item, index) in essayList" :key="index" class="col-3" style="margin: 1rem">
+      <div class="row col-10" style="padding: 2rem">
+        <div v-for="(item, index) in essayList" :key="index" style="width: 28rem">
           <CaskArticleListCard :intro="item"/>
         </div>
-        <div class="col-2 column justify-center" style="margin: 1rem">
+        <div class="col-1 column justify-center">
           <q-btn label="更多" to="/essay/list" class="admin-show-base-go"/>
         </div>
       </div>
@@ -105,9 +105,9 @@ onMounted(() => {
 
 
 .admin-show-base-go
-  margin-left: 50%
-  height: 30%
-  width: 20%
+  margin-left: 30%
+  height: 4rem
+  width: 8rem
   text-align: center
   color: white
   background-image: linear-gradient(195deg, #42424a, #191919)
