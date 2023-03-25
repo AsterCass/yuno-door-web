@@ -36,6 +36,12 @@ const articleTagEnums = [
         color: "blue-grey-5",
         rbg: "#78909C",
     },
+    {
+        name: "Shell",
+        code: 64,
+        color: "purple-5",
+        rbg: "#AB47BC",
+    },
 ]
 
 function getArticleTagDesc(code) {
