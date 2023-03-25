@@ -56,7 +56,7 @@ let selection = ref([])
 let articleList = ref([])
 let currentPage = ref(0)
 let currentParam = ref({})
-let scrollDisable = ref(false)
+let scrollDisable = ref(true)
 
 watch(selection, () => {
   searchArticleListMethod()
@@ -64,11 +64,14 @@ watch(selection, () => {
 
 function onLoad(index, done) {
   ++currentPage.value
+  //参数插入
+  currentParam.value.articleType = props.listType
   getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
     if (null != res.data.data && 0 !== res.data.data.length) {
       articleList.value.push(...res.data.data)
       done()
     } else {
+      //获取所有数据后关闭无限滚动
       scrollDisable.value = true
     }
   })
@@ -77,17 +80,22 @@ function onLoad(index, done) {
 function searchArticleListMethod(keywordParam) {
   //数据重置
   currentPage.value = 1
-  scrollDisable.value = false
   articleList.value.splice(0)
   //参数插入
-  currentParam.value = {keyword: keywordParam, articleType: props.listType}
+  currentParam.value.keyword = keywordParam
+  currentParam.value.articleType = props.listType
   //标签参数
   if (0 !== selection.value.length) {
+    console.log(selection.value)
     // Object.defineProperty(currentParam.value, tags, )
     currentParam.value.tags = selection.value.join()
+  } else {
+    currentParam.value.tags = null
   }
   getBlogList(simplePage(currentParam.value, currentPage.value)).then(res => {
     articleList.value.push(...res.data.data)
+    //首次请求完成后开启无限滚动
+    scrollDisable.value = false
   })
 }
 
