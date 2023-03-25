@@ -80,7 +80,7 @@ const props = defineProps({
 
 let blogContent = ref("")
 let blogMeta = ref({
-  articleTitle: "Not found",
+  articleTitle: "Loading...",
   createTime: "1970-01-01",
   updateTime: "1970-01-01",
   refArticleIdList: []
@@ -174,7 +174,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import "@/styles/blog.markdown.css";
 @import "@/styles/cask.sass";
-@import "~highlight.js/styles/hybrid.css";
+@import "../../node_modules/highlight.js/styles/hybrid.css";
 
 
 .article-anchors {

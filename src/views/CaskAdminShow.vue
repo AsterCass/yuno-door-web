@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="col-sm-4 col-lg-1 column justify-center">
-          <q-btn label="更多" to="/article/list" class="col-sm-12 col-lg-2 admin-show-base-go"/>
+          <q-btn label="更多" to="/essay/list" class="col-sm-12 col-lg-2 admin-show-base-go"/>
         </div>
       </div>
     </div>
@@ -60,8 +60,8 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
-import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
-import CaskGameSimpleList from "@/components/CaskGameSimpleList.vue";
+import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
+import CaskGameSimpleList from "@/views/CaskGameSimpleList.vue";
 import {getBlogList} from "@/api/base";
 import {customPage} from "@/utils/page";
 

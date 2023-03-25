@@ -32,7 +32,7 @@
 <script setup>
 import {onMounted, onUnmounted, ref, defineProps, watch} from "vue";
 import emitter from '@/utils/bus';
-import CaskArticleListCard from "@/components/CaskArticleListCard.vue";
+import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import {getBlogList} from "@/api/base";
 import {simplePage} from "@/utils/page";
 import {articleTagEnums} from '@/utils/article-tag'

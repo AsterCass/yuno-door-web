@@ -4,8 +4,10 @@
     <div>
       <q-img class="index-img"
              :no-native-menu="false"
-             src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg2-half.jpg"
-             placeholder-src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg2-half.jpg"
+             src=
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg2-half.jpg"
+             placeholder-src=
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg2-half-dim.jpg"
              alt=""
              :ratio="3"
              :fit="'cover'">
@@ -30,7 +32,7 @@ import CaskWebFab from "@/components/CaskWebFab.vue";
 import {onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskSearch from "@/components/CaskSearch.vue";
-import CaskArticleList from "@/components/CaskArticleList.vue";
+import CaskArticleList from "@/views/CaskArticleList.vue";
 
 onMounted(() => {
   //底色渲染

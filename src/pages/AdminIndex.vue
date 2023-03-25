@@ -6,8 +6,10 @@
     <div>
       <q-img class="index-img"
              :no-native-menu="false"
-             src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/backgroud.jpg"
-             placeholder-src="https://astercasc-admin-web-1256368017.cos.ap-shanghai.myqcloud.com/bg4-dim.jpg"
+             src=
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-ab-sq.jpg"
+             placeholder-src=
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-dim.jpg"
              alt=""
              :ratio="4/3"
              :fit="'cover'">
@@ -44,8 +46,7 @@ import {ref} from 'vue'
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskWebHeader from '@/components/CaskWebHeader.vue'
 import CaskWebFab from "@/components/CaskWebFab.vue";
-import 'animate.css';
-import CaskAdminShow from "@/components/CaskAdminShow.vue";
+import CaskAdminShow from "@/views/CaskAdminShow.vue";
 
 
 export default {
@@ -101,6 +102,7 @@ export default {
 
 <style lang="sass" scoped>
 @import "@/styles/cask.sass"
+@import "animate.css"
 
 .roller-guide
   animation: fadeOutDown 1.7s infinite

@@ -15,7 +15,7 @@ import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {onMounted, onUnmounted, ref, defineProps} from "vue";
-import CaskArticleDetail from "@/components/CaskArticleDetail.vue";
+import CaskArticleDetail from "@/views/CaskArticleDetail.vue";
 
 defineProps({
   articleId: {
