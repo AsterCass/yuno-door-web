@@ -3,18 +3,18 @@
 
     <CaskWebHeader :header-visible="headerVisible"/>
 
-<!--    <div>-->
-<!--      <q-img class="index-img"-->
-<!--             :no-native-menu="false"-->
-<!--             src=-->
-<!--                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-ab-sq.jpg"-->
-<!--             placeholder-src=-->
-<!--                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-dim.jpg"-->
-<!--             alt=""-->
-<!--             :ratio="4/3"-->
-<!--             :fit="'cover'">-->
-<!--      </q-img>-->
-<!--    </div>-->
+    <div>
+      <q-img class="index-img"
+             :no-native-menu="false"
+             src=
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-ab-sq.jpg"
+             placeholder-src=
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-dim.jpg"
+             alt=""
+             :ratio="4/3"
+             :fit="'cover'">
+      </q-img>
+    </div>
 
     <div id="indexMain" class="index-main">
       <CaskAdminShow v-intersection="onIntersection"/>
