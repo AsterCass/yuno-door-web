@@ -3,18 +3,18 @@
 
     <CaskWebHeader :header-visible="headerVisible"/>
 
-    <div>
-      <q-img class="index-img"
-             :no-native-menu="false"
-             src=
-                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-ab-sq.jpg"
-             placeholder-src=
-                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-dim.jpg"
-             alt=""
-             :ratio="4/3"
-             :fit="'cover'">
-      </q-img>
-    </div>
+<!--    <div>-->
+<!--      <q-img class="index-img"-->
+<!--             :no-native-menu="false"-->
+<!--             src=-->
+<!--                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-ab-sq.jpg"-->
+<!--             placeholder-src=-->
+<!--                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg4-dim.jpg"-->
+<!--             alt=""-->
+<!--             :ratio="4/3"-->
+<!--             :fit="'cover'">-->
+<!--      </q-img>-->
+<!--    </div>-->
 
     <div id="indexMain" class="index-main">
       <CaskAdminShow v-intersection="onIntersection"/>
@@ -41,63 +41,55 @@
   </q-layout>
 </template>
 
-<script>
-import {ref} from 'vue'
+<script setup>
+import {onMounted, ref} from 'vue'
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskWebHeader from '@/components/CaskWebHeader.vue'
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskAdminShow from "@/views/CaskAdminShow.vue";
+import {health} from "@/api/base";
 
-
-export default {
-  name: "AdminIndex",
-  components: {CaskAdminShow, CopyrightFooter, CaskWebHeader, CaskWebFab},
-  setup() {
 
 // https://quasar.dev/vue-directives/intersection
 // https://quasar.dev/vue-directives/scroll-fire
-    let headerVisible = ref(false)
-    let rollerGuideHidden = ref(false)
+let headerVisible = ref(false)
+let rollerGuideHidden = ref(false)
 
-    function onIntersection(entry) {
-      headerVisible.value = entry.isIntersecting
-      rollerGuideHidden.value = entry.isIntersecting
-    }
-
-    // //页面滚动事件捕捉
-    // function doScroll({target: {documentElement: {scrollTop, clientHeight, scrollHeight}}}) {
-    //   if(Math.abs(scrollTop + clientHeight - scrollHeight) < 1) {
-    //     console.log("bottom")
-    //   } else {
-    //     console.log("not bottom")
-    //   }
-    // }
-    // onMounted(() => {
-    //   window.addEventListener('scroll', doScroll)
-    // })
-    // onUnmounted(() => {
-    //   window.removeEventListener('scroll', doScroll)
-    // })
-
-    function togo(id) {
-      const target = document.getElementById(id);
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
-
-
-    return {
-      togo,
-      headerVisible,
-      rollerGuideHidden,
-      onIntersection,
-    }
-
-  }
+function onIntersection(entry) {
+  headerVisible.value = entry.isIntersecting
+  rollerGuideHidden.value = entry.isIntersecting
 }
+
+// //页面滚动事件捕捉
+// function doScroll({target: {documentElement: {scrollTop, clientHeight, scrollHeight}}}) {
+//   if(Math.abs(scrollTop + clientHeight - scrollHeight) < 1) {
+//     console.log("bottom")
+//   } else {
+//     console.log("not bottom")
+//   }
+// }
+// onMounted(() => {
+//   window.addEventListener('scroll', doScroll)
+// })
+// onUnmounted(() => {
+//   window.removeEventListener('scroll', doScroll)
+// })
+
+function togo(id) {
+  const target = document.getElementById(id);
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+    inline: "nearest",
+  });
+}
+
+
+onMounted(() => {
+  health()
+})
+
+
 </script>
 
 <style lang="sass" scoped>

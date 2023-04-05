@@ -24,3 +24,10 @@ export function getBlogList(param) {
     })
 }
 
+export function health() {
+    return serviceShiro({
+        url: `/asGo/health`,
+        method: 'get',
+    })
+}
+
