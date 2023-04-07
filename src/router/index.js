@@ -12,6 +12,9 @@ const router = createRouter({
             path: "/",
             name: "adminIndex",
             component: AdminIndex,
+            meta: {
+                title: 'AsterCass Home'
+            },
         },
         {
             path: "/article",
@@ -20,6 +23,9 @@ const router = createRouter({
                     path: 'detail',
                     name: "adminArticleDetail",
                     component: AdminArticleDetail,
+                    meta: {
+                        title: '技术备录'
+                    },
                     props: ($route) => ({
                         articleId: $route.query.articleId,
                     })
@@ -27,14 +33,20 @@ const router = createRouter({
                 {
                     path: 'list',
                     name: "adminArticleList",
-                    component: AdminArticleList
+                    component: AdminArticleList,
+                    meta: {
+                        title: '技术备录'
+                    },
                 }
             ]
         },
         {
             path: '/essay/list',
             name: "adminEssayList",
-            component: AdminEssayList
+            component: AdminEssayList,
+            meta: {
+                title: '生活题记'
+            },
         },
         {
             path: "/:catchAll(.*)",
@@ -43,6 +55,14 @@ const router = createRouter({
         },
     ],
 });
+
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+        document.title = to.meta.title
+    }
+    next()
+})
 
 router.afterEach(() => {
     window.scrollTo(0, 0)

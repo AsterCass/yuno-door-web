@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import {computed, ref, onMounted, defineProps} from "vue";
+import {computed, ref, onMounted, defineProps, onUnmounted} from "vue";
 import {getBlogContent, getBlogMeta} from "@/api/base";
 import {marked} from "marked";
 import hljs from "highlight.js";
@@ -83,7 +83,9 @@ let blogMeta = ref({
   articleTitle: "Loading...",
   createTime: "1970-01-01",
   updateTime: "1970-01-01",
-  refArticleIdList: []
+  refArticleIdList: [],
+  articleBrief: "description",
+  articleKeyList: [],
 })
 
 //导航信息
@@ -99,6 +101,9 @@ let shortfallAnchorsNum = ref(0)
 let hiddenRefAnchors = ref(false)
 //是否隐藏分隔符
 let hiddenSep = ref(false)
+//页面headMeta
+let headKeywordMeta = ref({})
+let headDescriptionMeta = ref({})
 
 //跳转
 function togo(id) {
@@ -108,6 +113,29 @@ function togo(id) {
     block: "center",
     inline: "nearest",
   });
+}
+
+//文章标签渲染
+function articleDocumentUp() {
+  //修改标题
+  document.title = blogMeta.value.articleTitle
+  //添加关键信息
+  let metaKeyword = document.createElement('meta');
+  let metaDescription = document.createElement('meta');
+  metaKeyword.setAttribute("name", "keywords")
+  metaKeyword.setAttribute("content", blogMeta.value.articleKeyList.join(" "))
+  metaDescription.setAttribute("name", "description")
+  metaDescription.setAttribute("content", blogMeta.value.articleBrief)
+  document.querySelector('head').append(metaKeyword)
+  document.querySelector('head').append(metaDescription)
+  headKeywordMeta = metaKeyword
+  headDescriptionMeta = metaDescription
+}
+
+//文章标签取消
+function articleDocumentDown() {
+  document.querySelector('head').removeChild(headKeywordMeta)
+  document.querySelector('head').removeChild(headDescriptionMeta)
 }
 
 //请求后端获取文章内容
@@ -124,6 +152,8 @@ function getBlogContentMethod() {
 function getBlogMetaMethod() {
   getBlogMeta({id: props.articleId}).then(res => {
     blogMeta.value = res.data.data
+    //文章标签渲染
+    articleDocumentUp()
     //渲染左栏导航信息
     titleAnchorData.value = headToHtmlTag(blogMeta.value)
     titleAnchorsNum.value = titleAnchorData.value.length
@@ -165,6 +195,11 @@ onMounted(() => {
   getBlogContentMethod()
   //获取文章元数据
   getBlogMetaMethod()
+})
+
+onUnmounted(() => {
+  //文章标签取消
+  articleDocumentDown()
 })
 
 
