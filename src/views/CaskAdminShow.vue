@@ -64,16 +64,24 @@ import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import CaskGameSimpleList from "@/views/CaskGameSimpleList.vue";
 import {getBlogList} from "@/api/base";
 import {customPage} from "@/utils/page";
+import emitter from "@/utils/bus";
 
 
 let articleList = ref([])
 let essayList = ref([])
+let articleLoaded = ref(false)
+let essayLoaded = ref(false)
 
 function searchArticleListMethod() {
   //参数插入
   let currentParam = {articleType: 1}
   getBlogList(customPage(currentParam, 0, 3)).then(res => {
     articleList.value.push(...res.data.data)
+    //报告主页已经准备完毕
+    articleLoaded.value = true
+    if (articleLoaded.value && essayLoaded.value) {
+      emitter.emit('indexDataAlready')
+    }
   })
 }
 
@@ -82,6 +90,11 @@ function searchEssayListMethod() {
   let currentParam = {articleType: 2}
   getBlogList(customPage(currentParam, 0, 3)).then(res => {
     essayList.value.push(...res.data.data)
+    //报告主页已经准备完毕
+    essayLoaded.value = true
+    if (articleLoaded.value && essayLoaded.value) {
+      emitter.emit('indexDataAlready')
+    }
   })
 }
 

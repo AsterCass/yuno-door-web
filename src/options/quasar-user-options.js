@@ -5,8 +5,10 @@ import '@quasar/extras/eva-icons/eva-icons.css'
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css'
 import '@quasar/extras/mdi-v7/mdi-v7.css'
 
+import {Loading} from 'quasar'
+
 // To be used on app.use(Quasar, { ... })
 export default {
-    config: {},
-    plugins: {}
+    plugins: {Loading},
+    config: {loading: {}},
 }

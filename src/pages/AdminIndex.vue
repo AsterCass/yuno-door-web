@@ -42,18 +42,23 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue'
+import {onMounted, onUnmounted, ref} from 'vue'
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskWebHeader from '@/components/CaskWebHeader.vue'
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskAdminShow from "@/views/CaskAdminShow.vue";
-import {health} from "@/api/base";
+import {useQuasar} from "quasar";
+import emitter from "@/utils/bus";
+import {QSpinnerGears} from "quasar";
+import {getLoadGarbleLang} from "@/utils/load-garble";
 
 
+const load = useQuasar().loading
 // https://quasar.dev/vue-directives/intersection
 // https://quasar.dev/vue-directives/scroll-fire
 let headerVisible = ref(false)
 let rollerGuideHidden = ref(false)
+let timer = 0;
 
 function onIntersection(entry) {
   headerVisible.value = entry.isIntersecting
@@ -84,9 +89,40 @@ function togo(id) {
   });
 }
 
+//载入完成
+function loadAlready() {
+  timerDown()
+  load.hide()
+}
+
+//载入中模板
+const indexLoadTemplate = load.show({
+  group: 'index-load-template',
+  spinner: QSpinnerGears,
+  message: '首次进入会稍慢，加载中...'
+})
+
+//生成定时器
+function timerUp() {
+  timer = setInterval(() => {
+    indexLoadTemplate({message: getLoadGarbleLang()})
+  }, 2000);
+}
+
+//删除定时器
+function timerDown() {
+  clearInterval(timer);
+  timer = 0
+}
 
 onMounted(() => {
-  health()
+  timerUp()
+  emitter.on('indexDataAlready', loadAlready)
+})
+
+onUnmounted(() => {
+  emitter.off('indexDataAlready')
+  timerDown()
 })
 
 
