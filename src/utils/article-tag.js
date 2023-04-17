@@ -42,6 +42,42 @@ const articleTagEnums = [
         color: "purple-5",
         rbg: "#AB47BC",
     },
+    {
+        name: "Tool",
+        code: 128,
+        color: "yellow-5",
+        rbg: "#FFEE58",
+    },
+    {
+        name: "Android",
+        code: 256,
+        color: "deep-orange-5",
+        rbg: "#FF7043",
+    },
+    {
+        name: "Qt",
+        code: 512,
+        color: "brown-5",
+        rbg: "#8D6E63",
+    },
+    {
+        name: "Spring",
+        code: 1024,
+        color: "light-green-5",
+        rbg: "#9CCC65",
+    },
+    {
+        name: "Kotlin",
+        code: 2048,
+        color: "amber-5",
+        rbg: "#FFCA28",
+    },
+    {
+        name: "Vue",
+        code: 4096,
+        color: "green-10",
+        rbg: "#1B5E20",
+    },
 ]
 
 function getArticleTagDesc(code) {
