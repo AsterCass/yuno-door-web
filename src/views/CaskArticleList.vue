@@ -86,7 +86,6 @@ function searchArticleListMethod(keywordParam) {
   currentParam.value.articleType = props.listType
   //标签参数
   if (0 !== selection.value.length) {
-    console.log(selection.value)
     // Object.defineProperty(currentParam.value, tags, )
     currentParam.value.tags = selection.value.join()
   } else {

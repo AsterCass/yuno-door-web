@@ -16,8 +16,15 @@ function customPage(param, offset, limit) {
     return pageParam
 }
 
+function customPageNP(offset, limit) {
+    let pageParam = {}
+    pageParam.offset = offset
+    pageParam.limit = limit
+    return pageParam
+}
+
 
 export {
-    simplePage, customPage
+    simplePage, customPage, customPageNP
 }
 

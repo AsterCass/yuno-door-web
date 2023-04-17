@@ -22,16 +22,16 @@
         </div>
 
         <div :hidden="hiddenRefAnchors">
-          <h1>相关文章</h1>
+          <h1>文章推荐</h1>
           <q-list>
             <q-item clickable v-ripple v-for="item in titleRefData" :key="item">
               <q-item-section>
-                <a :href="`/article/detail?articleId=${item}`">母猪的产后护理1</a>
+                <a :href="`#/article/detail?articleId=${item.articleId}`">{{ item.title }}</a>
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple v-for="n in shortfallAnchorsNum" :key="n">
+            <q-item clickable v-ripple v-for="item in shortfallAnchorsData" :key="item">
               <q-item-section>
-                <a href="https://www.baidu.com">母猪的产后护理</a>
+                <a :href="`#/article/detail?articleId=${item.id}`">{{ item.articleTitle }}</a>
               </q-item-section>
             </q-item>
           </q-list>
@@ -58,11 +58,12 @@
 
 <script setup>
 import {computed, ref, onMounted, defineProps, onUnmounted} from "vue";
-import {getBlogContent, getBlogMeta} from "@/api/base";
+import {getBlogContent, getBlogMeta, getBlogList} from "@/api/base";
 import {marked} from "marked";
 import hljs from "highlight.js";
 import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
+import {customPageNP} from "@/utils/page";
 
 
 const props = defineProps({
@@ -83,7 +84,7 @@ let blogMeta = ref({
   articleTitle: "Loading...",
   createTime: "1970-01-01",
   updateTime: "1970-01-01",
-  refArticleIdList: [],
+  refArticleList: [],
   articleBrief: "description",
   articleKeyList: [],
 })
@@ -97,6 +98,7 @@ let titleRefNum = ref(0)
 let titleRefData = ref([])
 //剩余容量
 let shortfallAnchorsNum = ref(0)
+let shortfallAnchorsData = ref([])
 //当没有推荐文章和剩余容量时候不展示标签
 let hiddenRefAnchors = ref(false)
 //是否隐藏分隔符
@@ -148,6 +150,15 @@ function getBlogContentMethod() {
   })
 }
 
+//左侧导航不够填充使用新日志填充
+function onLoadElse(num) {
+  getBlogList(customPageNP(0, num)).then(res => {
+    if (null != res.data.data && 0 !== res.data.data.length) {
+      shortfallAnchorsData.value = res.data.data
+    }
+  })
+}
+
 //请求后端获取文章meta
 function getBlogMetaMethod() {
   getBlogMeta({id: props.articleId}).then(res => {
@@ -161,14 +172,15 @@ function getBlogMetaMethod() {
       hiddenTitleAnchors.value = true
     }
     //渲染左栏推荐信息
-    titleRefData.value = blogMeta.value.refArticleIdList
-    if (null !== titleRefData.value) {
+    titleRefData.value = blogMeta.value.refArticleList
+    if (null != titleRefData.value) {
       titleRefNum.value = titleRefData.value.length
     }
     //剩余容量 容量最小值10
     let remain = 10 - titleAnchorsNum.value - titleRefNum.value
     if (remain > 0) {
       shortfallAnchorsNum.value = remain
+      onLoadElse(remain)
     }
     //没有推荐文章和剩余容量时候不展示标签
     hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
