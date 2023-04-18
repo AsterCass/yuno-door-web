@@ -9,12 +9,12 @@
       <div class="row col-12 justify-center">
         <div class="row col-11">
           <div v-for="(item, index) in articleList" :key="index"
-               class="col-sm-12 col-lg-4" style="padding: 0.5rem">
+               class="col-xs-12 col-lg-4" style="padding: 0.5rem">
             <CaskArticleListCard :intro="item"/>
           </div>
         </div>
-        <div class="col-sm-4 col-lg-1 column justify-center">
-          <q-btn label="更多" to="/article/list" class="col-sm-12 col-lg-2 admin-show-base-go"/>
+        <div class="col-xs-4 col-lg-1 column justify-center">
+          <q-btn label="更多" to="/article/list" class="col-xs-12 col-lg-2 admin-show-base-go"/>
         </div>
       </div>
     </div>
@@ -30,12 +30,12 @@
       <div class="row col-12 justify-center">
         <div class="row col-11">
           <div v-for="(item, index) in essayList" :key="index"
-               class="col-sm-12 col-lg-4" style="padding: 0.5rem">
+               class="col-xs-12 col-lg-4" style="padding: 0.5rem">
             <CaskArticleListCard :intro="item"/>
           </div>
         </div>
-        <div class="col-sm-4 col-lg-1 column justify-center">
-          <q-btn label="更多" to="/essay/list" class="col-sm-12 col-lg-2 admin-show-base-go"/>
+        <div class="col-xs-4 col-lg-1 column justify-center">
+          <q-btn label="更多" to="/essay/list" class="col-xs-12 col-lg-2 admin-show-base-go"/>
         </div>
       </div>
     </div>

@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-0 col-md-2"></div>
+      <div class="col-xs-0 col-lg-2"></div>
     </div>
   </div>
 </template>
