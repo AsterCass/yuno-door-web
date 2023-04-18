@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center article-layout">
     <div class="col-4 row justify-end">
-      <q-scroll-area class="article-anchors" delay="100" :hidden="!extendVisible">
+      <q-scroll-area class="article-anchors" delay="100" :hidden="!innerExtendVisible">
         <div :hidden="hiddenTitleAnchors">
           <h1>导航</h1>
           <q-list>
@@ -38,8 +38,16 @@
         </div>
       </q-scroll-area>
     </div>
-    <div class="col-xs-12 col-lg-8 row justify-lg-start justify-xs-center">
-      <div class="col-xs-12 col-lg-10 article-body">
+    <div class="row"
+         :class="{
+      'col-12 justify-center': !innerExtendVisible,
+      'col-8 justify-start': innerExtendVisible
+    }">
+      <div class="article-body"
+           :class="{
+        'col-12': !innerExtendVisible,
+        'col-10': innerExtendVisible
+      }">
         <div class="article-title">
           <h1>{{ blogMeta.articleTitle }}</h1>
           <p>创建时间: {{ blogMeta.createTime }}</p>
@@ -51,7 +59,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-0 col-lg-2"></div>
+      <div class="col-xs-0 col-md-2"></div>
     </div>
   </div>
 </template>
@@ -64,6 +72,7 @@ import hljs from "highlight.js";
 import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {customPageNP} from "@/utils/page";
+import emitter from "@/utils/bus";
 
 
 const props = defineProps({
@@ -72,10 +81,6 @@ const props = defineProps({
     default:
         "AT123"
   },
-  extendVisible: {
-    type: Boolean,
-    default: true
-  }
 })
 
 
@@ -107,6 +112,8 @@ let hiddenSep = ref(false)
 let headKeywordMeta = ref({})
 let headDescriptionMeta = ref({})
 let headOgDescriptionMeta = ref({})
+//附属信息是否展示
+let innerExtendVisible = ref(true)
 
 //跳转
 function togo(id) {
@@ -209,6 +216,11 @@ const markdownToHtml = computed(() => {
   )
 })
 
+//受通知屏幕改变事件
+function adminArticleResizeEven(extendVisible) {
+  innerExtendVisible.value = extendVisible
+}
+
 onMounted(() => {
   //markdown代码渲染
   hljs.highlightAll()
@@ -216,11 +228,15 @@ onMounted(() => {
   getBlogContentMethod()
   //获取文章元数据
   getBlogMetaMethod()
+  //受通知屏幕改变事件
+  emitter.on('adminArticleResizing', adminArticleResizeEven)
 })
 
 onUnmounted(() => {
   //文章标签取消
   articleDocumentDown()
+  //停止屏幕事件监听
+  emitter.off('adminArticleResizing')
 })
 
 

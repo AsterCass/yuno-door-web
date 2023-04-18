@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh lpr lFf" container:false>
     <CaskWebHeader :headerVisible="extendVisible"/>
-    <CaskArticleDetail :article-id="articleId" :extend-visible="extendVisible"/>
+    <CaskArticleDetail :article-id="articleId"/>
     <q-page-sticky position="left" :offset="[25, 25]">
       <CaskWebFab/>
     </q-page-sticky>
@@ -16,6 +16,7 @@ import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {onMounted, onUnmounted, ref, defineProps} from "vue";
 import CaskArticleDetail from "@/views/CaskArticleDetail.vue";
+import emitter from "@/utils/bus";
 
 defineProps({
   articleId: {
@@ -27,6 +28,12 @@ defineProps({
 let baseElement = ref({})
 let extendVisible = ref(true)
 
+function myEventHandler() {
+  //屏幕宽高决定是否展示导航页
+  extendVisible.value = !(document.documentElement.clientWidth < document.documentElement.clientHeight)
+  emitter.emit("adminArticleResizing", extendVisible.value)
+}
+
 onMounted(() => {
   //底色渲染
   document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
@@ -35,13 +42,17 @@ onMounted(() => {
   base.setAttribute("target", "_blank")
   document.querySelector('head').append(base)
   baseElement = base
-  //屏幕宽高决定是否展示导航页
-  extendVisible.value = !(document.body.clientWidth < document.body.clientHeight)
+  //添加监控屏幕改变事件
+  myEventHandler()
+  window.addEventListener("resize", myEventHandler);
+
 })
 
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
   document.querySelector('head').removeChild(baseElement)
+  //删除屏幕改变事件
+  window.removeEventListener("resize", myEventHandler);
 })
 
 
