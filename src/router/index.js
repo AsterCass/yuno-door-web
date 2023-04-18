@@ -13,7 +13,7 @@ const router = createRouter({
             name: "adminIndex",
             component: AdminIndex,
             meta: {
-                title: 'AsterCass Home'
+                title: 'AsterCasc Home'
             },
         },
         {
