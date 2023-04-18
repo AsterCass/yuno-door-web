@@ -106,6 +106,7 @@ let hiddenSep = ref(false)
 //页面headMeta
 let headKeywordMeta = ref({})
 let headDescriptionMeta = ref({})
+let headOgDescriptionMeta = ref({})
 
 //跳转
 function togo(id) {
@@ -121,23 +122,31 @@ function togo(id) {
 function articleDocumentUp() {
   //修改标题
   document.title = blogMeta.value.articleTitle
-  //添加关键信息
+  //添加关键信息 keywords
   let metaKeyword = document.createElement('meta');
-  let metaDescription = document.createElement('meta');
   metaKeyword.setAttribute("name", "keywords")
   metaKeyword.setAttribute("content", blogMeta.value.articleKeyList.join(" "))
+  document.querySelector('head').append(metaKeyword)
+  headKeywordMeta = metaKeyword
+  //description
+  let metaDescription = document.createElement('meta');
   metaDescription.setAttribute("name", "description")
   metaDescription.setAttribute("content", blogMeta.value.articleBrief)
-  document.querySelector('head').append(metaKeyword)
   document.querySelector('head').append(metaDescription)
-  headKeywordMeta = metaKeyword
   headDescriptionMeta = metaDescription
+  //og:description
+  let metaOgDescription = document.createElement('meta')
+  metaOgDescription.setAttribute("property", "og:description")
+  metaOgDescription.setAttribute("content", blogMeta.value.articleBrief)
+  document.querySelector('head').append(metaOgDescription)
+  headOgDescriptionMeta = metaOgDescription
 }
 
 //文章标签取消
 function articleDocumentDown() {
   document.querySelector('head').removeChild(headKeywordMeta)
   document.querySelector('head').removeChild(headDescriptionMeta)
+  document.querySelector('head').removeChild(headOgDescriptionMeta)
 }
 
 //请求后端获取文章内容
