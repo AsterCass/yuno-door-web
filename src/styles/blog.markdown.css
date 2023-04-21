@@ -51,8 +51,17 @@
 }
 
 .blogMarkDown code {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0.5rem 0;
+}
+
+.blogMarkDown p code {
+    padding: 0 0.3rem;
+    font-size: 1rem;
+    color: #447550;
+    background-color: rgb(220, 220, 220);
+    margin: 0;
+
 }
 
 
