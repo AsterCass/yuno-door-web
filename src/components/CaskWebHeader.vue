@@ -2,27 +2,44 @@
   <q-header :modelValue="headerVisible" class="index-header">
     <q-toolbar>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" to="/"/>
-      <q-toolbar-title>Aster Casc</q-toolbar-title>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book-bookmark" label="essay" to="/essay/list"/>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" to="/article/list"/>
+      <q-toolbar-title>Aster Casc</q-toolbar-title>
+      <q-btn label="登录" @click="showLoginDiaLog" class="head-login"/>
     </q-toolbar>
   </q-header>
+  <CaskLogin/>
 </template>
 
-<script>
+<script setup>
 
-export default {
-  name: 'AdminArticleDetail',
-  props: {
-    headerVisible: Boolean
-  },
+import {defineProps} from "vue";
+import CaskLogin from "@/components/CaskLogin.vue";
+import emitter from "@/utils/bus";
 
+defineProps({
+  headerVisible: {
+    type: Boolean,
+    default: false
+  }
+})
+
+function showLoginDiaLog() {
+  emitter.emit('showLoginDiaLogEven')
 }
 
 </script>
 
 <style lang="sass" scoped>
 @import "@/styles/cask.sass"
+
+.head-login
+  margin: 0.5rem
+  text-align: center
+  color: white
+  min-width: 5rem
+  background-image: linear-gradient(195deg, #42424a, #191919)
+  border-radius: 0.8rem
 
 .index-header
   left: 0

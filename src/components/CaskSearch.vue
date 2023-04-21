@@ -49,7 +49,7 @@ function search() {
 
 </style>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
 .article-list-search-input
   border-radius: 30px

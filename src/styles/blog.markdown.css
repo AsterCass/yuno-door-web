@@ -58,8 +58,8 @@
 .blogMarkDown p code {
     padding: 0 0.3rem;
     font-size: 1rem;
-    color: #447550;
-    background-color: rgb(220, 220, 220);
+    color: DarkCyan;
+    background-color: rgb(245, 245, 245);
     margin: 0;
 
 }
