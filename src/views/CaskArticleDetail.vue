@@ -66,7 +66,7 @@
 
 <script setup>
 import {computed, ref, onMounted, defineProps, onUnmounted} from "vue";
-import {getBlogContent, getBlogMeta, getBlogList} from "@/api/base";
+import {getBlogContent, getBlogMeta, getBlogList} from "@/api/article";
 import {marked} from "marked";
 import hljs from "highlight.js";
 import {decrypt} from '@/utils/crypto'

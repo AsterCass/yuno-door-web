@@ -5,7 +5,17 @@
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book-bookmark" label="essay" to="/essay/list"/>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" to="/article/list"/>
       <q-toolbar-title>Aster Casc</q-toolbar-title>
-      <q-btn label="登录" @click="showLoginDiaLog" class="head-login"/>
+      <div v-if="!isLoginStatus">
+        <q-btn label="登录" @click="showLoginDiaLog" class="head-login"/>
+      </div>
+      <div v-if="isLoginStatus" class="user-simple">
+        {{ userData.nickName }}
+        <q-btn round color="white" @click="logoutMethod" class="header-user-avatar">
+          <q-avatar size="40px">
+            <img :src="userData.avatar" alt=""/>
+          </q-avatar>
+        </q-btn>
+      </div>
     </q-toolbar>
   </q-header>
   <CaskLogin/>
@@ -13,9 +23,22 @@
 
 <script setup>
 
-import {defineProps} from "vue";
+import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
 import CaskLogin from "@/components/CaskLogin.vue";
 import emitter from "@/utils/bus";
+import {getLoginData, isLogin, logout} from "@/utils/store";
+import {userLogin} from "@/utils/share-data";
+
+
+//user data
+let userData = ref({
+  avatar: '',
+  nickName: '',
+})
+//user login share data
+const userLoginData = userLogin()
+
+let isLoginStatus = computed(() => userLoginData.isLogin)
 
 defineProps({
   headerVisible: {
@@ -28,10 +51,45 @@ function showLoginDiaLog() {
   emitter.emit('showLoginDiaLogEven')
 }
 
+//登录操作
+function loginMethod() {
+  userData.value = getLoginData()
+}
+
+//登出操作
+function logoutMethod() {
+  logout()
+}
+
+//感知登录事件
+function loginMessage(isSuccess) {
+  if (isSuccess) {
+    loginMethod()
+  }
+}
+
+onMounted(() => {
+  emitter.on("loginMessageEvent", loginMessage)
+  if (isLogin()) {
+    loginMethod()
+  }
+})
+
+onUnmounted(() => {
+  emitter.off("loginMessageEvent")
+})
+
 </script>
 
 <style lang="sass" scoped>
 @import "@/styles/cask.sass"
+
+.user-simple
+  font-family: Roboto Slab, sans-serif
+  font-size: 1.1rem
+
+.header-user-avatar
+  margin-left: 0.25rem
 
 .head-login
   margin: 0.5rem

@@ -62,7 +62,7 @@
 import {onMounted, ref} from "vue";
 import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import CaskGameSimpleList from "@/views/CaskGameSimpleList.vue";
-import {getBlogList} from "@/api/base";
+import {getBlogList} from "@/api/article";
 import {customPage} from "@/utils/page";
 import emitter from "@/utils/bus";
 

@@ -5,8 +5,12 @@
       <q-card class="login-dialog-class column justify-between">
 
         <div class="login-dialog-header">
-          Link start
+          System Login
+          <div class="login-dialog-tag">
+            登录解锁系统隐藏区域
+          </div>
         </div>
+
 
         <div>
           <q-input class="login-dialog-input" placeholder="账号" v-model="account"
@@ -17,28 +21,10 @@
 
 
         <div class="row justify-around login-dialog-btn-comb">
-          <q-btn label="登录" @click="loginSuccess" class="login-dialog-btn col-4"/>
-          <q-btn label="注册" @click="closeLogin" class="login-dialog-btn col-4"/>
+          <q-btn label="登录" @click="loginMethod" class="login-dialog-btn col-4"/>
+          <q-btn label="注册" @click="registryMethod" class="login-dialog-btn col-4"/>
         </div>
 
-      </q-card>
-    </q-dialog>
-    <q-dialog :model-value="loginResult"
-              :position="'top'" auto-close no-focus>
-      <q-card style="width: 350px">
-        <q-card-section class="row items-center no-wrap">
-          登录成功
-          <!--          <div>-->
-          <!--            <div class="text-weight-bold">The Walker</div>-->
-          <!--            <div class="text-grey">Fitz & The Tantrums</div>-->
-          <!--          </div>-->
-
-          <!--          <q-space />-->
-
-          <!--          <q-btn flat round icon="fast_rewind" />-->
-          <!--          <q-btn flat round icon="pause" />-->
-          <!--          <q-btn flat round icon="fast_forward" />-->
-        </q-card-section>
       </q-card>
     </q-dialog>
   </div>
@@ -48,9 +34,14 @@
 <script setup>
 import {onMounted, onUnmounted, ref} from "vue";
 import emitter from "@/utils/bus";
+import {useQuasar} from "quasar";
+import {login} from "@/api/user"
+import {setLoginData} from "@/utils/store";
+
+//notify
+const notify = useQuasar().notify
 
 let loginDiaLog = ref(false)
-let loginResult = ref(false)
 let account = ref("")
 let passwd = ref("")
 
@@ -62,9 +53,42 @@ function closeLogin() {
   loginDiaLog.value = false
 }
 
-function loginSuccess() {
-  loginDiaLog.value = false
-  loginResult.value = true
+function loginMethod() {
+  //login body
+  let currentBody = {account: account.value, passwd: passwd.value}
+  //login
+  login(currentBody).then(res => {
+    const status = res.data.status
+    if (200 !== status) {
+      notify({
+        message: res.data.message,
+        position: 'top',
+        type: 'negative',
+        timeout: 1000
+      })
+    } else {
+      loginDiaLog.value = false
+      notify({
+        message: "登录成功",
+        position: 'top-right',
+        type: 'positive',
+        timeout: 1000
+      })
+      setLoginData(res.data.data)
+      emitter.emit("loginMessageEvent", true)
+    }
+  })
+
+
+}
+
+function registryMethod() {
+  notify({
+    message: "暂时不支持外部注册",
+    position: 'top-right',
+    type: 'warning',
+    timeout: 1000
+  })
 }
 
 onMounted(() => {
@@ -89,7 +113,10 @@ onUnmounted(() => {
 
 .login-dialog-header
   font-size: 3rem
-  font-family: "Segoe Print", serif
+  font-family: Roboto Slab, sans-serif
+
+.login-dialog-tag
+  font-size: 0.5rem
 
 .login-dialog-input
   margin: 5%

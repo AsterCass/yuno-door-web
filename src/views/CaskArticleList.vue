@@ -33,7 +33,7 @@
 import {onMounted, onUnmounted, ref, defineProps, watch} from "vue";
 import emitter from '@/utils/bus';
 import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
-import {getBlogList} from "@/api/base";
+import {getBlogList} from "@/api/article";
 import {simplePage} from "@/utils/page";
 import {articleTagEnums} from '@/utils/article-tag'
 
