@@ -12,7 +12,7 @@
           <p>创建时间: {{ privateMetaData.createTime }}</p>
           <p>更新时间: {{ privateMetaData.updateTime }}</p>
         </div>
-        <div>
+        <div class="privacy-content">
           <div>
             <div v-html="markdownToHtml" class="blogMarkDown"></div>
           </div>
@@ -89,6 +89,10 @@ onUnmounted(() => {
 .privacy-base {
   margin-top: 10%;
   margin-bottom: 5%;
+}
+
+.privacy-content {
+  min-height: 50rem;
 }
 
 
