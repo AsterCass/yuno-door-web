@@ -76,6 +76,7 @@ import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {customPageNP} from "@/utils/page";
 import emitter from "@/utils/bus";
+import {useRouter} from "vue-router";
 
 
 const props = defineProps({
@@ -85,8 +86,9 @@ const props = defineProps({
         "AT123"
   },
 })
-
-
+//无数据跳转
+const thisRouter = useRouter()
+//基础数据
 let blogContent = ref("")
 let blogMeta = ref({
   articleTitle: "Loading...",
@@ -96,7 +98,6 @@ let blogMeta = ref({
   articleBrief: "description",
   articleKeyList: [],
 })
-
 //导航信息
 let titleAnchorsNum = ref(0)
 let titleAnchorData = ref([])
@@ -112,9 +113,9 @@ let hiddenRefAnchors = ref(false)
 //是否隐藏分隔符
 let hiddenSep = ref(false)
 //页面headMeta
-let headKeywordMeta = ref({})
-let headDescriptionMeta = ref({})
-let headOgDescriptionMeta = ref({})
+let headKeywordMeta = ref(null)
+let headDescriptionMeta = ref(null)
+let headOgDescriptionMeta = ref(null)
 //附属信息是否展示
 let innerExtendVisible = ref(true)
 //文档是否加载完成
@@ -139,26 +140,32 @@ function articleDocumentUp() {
   metaKeyword.setAttribute("name", "keywords")
   metaKeyword.setAttribute("content", blogMeta.value.articleKeyList.join(" "))
   document.querySelector('head').append(metaKeyword)
-  headKeywordMeta = metaKeyword
+  headKeywordMeta.value = metaKeyword
   //description
   let metaDescription = document.createElement('meta');
   metaDescription.setAttribute("name", "description")
   metaDescription.setAttribute("content", blogMeta.value.articleBrief)
   document.querySelector('head').append(metaDescription)
-  headDescriptionMeta = metaDescription
+  headDescriptionMeta.value = metaDescription
   //og:description
   let metaOgDescription = document.createElement('meta')
   metaOgDescription.setAttribute("property", "og:description")
   metaOgDescription.setAttribute("content", blogMeta.value.articleBrief)
   document.querySelector('head').append(metaOgDescription)
-  headOgDescriptionMeta = metaOgDescription
+  headOgDescriptionMeta.value = metaOgDescription
 }
 
 //文章标签取消
 function articleDocumentDown() {
-  document.querySelector('head').removeChild(headKeywordMeta)
-  document.querySelector('head').removeChild(headDescriptionMeta)
-  document.querySelector('head').removeChild(headOgDescriptionMeta)
+  if (null !== headKeywordMeta.value) {
+    document.querySelector('head').removeChild(headKeywordMeta.value)
+  }
+  if (null !== headDescriptionMeta.value) {
+    document.querySelector('head').removeChild(headDescriptionMeta.value)
+  }
+  if (null !== headOgDescriptionMeta.value) {
+    document.querySelector('head').removeChild(headOgDescriptionMeta.value)
+  }
 }
 
 //请求后端获取文章内容
@@ -184,30 +191,36 @@ function onLoadElse(num) {
 //请求后端获取文章meta
 function getBlogMetaMethod() {
   getBlogMeta({id: props.articleId}).then(res => {
-    blogMeta.value = res.data.data
-    //文章标签渲染
-    articleDocumentUp()
-    //渲染左栏导航信息
-    titleAnchorData.value = headToHtmlTag(blogMeta.value)
-    titleAnchorsNum.value = titleAnchorData.value.length
-    if (0 === titleAnchorsNum.value) {
-      hiddenTitleAnchors.value = true
+    //检查数据
+    if (checkData(res.data)) {
+      //获取文章信息
+      getBlogContentMethod()
+      //基础数据
+      blogMeta.value = res.data.data
+      //文章标签渲染
+      articleDocumentUp()
+      //渲染左栏导航信息
+      titleAnchorData.value = headToHtmlTag(blogMeta.value)
+      titleAnchorsNum.value = titleAnchorData.value.length
+      if (0 === titleAnchorsNum.value) {
+        hiddenTitleAnchors.value = true
+      }
+      //渲染左栏推荐信息
+      titleRefData.value = blogMeta.value.refArticleList
+      if (null != titleRefData.value) {
+        titleRefNum.value = titleRefData.value.length
+      }
+      //剩余容量 容量最小值10
+      let remain = 10 - titleAnchorsNum.value - titleRefNum.value
+      if (remain > 0) {
+        shortfallAnchorsNum.value = remain
+        onLoadElse(remain)
+      }
+      //没有推荐文章和剩余容量时候不展示标签
+      hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
+      //当标题或者推荐任意一个隐藏时，隐藏分隔符
+      hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
     }
-    //渲染左栏推荐信息
-    titleRefData.value = blogMeta.value.refArticleList
-    if (null != titleRefData.value) {
-      titleRefNum.value = titleRefData.value.length
-    }
-    //剩余容量 容量最小值10
-    let remain = 10 - titleAnchorsNum.value - titleRefNum.value
-    if (remain > 0) {
-      shortfallAnchorsNum.value = remain
-      onLoadElse(remain)
-    }
-    //没有推荐文章和剩余容量时候不展示标签
-    hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
-    //当标题或者推荐任意一个隐藏时，隐藏分隔符
-    hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
   })
 }
 
@@ -227,11 +240,20 @@ function adminArticleResizeEven(extendVisible) {
   innerExtendVisible.value = extendVisible
 }
 
+//数据请求失败跳404
+function checkData(data) {
+  const isEmpty = null == data.data
+  if (isEmpty) {
+    thisRouter.push({
+      path: '/404'
+    })
+  }
+  return !isEmpty
+}
+
 onMounted(() => {
   //markdown代码渲染
   hljs.highlightAll()
-  //获取文章信息
-  getBlogContentMethod()
   //获取文章元数据
   getBlogMetaMethod()
   //受通知屏幕改变事件

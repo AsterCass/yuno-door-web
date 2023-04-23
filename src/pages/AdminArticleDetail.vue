@@ -41,7 +41,7 @@ onMounted(() => {
   let base = document.createElement("base")
   base.setAttribute("target", "_blank")
   document.querySelector('head').append(base)
-  baseElement = base
+  baseElement.value = base
   //添加监控屏幕改变事件
   myEventHandler()
   window.addEventListener("resize", myEventHandler);
@@ -50,7 +50,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
-  document.querySelector('head').removeChild(baseElement)
+  document.querySelector('head').removeChild(baseElement.value)
   //删除屏幕改变事件
   window.removeEventListener("resize", myEventHandler);
 })
