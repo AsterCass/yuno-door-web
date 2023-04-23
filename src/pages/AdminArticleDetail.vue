@@ -28,7 +28,7 @@ defineProps({
 let baseElement = ref({})
 let extendVisible = ref(true)
 
-function myEventHandler() {
+function screenEventHandler() {
   //屏幕宽高决定是否展示导航页
   extendVisible.value = !(document.documentElement.clientWidth < document.documentElement.clientHeight)
   emitter.emit("adminArticleResizing", extendVisible.value)
@@ -43,8 +43,8 @@ onMounted(() => {
   document.querySelector('head').append(base)
   baseElement.value = base
   //添加监控屏幕改变事件
-  myEventHandler()
-  window.addEventListener("resize", myEventHandler);
+  screenEventHandler()
+  window.addEventListener("resize", screenEventHandler);
 
 })
 
@@ -52,7 +52,7 @@ onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
   document.querySelector('head').removeChild(baseElement.value)
   //删除屏幕改变事件
-  window.removeEventListener("resize", myEventHandler);
+  window.removeEventListener("resize", screenEventHandler);
 })
 
 

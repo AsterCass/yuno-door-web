@@ -48,7 +48,7 @@
         'col-12': !innerExtendVisible,
         'col-10': innerExtendVisible
       }">
-        <div class="article-title">
+        <div class="cask-primary-card-header-left">
           <h1>{{ blogMeta.articleTitle }}</h1>
           <p>创建时间: {{ blogMeta.createTime }}</p>
           <p>更新时间: {{ blogMeta.updateTime }}</p>
@@ -273,7 +273,7 @@ onUnmounted(() => {
 <!--代码样式选择 https://highlightjs.org/static/demo/-->
 <style lang="scss" scoped>
 @import "@/styles/blog.markdown.css";
-@import "@/styles/cask.sass";
+@import "@/styles/cask-primary-style.scss";
 @import "../../node_modules/highlight.js/styles/hybrid.css";
 
 

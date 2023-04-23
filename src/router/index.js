@@ -4,6 +4,7 @@ import AdminArticleList from "@/pages/AdminArticleList.vue";
 import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
 import AdminEssayList from "@/pages/AdminEssayList.vue";
 import NotFound from "@/pages/NotFound.vue";
+import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
 
 const router = createRouter({
     history: createWebHashHistory(process.env.BASE_URL),
@@ -47,6 +48,14 @@ const router = createRouter({
             meta: {
                 title: '生活题记'
             },
+        },
+        {
+            path: '/privacy',
+            name: 'privacyPolicy',
+            component: PrivacyPolicy,
+            meta: {
+                title: '隐私政策'
+            }
         },
         {
             path: "/404",
