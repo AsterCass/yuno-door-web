@@ -57,6 +57,9 @@
           <div>
             <div v-html="markdownToHtml" class="blogMarkDown"></div>
           </div>
+          <q-inner-loading :showing="!articleContextFinish"
+                           label="数据解码中...">
+          </q-inner-loading>
         </div>
       </div>
       <div class="col-xs-0 col-lg-2"></div>
@@ -114,6 +117,8 @@ let headDescriptionMeta = ref({})
 let headOgDescriptionMeta = ref({})
 //附属信息是否展示
 let innerExtendVisible = ref(true)
+//文档是否加载完成
+let articleContextFinish = ref(false)
 
 //跳转
 function togo(id) {
@@ -161,6 +166,7 @@ function getBlogContentMethod() {
   getBlogContent({id: props.articleId}).then(res => {
     decrypt(res.data).then(text => {
           blogContent.value = text
+          articleContextFinish.value = true
         }
     )
   })
@@ -327,6 +333,7 @@ onUnmounted(() => {
 }
 
 .article-context {
+  position: relative;
   padding: 0 3rem 3rem 3rem;
   min-height: 800px;
 }
