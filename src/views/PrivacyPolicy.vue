@@ -4,6 +4,25 @@
     <CaskWebHeader :header-visible="!smallScreen"/>
 
     <div class="row justify-center">
+
+      <div class="col-2 row justify-end privacy-anchors-site" v-show="!smallScreen">
+        <q-scroll-area class="article-anchors" delay="100">
+          <h1>导航</h1>
+          <q-list>
+            <q-item clickable v-ripple
+                    v-for="item in titleAnchorData"
+                    :key="item.title"
+                    @click="anchorTogo(item.value)">
+              <q-item-section>
+                <p>
+                  {{ item.title }}
+                </p>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+      </div>
+
       <div class="privacy-base col-lg-6 col-md-7 col-xs-11 ">
         <div class="cask-primary-card-header-center">
           <h1>
@@ -33,6 +52,7 @@ import {getBlogContent, getBlogList} from "@/api/article";
 import {customPage} from "@/utils/page";
 import {marked} from "marked";
 import {decrypt} from "@/utils/crypto";
+import {headToHtmlTag} from "@/utils/head-to-html-tag";
 
 let smallScreen = ref(false)
 let privateArticleParam = ref({
@@ -42,11 +62,23 @@ let privateMetaData = ref({
   id: ''
 })
 let privateContent = ref("")
+//导航信息
+let titleAnchorData = ref([])
 
+//导航跳转
+function anchorTogo(id) {
+  const target = document.getElementById(id);
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "nearest",
+  });
+}
 
 function getPrivateMeta() {
   getBlogList(customPage(privateArticleParam.value, 0, 1)).then(res => {
     privateMetaData.value = res.data.data[0]
+    titleAnchorData.value = headToHtmlTag(privateMetaData.value)
     getBlogContent({id: privateMetaData.value.id}).then(res => {
       decrypt(res.data).then(text => {
             privateContent.value = text
@@ -89,6 +121,11 @@ onUnmounted(() => {
 .privacy-base {
   margin-top: 10%;
   margin-bottom: 5%;
+}
+
+.privacy-anchors-site {
+  margin-top: 10%;
+  padding-right: 5%;
 }
 
 .privacy-content {
