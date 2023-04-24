@@ -1,13 +1,13 @@
 <template>
   <div>
-    <q-dialog :model-value="loginDiaLog" @hide="closeLogin"
+    <q-dialog :model-value="registryDialog" @hide="closeRegistry"
               transition-show="fade" transition-hide="fade">
       <q-card class="login-dialog-class column justify-between">
 
         <div class="login-dialog-header">
-          System Login
+          System Registry
           <div class="login-dialog-tag">
-            登录解锁系统隐藏区域
+            注册账号
           </div>
         </div>
 
@@ -21,78 +21,51 @@
 
 
         <div class="row justify-around login-dialog-btn-comb">
-          <q-btn label="登录" @click="loginMethod" class="login-dialog-btn col-4"/>
           <q-btn label="注册" @click="registryMethod" class="login-dialog-btn col-4"/>
         </div>
 
       </q-card>
     </q-dialog>
   </div>
-  <CaskRegistry/>
+
 </template>
 
 <script setup>
 import {onMounted, onUnmounted, ref} from "vue";
 import emitter from "@/utils/bus";
 import {useQuasar} from "quasar";
-import {login} from "@/api/user"
-import {setLoginData} from "@/utils/store";
-import CaskRegistry from "@/components/CaskRegistry.vue";
 
 //notify
 const notify = useQuasar().notify
 
-let loginDiaLog = ref(false)
+let registryDialog = ref(false)
 let account = ref("")
 let passwd = ref("")
 
-function showLoginDiaLog() {
-  loginDiaLog.value = true
+function showRegistryDialog() {
+  console.log("reg sjh")
+  registryDialog.value = true
 }
 
-function closeLogin() {
-  loginDiaLog.value = false
+function closeRegistry() {
+  registryDialog.value = false
 }
 
-function loginMethod() {
-  //login body
-  let currentBody = {account: account.value, passwd: passwd.value}
-  //login
-  login(currentBody).then(res => {
-    const status = res.data.status
-    if (200 !== status) {
-      notify({
-        message: res.data.message,
-        position: 'top',
-        type: 'negative',
-        timeout: 1000
-      })
-    } else {
-      loginDiaLog.value = false
-      notify({
-        message: "登录成功",
-        position: 'top-right',
-        type: 'positive',
-        timeout: 1000
-      })
-      setLoginData(res.data.data)
-      emitter.emit("loginMessageEvent", true)
-    }
+function registryMethod() {
+  notify({
+    message: "暂时不支持外部注册",
+    position: 'top-right',
+    type: 'warning',
+    timeout: 1000
   })
 }
 
-
-function registryMethod() {
-  loginDiaLog.value = false
-  emitter.emit('showRegistryDialogEven')
-}
-
 onMounted(() => {
-  emitter.on('showLoginDiaLogEven', showLoginDiaLog)
+  emitter.on('showRegistryDialogEven', showRegistryDialog)
 })
 
 onUnmounted(() => {
-  emitter.off('showLoginDiaLogEven')
+  emitter.off('showRegistryDialogEven')
 })
 
 
