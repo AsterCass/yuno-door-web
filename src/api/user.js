@@ -8,3 +8,19 @@ export function login(body) {
         data: body
     })
 }
+
+export function sendMail(body) {
+    return serviceShiro({
+        url: `/yui/user/sendMail`,
+        method: 'post',
+        data: body
+    })
+}
+
+export function registry(body) {
+    return serviceShiro({
+        url: `/yui/user/registry`,
+        method: 'post',
+        data: body
+    })
+}
