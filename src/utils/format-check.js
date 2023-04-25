@@ -13,7 +13,6 @@ function checkLength(str, min, max) {
     if (null != str) {
         checkResult = str.length >= min && str.length <= max
     }
-    console.log(checkResult)
     return checkResult
 }
 
