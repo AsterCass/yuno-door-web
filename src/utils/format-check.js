@@ -1,3 +1,19 @@
+export const notAllowStr = "'/\\?:*\"<>| "
+
+
+function hasSameCharacter(str1, str2) {
+    return new Set(str1).size + new Set(str2).size !== new Set(str1 + str2).size;
+}
+
+function checkAllowChar(str) {
+    let result = true;
+    if (null != str && 0 !== str.length) {
+        result = !hasSameCharacter(notAllowStr, str)
+    }
+    return result
+
+}
+
 function checkEnAndNum(str) {
     const reg = new RegExp(`^[0-9a-zA-Z]*$`)
     return reg.test(str)
@@ -30,11 +46,25 @@ function checkAccount(str) {
     return checkEnAndNum(str) && checkLength(str, 8, 20)
 }
 
+function checkNickName(str) {
+    return checkAllowChar(str) && checkLength(str, 0, 20)
+}
+
+function checkName(str) {
+    return checkAllowChar(str) && checkLength(str, 0, 10)
+}
+
+function checkMotto(str) {
+    return checkLength(str, 0, 50)
+}
+
 function checkTrue() {
     return true
 }
 
 
 export {
-    checkIsMail, checkIsPasswd, checkAccount, checkTrue
+    checkIsMail, checkIsPasswd, checkAccount,
+    checkMotto, checkNickName, checkName,
+    checkTrue,
 }

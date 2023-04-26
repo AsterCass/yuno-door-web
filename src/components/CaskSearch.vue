@@ -11,7 +11,7 @@
         placeholder="输入查询文章关键词"
         v-model="text"
         @keyup.enter="search"
-        class="col-12 article-list-base article-list-search-input"
+        class="col-12 article-list-search-input"
         standout="bg-white text-grey-10"
     >
     </q-input>

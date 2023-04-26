@@ -32,3 +32,15 @@ export const genderOptEnum = [
         category: 7
     },
 ]
+
+export function getGenderObj(category) {
+    for (let obj of genderOptEnum) {
+        if (obj.category === category) {
+            return obj
+        }
+    }
+    return {
+        label: "",
+        category: 0
+    }
+}

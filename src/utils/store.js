@@ -5,6 +5,7 @@ const LOGIN_LOCAL_KEY = "yui-user-data"
 
 export function isLogin() {
     const isLoginStatus = LocalStorage.has(LOGIN_LOCAL_KEY)
+    //todo call backend is login
     updateLogin(isLoginStatus)
     return isLoginStatus
 

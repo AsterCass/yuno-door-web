@@ -17,6 +17,7 @@ import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {onMounted, onUnmounted, ref, defineProps} from "vue";
 import CaskArticleDetail from "@/views/CaskArticleDetail.vue";
 import emitter from "@/utils/bus";
+import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
 defineProps({
   articleId: {
@@ -36,7 +37,7 @@ function screenEventHandler() {
 
 onMounted(() => {
   //底色渲染
-  document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
+  addStyle("background-color:#EFF2F5")
   //该页面所有链接均打开新标签，不在本页面打开，目的兼容markdown语法
   let base = document.createElement("base")
   base.setAttribute("target", "_blank")
@@ -53,6 +54,8 @@ onUnmounted(() => {
   document.querySelector('head').removeChild(baseElement.value)
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);
+  //取消底色渲染
+  removeStyle("background-color:#EFF2F5")
 })
 
 

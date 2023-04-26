@@ -2,21 +2,21 @@
   <q-layout view="lHh lpr lFf" container:false>
 
     <div>
-      <q-img class="index-img"
-             :no-native-menu="false"
-             src=
-                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg1-half.jpg"
-             placeholder-src=
-                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg1-half-dim.jpg"
-             alt=""
-             :ratio="3"
-             :fit="'cover'">
+      <q-img
+          :no-native-menu="false"
+          src=
+              "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg3-half.jpg"
+          placeholder-src=
+              "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg3-half-dim.jpg"
+          alt=""
+          :ratio="3"
+          :fit="'cover'">
       </q-img>
     </div>
     <CaskSearch/>
 
 
-    <div class="article-list-base article-list-main">
+    <div class="article-list-main">
       <CaskArticleList list-name="题记列表" :list-type="2"/>
     </div>
 
@@ -33,14 +33,17 @@ import {onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskSearch from "@/components/CaskSearch.vue";
 import CaskArticleList from "@/views/CaskArticleList.vue";
+import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
 onMounted(() => {
   //底色渲染
-  document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
+  addStyle("background-color:#EFF2F5")
 })
 
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
+  //取消底色渲染
+  removeStyle("background-color:#EFF2F5")
 })
 
 

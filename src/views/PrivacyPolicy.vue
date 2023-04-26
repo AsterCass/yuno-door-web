@@ -53,6 +53,7 @@ import {customPage} from "@/utils/page";
 import {marked} from "marked";
 import {decrypt} from "@/utils/crypto";
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
+import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
 let smallScreen = ref(false)
 let privateArticleParam = ref({
@@ -99,7 +100,7 @@ function screenEventHandler() {
 
 onMounted(() => {
   //底色渲染
-  document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
+  addStyle("background-color:#EFF2F5")
   //添加监控屏幕改变事件
   screenEventHandler()
   window.addEventListener("resize", screenEventHandler);
@@ -110,6 +111,8 @@ onMounted(() => {
 onUnmounted(() => {
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);
+  //取消底色渲染
+  removeStyle("background-color:#EFF2F5")
 })
 
 </script>

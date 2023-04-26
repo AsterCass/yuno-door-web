@@ -16,7 +16,7 @@
     <CaskSearch/>
 
 
-    <div class="article-list-base article-list-main">
+    <div class="article-list-main">
       <CaskArticleList list-name="文章列表" :list-type="1" :hide-tag-enum="false"/>
     </div>
 
@@ -33,14 +33,17 @@ import {onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskSearch from "@/components/CaskSearch.vue";
 import CaskArticleList from "@/views/CaskArticleList.vue";
+import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
 onMounted(() => {
   //底色渲染
-  document.querySelector('body').setAttribute('style', 'background-color:#EFF2F5')
+  addStyle("background-color:#EFF2F5")
 })
 
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
+  //取消底色渲染
+  removeStyle("background-color:#EFF2F5")
 })
 
 

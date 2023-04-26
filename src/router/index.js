@@ -5,6 +5,7 @@ import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
 import AdminEssayList from "@/pages/AdminEssayList.vue";
 import NotFound from "@/pages/NotFound.vue";
 import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
+import AdminSpace from "@/pages/AdminSpace.vue";
 
 const router = createRouter({
     history: createWebHashHistory(process.env.BASE_URL),
@@ -55,6 +56,14 @@ const router = createRouter({
             component: PrivacyPolicy,
             meta: {
                 title: '隐私政策'
+            }
+        },
+        {
+            path: '/space',
+            name: 'adminSpace',
+            component: AdminSpace,
+            meta: {
+                title: '个人中心'
             }
         },
         {
