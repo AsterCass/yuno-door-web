@@ -11,9 +11,12 @@ function addStyle(style) {
 
 function removeStyle(style) {
     let nowStyle = document.querySelector('body').getAttribute('style')
-    let newStyle = nowStyle.replaceAll(";" + style, "")
-        .replaceAll(style + ";", "")
-    document.querySelector('body').setAttribute('style', newStyle)
+    if(null != nowStyle) {
+        let newStyle = nowStyle.replaceAll(";" + style, "")
+            .replaceAll(style + ";", "")
+        document.querySelector('body').setAttribute('style', newStyle)
+    }
+
 }
 
 export {
