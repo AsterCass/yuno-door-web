@@ -50,24 +50,19 @@
     line-height: 1.625;
 }
 
+.blogMarkDown pre code {
+    font-size: 0.9rem !important;
+    background-color: #1F2124 !important;
+    color: #c5c7c8 !important;
+    padding: 1em 1.5em !important;
+    margin: 0.5rem 0 !important;
+}
+
 .blogMarkDown code {
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
-}
-
-.blogMarkDown p code {
-    padding: 0 0.3rem;
     font-size: 1rem;
-    color: DarkCyan;
     background-color: rgb(245, 245, 245);
-    margin: 0;
-}
-
-.blogMarkDown li code {
+    color: DarkCyan;
     padding: 0 0.3rem;
-    font-size: 1rem;
-    color: DarkCyan;
-    background-color: rgb(245, 245, 245);
     margin: 0;
 }
 
