@@ -97,7 +97,7 @@
                   <div class="column justify-center col-3 space-card-input-name">
                     姓：
                   </div>
-                  <q-input class="col-7 dialog-btn-small-contain-valid" placeholder="姓" v-model="userData.secondName"
+                  <q-input class="col-7 dialog-btn-small-contain-valid" placeholder="姓" v-model="userData.lastName"
                            filled color="black" lazy-rules
                            :rules="[ val => checkName(val) || '姓氏不合法']"/>
                 </div>
@@ -199,7 +199,7 @@ let userData = ref({
   birth: "",
   motto: "",
   firstName: "",
-  secondName: "",
+  lastName: "",
   nickName: ""
 })
 //gender
@@ -217,7 +217,7 @@ profileIntegrity = computed(() => {
   if (null != userData.value.firstName && 0 !== userData.value.firstName.length) {
     curIntegrity += 0.2
   }
-  if (null != userData.value.secondName && 0 !== userData.value.secondName.length) {
+  if (null != userData.value.lastName && 0 !== userData.value.lastName.length) {
     curIntegrity += 0.2
   }
   if (null != userData.value.nickName && 0 !== userData.value.nickName.length) {
@@ -250,7 +250,7 @@ function saveProfile() {
     regWarningNotify("名字格式错误")
     return
   }
-  if (!checkName(userData.value.secondName)) {
+  if (!checkName(userData.value.lastName)) {
     regWarningNotify("姓氏格式错误")
     return
   }
