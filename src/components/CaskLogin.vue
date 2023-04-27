@@ -21,7 +21,7 @@
 
 
         <div class="row justify-around dialog-btn-comb">
-          <q-btn label="登录" @click="loginMethod" class="dialog-btn-margin col-4"/>
+          <q-btn label="登录" @click="loginMethod" class="dialog-btn-margin col-4" :disable="loginBtnDisable"/>
           <q-btn label="注册" @click="registryMethod" class="dialog-btn-margin col-4"/>
         </div>
 
@@ -45,6 +45,9 @@ let loginDiaLog = ref(false)
 let account = ref("")
 let passwd = ref("")
 
+//防抖动
+let loginBtnDisable = ref(false)
+
 function showLoginDiaLog() {
   loginDiaLog.value = true
 }
@@ -54,6 +57,7 @@ function closeLogin() {
 }
 
 function loginMethod() {
+  loginBtnDisable.value = true
   authLogin(account.value, passwd.value, notify)
 }
 
@@ -62,6 +66,7 @@ function loginMessage(isSuccess) {
   if (isSuccess) {
     loginDiaLog.value = false
   }
+  loginBtnDisable.value = false
 }
 
 

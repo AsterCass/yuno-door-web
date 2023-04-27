@@ -25,7 +25,7 @@
           </q-avatar>
         </div>
         <div class="space-head-modify">
-          <q-btn label="修改头像" class="dialog-btn-margin"/>
+          <q-btn label="修改头像" class="dialog-btn-margin" @click="modifyAvatar"/>
         </div>
         <div class="col-12 row">
           <q-tabs
@@ -180,11 +180,12 @@ import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-import {isLogin, getLoginData} from "@/utils/store";
+import {isLogin, getLoginData, refreshLoginMessage} from "@/utils/store";
 import {genderOptEnum, getGenderObj} from "@/utils/gender-opt";
 import {checkName, checkMotto, checkNickName} from "@/utils/format-check";
 import {updateInfo} from "@/api/user";
 import {useQuasar} from "quasar";
+import emitter from "@/utils/bus";
 
 //notify
 const notify = useQuasar().notify
@@ -238,11 +239,11 @@ function regWarningNotify(notifyMessage) {
   })
 }
 
-
+//save user info
 function saveProfile() {
   //check
   if (!checkNickName(userData.value.nickName)) {
-    regWarningNotify("密码格式错误")
+    regWarningNotify("昵称格式错误")
     return
   }
   if (!checkName(userData.value.firstName)) {
@@ -268,18 +269,29 @@ function saveProfile() {
         type: 'positive',
         timeout: 1000
       })
+      refreshLoginMessage()
     } else {
-      regWarningNotify("注册失败：" + res.data.message)
+      regWarningNotify("保存失败：" + res.data.message)
     }
   })
-
 }
 
+//reset user info
 function resetProfile() {
-  let loginData = {
-    gender: {}
-  }
-  if (isLogin()) {
+  isLogin()
+}
+
+//modify avatar
+
+function modifyAvatar() {
+  regWarningNotify("暂时不支持头像修改")
+}
+
+
+//登录事件
+function loginMessage(isOnLogin) {
+  if (isOnLogin) {
+    let loginData
     loginData = getLoginData()
     userData.value = loginData
     refGender.value = getGenderObj(loginData.gender)
@@ -292,11 +304,15 @@ onMounted(() => {
   addStyle("background-color:#EFF2F5")
   //初始化登录信息
   resetProfile()
+  //登录事件
+  emitter.on("loginMessageEvent", loginMessage)
 })
 
 onUnmounted(() => {
   //取消底色渲染
   removeStyle("background-color:#EFF2F5")
+  //删除登录事件
+  emitter.off("loginMessageEvent")
 })
 </script>
 

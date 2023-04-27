@@ -1,7 +1,7 @@
 import {serviceShiro} from '@/utils/request'
 
 
-export function login(body) {
+export function userLogin(body) {
     return serviceShiro({
         url: `/yui/user/login`,
         method: 'post',
@@ -17,16 +17,32 @@ export function sendMail(body) {
     })
 }
 
-export function isLogin(id) {
+export function userLogout(id) {
     return serviceShiro({
-        url: `/yui/user/${id}/isLogin`,
+        url: `/yui/user/${id}/logout/auth`,
+        method: 'post',
+    })
+}
+
+export function userIsLogin() {
+    return serviceShiro({
+        url: `/yui/user/isLogin`,
         method: 'get',
     })
 }
 
+
+export function userDetail(id) {
+    return serviceShiro({
+        url: `/yui/user/${id}/detail/auth`,
+        method: 'get',
+    })
+}
+
+
 export function updateInfo(id, body) {
     return serviceShiro({
-        url: `/yui/user/${id}/updateInfo`,
+        url: `/yui/user/${id}/updateInfo/auth`,
         method: 'patch',
         data: body
     })

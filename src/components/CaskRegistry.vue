@@ -38,7 +38,7 @@
 
 
         <div class="row justify-around dialog-btn-comb">
-          <q-btn label="注册" @click="registryMethod" class="dialog-btn-margin col-4"/>
+          <q-btn label="注册" @click="registryMethod" class="dialog-btn-margin col-4" :disable="registryBtnDisable"/>
         </div>
         <div class="dialog-tag">
           <q-checkbox v-model="againDeal" label="阅读并接受"
@@ -78,6 +78,9 @@ let sendingMail = ref(false)
 let mailWaitSecond = ref(0)
 let sendMailTimer = ref(0);
 let sendMailLabel = ref("发送验证码")
+
+//防抖动
+let registryBtnDisable = ref(false)
 
 //registry body
 let registryBody = ref({
@@ -148,6 +151,8 @@ function registryMethod() {
     regWarningNotify("账号格式错误")
     return
   }
+  registryBtnDisable.value = true
+  //set data
   registryBody.value.account = account.value
   registryBody.value.gender = gender.value.category
   registryBody.value.confirmCode = confirmCode.value
@@ -158,6 +163,7 @@ function registryMethod() {
     } else {
       regWarningNotify("注册失败：" + res.data.message)
     }
+    registryBtnDisable.value = false
   })
 }
 

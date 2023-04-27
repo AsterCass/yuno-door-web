@@ -1,13 +1,13 @@
-import {login} from "@/api/user";
+import {userLogin} from "@/api/user";
 import {setLoginData} from "@/utils/store";
 import emitter from "@/utils/bus";
 
 
 function authLogin(account, passwd, notify) {
     //login body
-    let currentBody = {account: account, passwd: passwd}
+    let currentBody = {accountMail: account, passwd: passwd}
     //login
-    login(currentBody).then(res => {
+    userLogin(currentBody).then(res => {
         const status = res.data.status
         if (200 !== status) {
             notify({
@@ -16,6 +16,7 @@ function authLogin(account, passwd, notify) {
                 type: 'negative',
                 timeout: 1000
             })
+            emitter.emit("loginMessageEvent", false)
         } else {
             notify({
                 message: "登录成功",
@@ -23,7 +24,7 @@ function authLogin(account, passwd, notify) {
                 type: 'positive',
                 timeout: 1000
             })
-            setLoginData(res.data.data)
+            setLoginData(res.data.data, res.headers.get("User-Token"))
             emitter.emit("loginMessageEvent", true)
         }
     })

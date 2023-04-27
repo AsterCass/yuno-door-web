@@ -32,6 +32,7 @@ import {userLogin} from "@/utils/share-data";
 
 //user data
 let userData = ref({
+  id: '',
   avatar: '',
   nickName: '',
 })
@@ -58,7 +59,7 @@ function loginMethod() {
 
 //登出操作
 function logoutMethod() {
-  logout()
+  logout(userData.value.id)
 }
 
 //感知登录事件
@@ -70,9 +71,7 @@ function loginMessage(isSuccess) {
 
 onMounted(() => {
   emitter.on("loginMessageEvent", loginMessage)
-  if (isLogin()) {
-    loginMethod()
-  }
+  isLogin()
 })
 
 onUnmounted(() => {
