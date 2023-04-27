@@ -10,7 +10,7 @@
       </div>
       <div v-if="isLoginStatus" class="user-simple">
         {{ userData.nickName }}
-        <q-btn round color="white" @click="logoutMethod" class="header-user-avatar">
+        <q-btn round color="white" to="/space" class="header-user-avatar">
           <q-avatar size="40px">
             <img :src="userData.avatar" alt=""/>
           </q-avatar>
@@ -26,7 +26,7 @@
 import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
 import CaskLogin from "@/components/CaskLogin.vue";
 import emitter from "@/utils/bus";
-import {getLoginData, isLogin, logout} from "@/utils/store";
+import {getLoginData, isLogin} from "@/utils/store";
 import {userLogin} from "@/utils/share-data";
 
 
@@ -57,10 +57,10 @@ function loginMethod() {
   userData.value = getLoginData()
 }
 
-//登出操作
-function logoutMethod() {
-  logout(userData.value.id)
-}
+// //登出操作
+// function logoutMethod() {
+//   logout(userData.value.id)
+// }
 
 //感知登录事件
 function loginMessage(isSuccess) {
