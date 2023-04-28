@@ -13,7 +13,7 @@
         <q-btn round color="white" class="header-user-avatar" to="/space"
                v-on:mouseover="userMenuTouchOver" v-on:mouseleave="userMenuTouchLeave">
           <q-avatar size="40px">
-            <img :src="userData.avatar" alt=""/>
+            <q-img :src="userData.avatar"/>
           </q-avatar>
 
           <q-menu :model-value="userMenuShow"
@@ -26,7 +26,7 @@
               <q-card class="user-data-card column q-pa-md">
                 <div class="column items-center">
                   <q-avatar size="100px">
-                    <img :src="userData.avatar" alt=""/>
+                    <q-img :src="userData.avatar"/>
                   </q-avatar>
                   <div class="q-mt-md q-mb-xs user-simple text-white">
                     {{ userData.nickName }}
