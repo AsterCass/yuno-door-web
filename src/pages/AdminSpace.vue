@@ -25,7 +25,9 @@
           </q-avatar>
         </div>
         <div class="space-head-modify">
-          <q-btn label="修改头像" class="dialog-btn-margin" @click="modifyAvatar"/>
+          <q-btn label="修改头像" class="dialog-btn-margin" @click="modifyAvatar">
+            <q-tooltip class="bg-secondary">请上传200k以内jpg/jpeg/png图片</q-tooltip>
+          </q-btn>
         </div>
         <div class="col-12 row">
           <q-tabs
