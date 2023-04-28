@@ -12,6 +12,11 @@
   font-family: Roboto Slab, sans-serif;
 }
 
+.dialog-sec-header {
+  font-size: 2rem;
+  font-family: Roboto Slab, sans-serif;
+}
+
 .dialog-tag {
   font-size: 0.5rem;
 }
@@ -74,6 +79,10 @@ $background-image: linear-gradient(195deg, #42424a, #191919)) {
 .dialog-btn-margin-sec {
   //@include dialog-btn(0.5rem, 2rem, 4rem, linear-gradient(195deg, #00897B, #004D40))
   @include dialog-btn(0.5rem, 2rem, 4rem, linear-gradient(195deg, #4DB6AC, #00897B))
+}
+
+.dialog-btn-margin-middle {
+  @include dialog-btn(0.5rem, 2.5rem, 6rem)
 }
 
 .dialog-btn-margin-long {

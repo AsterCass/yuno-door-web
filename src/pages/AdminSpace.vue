@@ -19,16 +19,17 @@
 
     <div class="page-main-card row">
       <div class="col-4 space-card-left row justify-center">
-        <div class="col-12 row justify-center space-head">
+        <div class="col-12 justify-center space-head">
           <q-avatar size="150px">
             <q-img :src="userData.avatar"/>
           </q-avatar>
+
+          <div class="space-head-modify">
+            <q-btn label="修改头像" class="dialog-btn-margin" @click="modifyAvatar">
+            </q-btn>
+          </div>
         </div>
-        <div class="space-head-modify">
-          <q-btn label="修改头像" class="dialog-btn-margin" @click="modifyAvatar">
-            <q-tooltip class="bg-secondary">请上传200k以内jpg/jpeg/png图片</q-tooltip>
-          </q-btn>
-        </div>
+
         <div class="col-12 row">
           <q-tabs
               v-model="currentTab"
@@ -173,6 +174,7 @@
 
   </q-layout>
 
+  <CaskUploadAvatar :user-data="userData"/>
   <CopyrightFooter/>
 
 </template>
@@ -188,6 +190,7 @@ import {checkName, checkMotto, checkNickName} from "@/utils/format-check";
 import {updateInfo} from "@/api/user";
 import {useQuasar} from "quasar";
 import emitter from "@/utils/bus";
+import CaskUploadAvatar from "@/components/CaskUploadAvatar.vue";
 
 //notify
 const notify = useQuasar().notify
@@ -286,7 +289,7 @@ function resetProfile() {
 //modify avatar
 
 function modifyAvatar() {
-  regWarningNotify("暂时不支持头像修改")
+  emitter.emit("showUploadDialogEven", true)
 }
 
 
@@ -340,7 +343,7 @@ onUnmounted(() => {
 }
 
 .space-head-modify {
-  margin-top: -1rem;
+  margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
