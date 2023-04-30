@@ -37,13 +37,13 @@ import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
 onMounted(() => {
   //底色渲染
-  addStyle("background-color:#EFF2F5")
+  addStyle("background-color: rgb(239, 242, 245)")
 })
 
 onUnmounted(() => {
   document.querySelector('body').removeAttribute('style')
   //取消底色渲染
-  removeStyle("background-color:#EFF2F5")
+  removeStyle("background-color: rgb(239, 242, 245)")
 })
 
 

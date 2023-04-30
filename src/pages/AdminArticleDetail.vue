@@ -37,7 +37,7 @@ function screenEventHandler() {
 
 onMounted(() => {
   //底色渲染
-  addStyle("background-color:#EFF2F5")
+  addStyle("background-color: rgb(239, 242, 245)")
   //该页面所有链接均打开新标签，不在本页面打开，目的兼容markdown语法
   let base = document.createElement("base")
   base.setAttribute("target", "_blank")
@@ -55,7 +55,7 @@ onUnmounted(() => {
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);
   //取消底色渲染
-  removeStyle("background-color:#EFF2F5")
+  removeStyle("background-color: rgb(239, 242, 245)")
 })
 
 

@@ -100,7 +100,7 @@ function screenEventHandler() {
 
 onMounted(() => {
   //底色渲染
-  addStyle("background-color:#EFF2F5")
+  addStyle("background-color: rgb(239, 242, 245)")
   //添加监控屏幕改变事件
   screenEventHandler()
   window.addEventListener("resize", screenEventHandler);
@@ -112,7 +112,7 @@ onUnmounted(() => {
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);
   //取消底色渲染
-  removeStyle("background-color:#EFF2F5")
+  removeStyle("background-color: rgb(239, 242, 245)")
 })
 
 </script>

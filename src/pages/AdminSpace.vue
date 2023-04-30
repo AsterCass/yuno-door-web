@@ -312,7 +312,7 @@ function refreshUserData(data) {
 
 onMounted(() => {
   //底色渲染
-  addStyle("background-color:#EFF2F5")
+  addStyle("background-color: rgb(239, 242, 245)")
   //初始化登录信息
   resetProfile()
   //登录事件
@@ -323,7 +323,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   //取消底色渲染
-  removeStyle("background-color:#EFF2F5")
+  removeStyle("background-color: rgb(239, 242, 245)")
   //删除登录事件
   emitter.off("loginMessageEvent")
   //删除数据更新事件
