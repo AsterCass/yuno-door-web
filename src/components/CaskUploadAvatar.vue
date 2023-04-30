@@ -72,7 +72,6 @@ function closeDialogShow() {
 function saveAvatar() {
   let formData = new FormData();
   formData.append('file', currentAvatar.value, currentAvatar.value.name)
-  console.log(currentAvatar.value, currentAvatar.value.name)
   updateAvatar(props.userData.id, formData).then(res => {
     if (200 === res.data.status) {
       //数据重新初始化
