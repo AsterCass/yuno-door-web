@@ -26,12 +26,12 @@
           <q-list>
             <q-item clickable v-ripple v-for="item in titleRefData" :key="item">
               <q-item-section>
-                <a :href="`#/article/detail?articleId=${item.articleId}`">{{ item.title }}</a>
+                <a :href="`/article/detail?articleId=${item.articleId}`">{{ item.title }}</a>
               </q-item-section>
             </q-item>
             <q-item clickable v-ripple v-for="item in shortfallAnchorsData" :key="item">
               <q-item-section>
-                <a :href="`#/article/detail?articleId=${item.id}`">{{ item.articleTitle }}</a>
+                <a :href="`/article/detail?articleId=${item.id}`">{{ item.articleTitle }}</a>
               </q-item-section>
             </q-item>
           </q-list>

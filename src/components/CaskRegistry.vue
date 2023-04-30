@@ -43,7 +43,7 @@
         <div class="dialog-tag">
           <q-checkbox v-model="againDeal" label="阅读并接受"
                       checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black"/>
-          <a :href="`#/privacy`" target="_blank">《Aster Casc隐私权保护声明》</a>
+          <a :href="`/privacy`" target="_blank">《Aster Casc隐私权保护声明》</a>
         </div>
 
       </q-card>

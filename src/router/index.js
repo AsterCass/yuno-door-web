@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import AdminIndex from "@/pages/AdminIndex.vue";
 import AdminArticleList from "@/pages/AdminArticleList.vue";
 import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
@@ -8,7 +8,8 @@ import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
 import AdminSpace from "@/pages/AdminSpace.vue";
 
 const router = createRouter({
-    history: createWebHashHistory(process.env.BASE_URL),
+    // history: createWebHashHistory(process.env.BASE_URL),
+    history: createWebHistory(process.env.BASE_URL),
     routes: [
         {
             path: "/",
