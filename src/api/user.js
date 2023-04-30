@@ -48,6 +48,14 @@ export function updateInfo(id, body) {
     })
 }
 
+export function updateAvatar(id, data) {
+    return serviceShiro({
+        url: `/yui/user/${id}/updateAvatar/auth`,
+        method: 'patch',
+        data: data
+    })
+}
+
 export function registry(body) {
     return serviceShiro({
         url: `/yui/user/registry`,

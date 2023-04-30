@@ -287,7 +287,6 @@ function resetProfile() {
 }
 
 //modify avatar
-
 function modifyAvatar() {
   emitter.emit("showUploadDialogEven", true)
 }
@@ -303,6 +302,13 @@ function loginMessage(isOnLogin) {
   }
 }
 
+//刷新数据
+function refreshUserData(data) {
+  if (data) {
+    userData.value = data
+  }
+}
+
 
 onMounted(() => {
   //底色渲染
@@ -311,6 +317,8 @@ onMounted(() => {
   resetProfile()
   //登录事件
   emitter.on("loginMessageEvent", loginMessage)
+  //数据更新事件
+  emitter.on("refreshLoginMessageEvent", refreshUserData)
 })
 
 onUnmounted(() => {
@@ -318,6 +326,8 @@ onUnmounted(() => {
   removeStyle("background-color:#EFF2F5")
   //删除登录事件
   emitter.off("loginMessageEvent")
+  //删除数据更新事件
+  emitter.off("refreshLoginMessageEvent")
 })
 </script>
 
