@@ -9,9 +9,17 @@ export function userLogin(body) {
     })
 }
 
-export function sendMail(body) {
+export function sendRegMail(body) {
     return serviceShiro({
-        url: `/yui/user/sendMail`,
+        url: `/yui/user/sendRegMail`,
+        method: 'post',
+        data: body
+    })
+}
+
+export function sendResetMail(body) {
+    return serviceShiro({
+        url: `/yui/user/sendResetMail`,
         method: 'post',
         data: body
     })
@@ -59,6 +67,14 @@ export function updateAvatar(id, data) {
 export function registry(body) {
     return serviceShiro({
         url: `/yui/user/registry`,
+        method: 'post',
+        data: body
+    })
+}
+
+export function resetPasswd(body) {
+    return serviceShiro({
+        url: `/yui/user/resetPasswd`,
         method: 'post',
         data: body
     })

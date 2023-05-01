@@ -1,30 +1,24 @@
 <template>
   <div>
-    <q-dialog :model-value="registryDialog" @hide="closeRegistry"
+    <q-dialog :model-value="resetPasswdDialog" @hide="closeResetPasswdDialog"
               transition-show="fade" transition-hide="fade">
       <q-card class="dialog-frame column justify-between">
 
         <div class="dialog-header">
-          System Registry
+          Reset Password
           <div class="dialog-tag">
-            注册账号
+            重置密码
           </div>
         </div>
 
 
         <div>
-          <q-input class="dialog-input-warn-first" placeholder="用户名/登录账号" v-model="account"
-                   filled color="black"
-                   :rules="[ val => checkAccount(val) || '账号长度在8-20位英文或数字']"/>
-          <q-input class="dialog-input-warn" placeholder="邮箱" v-model="mail"
+          <q-input class="dialog-input-warn-first" placeholder="邮箱" v-model="mail"
                    filled color="black" lazy-rules
                    :rules="[ val => checkIsMail(val) || '邮箱格式错误']"/>
-          <q-input class="dialog-input-warn" placeholder="密码" v-model="passwd"
+          <q-input class="dialog-input-warn" placeholder="新密码" v-model="passwd"
                    filled color="black" :type="'password'" lazy-rules
                    :rules="[ val => checkIsPasswd(val) || '密码长度需要在8-20位并且同时含有数字和大小写字母']"/>
-          <q-select class="dialog-input-warn" label="性别" v-model="gender"
-                    options-cover filled color="black" :options="genderOptEnum"
-                    :rules="[ val => checkTrue(val) || '性别选择错误']"/>
           <div class="dialog-input-warn-last row justify-between">
             <q-input class="col-5" placeholder="验证码" v-model="confirmCode"
                      filled color="black" mask="######"/>
@@ -37,13 +31,9 @@
         </div>
 
 
-        <div class="row justify-around dialog-btn-comb">
-          <q-btn label="注册" @click="registryMethod" class="dialog-btn-margin col-4" :disable="registryBtnDisable"/>
-        </div>
-        <div class="dialog-tag">
-          <q-checkbox v-model="againDeal" label="阅读并接受"
-                      checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black"/>
-          <a :href="`/privacy`" target="_blank">《Aster Casc隐私权保护声明》</a>
+        <div class="dialog-btn-comb">
+          <q-btn label="重置密码" class="dialog-btn-margin-long col-4"
+                 @click="resetPasswdMethod" :disable="btnDisable"/>
         </div>
 
       </q-card>
@@ -56,21 +46,17 @@
 import {onMounted, onUnmounted, ref} from "vue";
 import emitter from "@/utils/bus";
 import {useQuasar} from "quasar";
-import {genderOptEnum} from "@/utils/gender-opt";
-import {checkIsMail, checkIsPasswd, checkAccount, checkTrue} from "@/utils/format-check";
-import {sendRegMail, registry} from "@/api/user";
+import {checkIsMail, checkIsPasswd} from "@/utils/format-check";
+import {sendResetMail, resetPasswd} from "@/api/user";
 import {authLogin} from "@/utils/user-auth";
 
 
 //notify
 const notify = useQuasar().notify
 
-let registryDialog = ref(false)
-let account = ref("")
+let resetPasswdDialog = ref(false)
 let mail = ref("")
 let passwd = ref("")
-let gender = ref(null)
-let againDeal = ref(false)
 let confirmCode = ref("")
 
 //isSendMail
@@ -80,10 +66,10 @@ let sendMailLabel = ref("发送验证码")
 let sendMailTimer = 0
 
 //防抖动
-let registryBtnDisable = ref(false)
+let btnDisable = ref(false)
 
-//registry body
-let registryBody = ref({
+//reset pass body
+let resetPasswdBody = ref({
   account: "",
   mail: "",
   confirmCode: "",
@@ -92,7 +78,7 @@ let registryBody = ref({
 })
 
 //warning notify
-function regWarningNotify(notifyMessage) {
+function resetPassWarningNotify(notifyMessage) {
   notify({
     message: notifyMessage,
     position: 'top-right',
@@ -101,69 +87,56 @@ function regWarningNotify(notifyMessage) {
   })
 }
 
-function showRegistryDialog() {
-  registryDialog.value = true
+function showResetPasswdDialog() {
+  resetPasswdDialog.value = true
 }
 
-function closeRegistry() {
-  registryDialog.value = false
+function closeResetPasswdDialog() {
+  resetPasswdDialog.value = false
 }
 
 //验证码
 function sendEmail() {
   sendingMail.value = true
   if (!checkIsMail(mail.value)) {
-    regWarningNotify("邮箱格式错误")
+    resetPassWarningNotify("邮箱格式错误")
     sendingMail.value = false
     return
   }
-
-  sendRegMail({mail: mail.value}).then(res => {
+  sendResetMail({mail: mail.value}).then(res => {
     const status = res.data.status
     if (200 === status) {
       waitEmailSend(60)
     } else {
-      regWarningNotify("邮件发送失败：" + res.data.message)
+      resetPassWarningNotify("邮件发送失败：" + res.data.message)
       sendingMail.value = false
     }
   })
-
-
 }
 
 //注册
-function registryMethod() {
-  if (!againDeal.value) {
-    regWarningNotify("请勾选相关协议")
-    return
-  }
+function resetPasswdMethod() {
   if (!checkIsMail(mail.value)) {
-    regWarningNotify("邮箱格式错误")
+    resetPassWarningNotify("邮箱格式错误")
     return
   }
-  registryBody.value.mail = mail.value
+  resetPasswdBody.value.mail = mail.value
   if (!checkIsPasswd(passwd.value)) {
-    regWarningNotify("密码格式错误")
+    resetPassWarningNotify("密码格式错误")
     return
   }
-  registryBody.value.passwd = passwd.value
-  if (!checkAccount(account.value)) {
-    regWarningNotify("账号格式错误")
-    return
-  }
-  registryBtnDisable.value = true
+  resetPasswdBody.value.passwd = passwd.value
+  btnDisable.value = true
   //set data
-  registryBody.value.account = account.value
-  registryBody.value.gender = gender.value.category
-  registryBody.value.confirmCode = confirmCode.value
-  registry(registryBody.value).then(res => {
+  resetPasswdBody.value.confirmCode = confirmCode.value
+  resetPasswd(resetPasswdBody.value).then(res => {
     const status = res.data.status
     if (200 === status) {
-      authLogin(account.value, passwd.value, notify)
+      authLogin(mail.value, passwd.value, notify)
     } else {
-      regWarningNotify("注册失败：" + res.data.message)
+      resetPassWarningNotify("重置密码失败：" + res.data.message)
     }
-    registryBtnDisable.value = false
+    btnDisable.value = false
   })
 }
 
@@ -171,7 +144,7 @@ function registryMethod() {
 //感知登录事件
 function loginMessage(isSuccess) {
   if (isSuccess) {
-    registryDialog.value = false
+    resetPasswdDialog.value = false
   }
 }
 
@@ -197,12 +170,12 @@ function waitStop() {
 }
 
 onMounted(() => {
-  emitter.on('showRegistryDialogEven', showRegistryDialog)
+  emitter.on('showResetPassDialogEven', showResetPasswdDialog)
   emitter.on("loginMessageEvent", loginMessage)
 })
 
 onUnmounted(() => {
-  emitter.off('showRegistryDialogEven')
+  emitter.off('showResetPassDialogEven')
   emitter.off("loginMessageEvent")
 })
 

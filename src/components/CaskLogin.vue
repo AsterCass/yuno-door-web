@@ -19,6 +19,10 @@
                    filled color="black" :type="'password'"/>
         </div>
 
+        <div>
+          <q-btn flat no-wrap class="same-a-btn"
+                 @click="resetPasswdMethod" label="重置密码"/>
+        </div>
 
         <div class="row justify-around dialog-btn-comb">
           <q-btn label="登录" @click="loginMethod" class="dialog-btn-margin col-4" :disable="loginBtnDisable"/>
@@ -29,6 +33,7 @@
     </q-dialog>
   </div>
   <CaskRegistry/>
+  <CaskResetPassword/>
 </template>
 
 <script setup>
@@ -37,6 +42,7 @@ import emitter from "@/utils/bus";
 import {useQuasar} from "quasar";
 import CaskRegistry from "@/components/CaskRegistry.vue";
 import {authLogin} from "@/utils/user-auth"
+import CaskResetPassword from "@/components/CaskResetPassword.vue";
 
 //notify
 const notify = useQuasar().notify
@@ -75,6 +81,11 @@ function registryMethod() {
   emitter.emit('showRegistryDialogEven')
 }
 
+function resetPasswdMethod() {
+  loginDiaLog.value = false
+  emitter.emit('showResetPassDialogEven')
+}
+
 onMounted(() => {
   emitter.on('showLoginDiaLogEven', showLoginDiaLog)
   emitter.on("loginMessageEvent", loginMessage)
@@ -90,5 +101,6 @@ onUnmounted(() => {
 
 <style lang="sass" scoped>
 @import "@/styles/cask-dialog-style.scss"
+@import "@/styles/cask-little-mini-style.scss"
 
 </style>

@@ -19,6 +19,21 @@ function checkEnAndNum(str) {
     return reg.test(str)
 }
 
+function checkHaveLowLet(str) {
+    const reg = new RegExp(`[a-z]`)
+    return reg.test(str)
+}
+
+function checkHaveNUm(str) {
+    const reg = new RegExp(`[0-9]`)
+    return reg.test(str)
+}
+
+function checkHaveCapLet(str) {
+    const reg = new RegExp(`[A-Z]`)
+    return reg.test(str)
+}
+
 function checkNormalCode(str) {
     const reg = new RegExp(`^[!-~]*$`)
     return reg.test(str)
@@ -28,6 +43,9 @@ function checkLength(str, min, max) {
     let checkResult = false
     if (null != str) {
         checkResult = str.length >= min && str.length <= max
+    }
+    if (0 === min) {
+        checkResult = true
     }
     return checkResult
 }
@@ -40,6 +58,7 @@ function checkIsMail(str) {
 
 function checkIsPasswd(str) {
     return checkLength(str, 8, 20) && checkNormalCode(str)
+        && checkHaveCapLet(str) && checkHaveNUm(str) && checkHaveLowLet(str)
 }
 
 function checkAccount(str) {

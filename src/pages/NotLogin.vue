@@ -7,9 +7,13 @@
       访问该页面需要登录，请登录后访问
     </p>
     <br>
+    <div class="column items-center">
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="回到主页" to="/"/>
+      <q-separator spaced="1rem" size="0.05rem" inset/>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-right-to-bracket"
+             label="登录" @click="showLoginDiaLog"/>
+    </div>
 
-    <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-right-to-bracket"
-           label="登录" @click="showLoginDiaLog"/>
   </div>
 
   <CaskLogin/>
