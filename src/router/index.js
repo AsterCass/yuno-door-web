@@ -6,6 +6,7 @@ import AdminEssayList from "@/pages/AdminEssayList.vue";
 import NotFound from "@/pages/NotFound.vue";
 import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
 import AdminSpace from "@/pages/AdminSpace.vue";
+import NotLogin from "@/pages/NotLogin.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -71,6 +72,11 @@ const router = createRouter({
             path: "/404",
             name: '404',
             component: NotFound
+        },
+        {
+            path: "/notLogin",
+            name: 'notLogin',
+            component: NotLogin
         },
         {
             path: "/:catchAll(.*)",

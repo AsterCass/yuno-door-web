@@ -191,9 +191,12 @@ import {updateInfo} from "@/api/user";
 import {useQuasar} from "quasar";
 import emitter from "@/utils/bus";
 import CaskUploadAvatar from "@/components/CaskUploadAvatar.vue";
+import {useRouter} from "vue-router";
 
 //notify
 const notify = useQuasar().notify
+//无数据跳转
+const thisRouter = useRouter()
 //user data
 let userData = ref({
   id: "",
@@ -233,6 +236,7 @@ profileIntegrity = computed(() => {
   }
   return curIntegrity
 })
+
 
 //notify
 function regWarningNotify(notifyMessage) {
@@ -299,6 +303,10 @@ function loginMessage(isOnLogin) {
     loginData = getLoginData()
     userData.value = loginData
     refGender.value = getGenderObj(loginData.gender)
+  } else {
+    thisRouter.push({
+      path: '/notLogin'
+    })
   }
 }
 
