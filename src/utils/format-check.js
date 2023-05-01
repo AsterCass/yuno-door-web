@@ -41,11 +41,11 @@ function checkNormalCode(str) {
 
 function checkLength(str, min, max) {
     let checkResult = false
-    if (null != str) {
-        checkResult = str.length >= min && str.length <= max
-    }
     if (0 === min) {
         checkResult = true
+    }
+    if (null != str) {
+        checkResult = str.length >= min && str.length <= max
     }
     return checkResult
 }
