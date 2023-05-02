@@ -7,6 +7,7 @@ import NotFound from "@/pages/NotFound.vue";
 import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
 import AdminSpace from "@/pages/AdminSpace.vue";
 import NotLogin from "@/pages/NotLogin.vue";
+import AdminVideo from "@/pages/AdminVideo.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -66,6 +67,14 @@ const router = createRouter({
             component: AdminSpace,
             meta: {
                 title: '个人中心'
+            }
+        },
+        {
+            path: '/video',
+            name: 'adminVideo',
+            component: AdminVideo,
+            meta: {
+                title: '视频库'
             }
         },
         {

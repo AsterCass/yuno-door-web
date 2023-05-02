@@ -41,7 +41,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  document.querySelector('body').removeAttribute('style')
   //取消底色渲染
   removeStyle("background-color: rgb(239, 242, 245)")
 })

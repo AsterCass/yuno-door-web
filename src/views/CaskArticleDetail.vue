@@ -82,8 +82,7 @@ import {useRouter} from "vue-router";
 const props = defineProps({
   articleId: {
     type: String,
-    default:
-        "AT123"
+    default: "AT123"
   },
 })
 //无数据跳转
