@@ -36,11 +36,11 @@ const props = defineProps({
     type: Object,
     default() {
       return {
-        poster: "http://astercasc.com:44411/ushio/resources/snow.ico",
+        poster: "https://api.astercasc.com/ushio/resources/snow.ico",
         controls: true,
         sources: [
           {
-            src: "http://astercasc.com:44411/ushio/resources/video/xxx.mp4",
+            src: "https://api.astercasc.com/ushio/resources/video/xxx.mp4",
             type: 'video/mp4',
           }
         ],
