@@ -25,9 +25,9 @@ export function sendResetMail(body) {
     })
 }
 
-export function userLogout(id) {
+export function userLogout() {
     return serviceShiro({
-        url: `/yui/user/${id}/logout/auth`,
+        url: `/yui/user/logout/auth`,
         method: 'post',
     })
 }
@@ -40,25 +40,25 @@ export function userIsLogin() {
 }
 
 
-export function userDetail(id) {
+export function userDetail() {
     return serviceShiro({
-        url: `/yui/user/${id}/detail/auth`,
+        url: `/yui/user/detail/auth`,
         method: 'get',
     })
 }
 
 
-export function updateInfo(id, body) {
+export function updateInfo(body) {
     return serviceShiro({
-        url: `/yui/user/${id}/updateInfo/auth`,
+        url: `/yui/user/updateInfo/auth`,
         method: 'patch',
         data: body
     })
 }
 
-export function updateAvatar(id, data) {
+export function updateAvatar(data) {
     return serviceShiro({
-        url: `/yui/user/${id}/updateAvatar/auth`,
+        url: `/yui/user/updateAvatar/auth`,
         method: 'patch',
         data: data
     })

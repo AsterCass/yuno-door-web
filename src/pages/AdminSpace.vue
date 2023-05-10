@@ -269,7 +269,7 @@ function saveProfile() {
   }
   //set gender
   userData.value.gender = refGender.value.category
-  updateInfo(userData.value.id, userData.value).then(res => {
+  updateInfo(userData.value).then(res => {
     const status = res.data.status
     if (200 === status) {
       notify({

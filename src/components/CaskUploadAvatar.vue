@@ -40,7 +40,7 @@ import {refreshLoginMessage} from "@/utils/store";
 //notify
 const notify = useQuasar().notify
 
-const props = defineProps({
+defineProps({
   userData: {
     id: "",
     avatar: ""
@@ -72,7 +72,7 @@ function closeDialogShow() {
 function saveAvatar() {
   let formData = new FormData();
   formData.append('file', currentAvatar.value, currentAvatar.value.name)
-  updateAvatar(props.userData.id, formData).then(res => {
+  updateAvatar(formData).then(res => {
     if (200 === res.data.status) {
       //数据重新初始化
       refreshLoginMessage()
