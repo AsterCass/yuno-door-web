@@ -36,11 +36,11 @@ const props = defineProps({
     type: Object,
     default() {
       return {
-        poster: "//vjs.zencdn.net/v/oceans.png",
+        poster: "http://astercasc.com:44411/ushio/resources/snow.ico",
         controls: true,
         sources: [
           {
-            src: "http://localhost:8005/video/test",
+            src: "http://astercasc.com:44411/ushio/resources/video/xxx.mp4",
             type: 'video/mp4',
           }
         ],

@@ -86,7 +86,7 @@ function saveAvatar() {
       })
     } else {
       notify({
-        message: "文件上传失败，请重试",
+        message: "文件数据不合法，请更换或者重新编辑文件后上传",
         position: 'top-right',
         type: 'warning',
         timeout: 1000

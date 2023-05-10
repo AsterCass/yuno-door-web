@@ -20,8 +20,16 @@
                    filled color="black" lazy-rules
                    :rules="[ val => checkIsMail(val) || '邮箱格式错误']"/>
           <q-input class="dialog-input-warn" placeholder="密码" v-model="passwd"
-                   filled color="black" :type="'password'" lazy-rules
-                   :rules="[ val => checkIsPasswd(val) || '密码长度需要在8-20位并且同时含有数字和大小写字母']"/>
+                   filled color="black" :type="isPwd ? 'password' : 'text'" lazy-rules
+                   :rules="[ val => checkIsPasswd(val) || '密码长度需要在8-20位并且同时含有数字和大小写字母']">
+            <template v-slot:append>
+              <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
           <q-select class="dialog-input-warn" label="性别" v-model="gender"
                     options-cover filled color="black" :options="genderOptEnum"
                     :rules="[ val => checkTrue(val) || '性别选择错误']"/>
@@ -78,6 +86,9 @@ let sendingMail = ref(false)
 let mailWaitSecond = ref(0)
 let sendMailLabel = ref("发送验证码")
 let sendMailTimer = 0
+
+//passwd show or not
+let isPwd = ref(true)
 
 //防抖动
 let registryBtnDisable = ref(false)
