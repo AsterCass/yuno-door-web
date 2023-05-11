@@ -39,6 +39,10 @@ function checkNormalCode(str) {
     return reg.test(str)
 }
 
+function checkNotOnlyBlank(str) {
+    return str.trim().length > 0
+}
+
 function checkLength(str, min, max) {
     let checkResult = false
     if (0 === min) {
@@ -74,11 +78,11 @@ function checkName(str) {
 }
 
 function checkMotto(str) {
-    return checkLength(str, 0, 50)
+    return checkNotOnlyBlank && checkLength(str, 0, 50)
 }
 
 function checkReply(str) {
-    return checkLength(str, 0, 500)
+    return checkLength(str, 1, 500) && checkNotOnlyBlank(str)
 }
 
 function checkTrue() {

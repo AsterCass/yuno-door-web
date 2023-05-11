@@ -95,14 +95,14 @@
           </div>
         </div>
         <div class="col-10">
-          <q-input placeholder="评论..." borderless hide-bottom-space
+          <q-input placeholder="评论..." borderless hide-bottom-space lazy-rules
                    :input-style="{boxShadow: '0 0 5px 5px #2B5853',
                    backgroundImage: 'linear-gradient(195deg, #447550, #2B5853 50%)',
                    borderRadius: '12px', padding: '1.2rem', fontSize: '1rem',color: 'white'}"
-                   v-model="commentContent" type="textarea" color="secondary"
-                   :rules="[ val => checkReply(val) || '评论不允许超过500个字符']"/>
+                   v-model="commentContent" type="textarea" color="secondary"/>
           <div class="q-mt-md">
-            <q-btn icon="mail" class="cask-simple-btn-margin-sec " label="提交"/>
+            <q-btn icon="mail" class="cask-simple-btn-margin-sec"
+                   label="提交" @click="replyCommentMethod"/>
           </div>
         </div>
 
@@ -116,11 +116,24 @@
 <script setup>
 
 import {defineProps, onMounted, onUnmounted, ref} from "vue";
-import {getCommentTree} from "@/api/comment";
+import {getCommentTree, replyComment} from "@/api/comment";
 import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
 import {checkReply} from "@/utils/format-check";
 import emitter from "@/utils/bus";
 import {getLoginData} from "@/utils/store";
+import {useQuasar} from "quasar";
+
+//notify
+const notify = useQuasar().notify
+
+function commentWarningNotify(notifyMessage) {
+  notify({
+    message: notifyMessage,
+    position: 'top-right',
+    type: 'warning',
+    timeout: 1000
+  })
+}
 
 const props = defineProps({
   mainId: {
@@ -129,9 +142,9 @@ const props = defineProps({
   },
 })
 
-//comment content
+//reply content
+let replySubMainId = ref(props.mainId)
 let commentContent = ref("")
-
 //comment tree
 let commentOriginObj = ref({
   tree: [],
@@ -175,6 +188,28 @@ function caskCommentTreeLoginMethod(isLogin) {
   } else {
     userData.value = {};
   }
+}
+
+function replyCommentMethod() {
+  let replyNewData = {mainId: props.mainId, mainSubId: replySubMainId.value};
+  if (!checkReply(commentContent.value)) {
+    commentWarningNotify("输入内容不允许为空，且不能超过500字符")
+    return
+  }
+  replyNewData.commentContent = commentContent.value.trim()
+  commentContent.value = ""
+  replyComment(replyNewData).then(res => {
+    const status = res.data.status
+    if (200 === status) {
+      notify({
+        message: "回复成功",
+        position: 'top-right',
+        type: 'positive',
+        timeout: 1000
+      })
+      refreshCommentTree();
+    }
+  })
 }
 
 

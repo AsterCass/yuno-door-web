@@ -6,5 +6,12 @@ export function getCommentTree(mainId) {
         url: `/yui/comment/${mainId}/list`,
         method: 'get',
     })
+}
 
+export function replyComment(body) {
+    return serviceShiro({
+        url: `/yui/comment/insert/authNoError`,
+        method: 'post',
+        data: body
+    })
 }
