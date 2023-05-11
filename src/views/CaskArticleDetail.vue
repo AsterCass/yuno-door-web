@@ -62,7 +62,18 @@
           </q-inner-loading>
         </div>
       </div>
-      <div class="col-xs-0 col-lg-2"></div>
+
+
+      <div class="q-mt-xl"
+           style="margin-left: 1rem"
+           :class="{
+        'col-12': !innerExtendVisible,
+        'col-10': innerExtendVisible
+      }">
+        <CaskCommentTree :main-id="articleId"/>
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -77,6 +88,7 @@ import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {customPageNP} from "@/utils/page";
 import emitter from "@/utils/bus";
 import {useRouter} from "vue-router";
+import CaskCommentTree from "@/components/CaskCommentTree.vue";
 
 
 const props = defineProps({

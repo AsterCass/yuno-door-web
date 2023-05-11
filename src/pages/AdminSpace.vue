@@ -184,7 +184,7 @@ import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-import {isLogin, getLoginData, refreshLoginMessage} from "@/utils/store";
+import {getLoginData, refreshLoginMessage} from "@/utils/store";
 import {genderOptEnum, getGenderObj} from "@/utils/gender-opt";
 import {checkName, checkMotto, checkNickName} from "@/utils/format-check";
 import {updateInfo} from "@/api/user";
@@ -287,7 +287,7 @@ function saveProfile() {
 
 //reset user info
 function resetProfile() {
-  isLogin()
+  refreshLoginMessage()
 }
 
 //modify avatar

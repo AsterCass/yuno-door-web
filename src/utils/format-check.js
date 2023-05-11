@@ -77,6 +77,10 @@ function checkMotto(str) {
     return checkLength(str, 0, 50)
 }
 
+function checkReply(str) {
+    return checkLength(str, 0, 500)
+}
+
 function checkTrue() {
     return true
 }
@@ -85,5 +89,5 @@ function checkTrue() {
 export {
     checkIsMail, checkIsPasswd, checkAccount,
     checkMotto, checkNickName, checkName,
-    checkTrue,
+    checkTrue, checkReply
 }
