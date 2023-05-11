@@ -77,7 +77,7 @@
 
     </div>
 
-    <div class="col-11">
+    <div class="col-12 q-my-xl">
 
       <div class="row justify-center">
         <div class="column items-center" style="width: 80px">
@@ -95,7 +95,8 @@
           </div>
         </div>
         <div class="col-10">
-          <q-input placeholder="评论..." borderless hide-bottom-space lazy-rules
+          <q-input :placeholder="0 === commentOriginObj.sum ? '还没有人评论，快来占沙发吧' : '你们说的都不对，我来'"
+                   borderless hide-bottom-space lazy-rules
                    :input-style="{boxShadow: '0 0 5px 5px #2B5853',
                    backgroundImage: 'linear-gradient(195deg, #447550, #2B5853 50%)',
                    borderRadius: '12px', padding: '1.2rem', fontSize: '1rem',color: 'white'}"
