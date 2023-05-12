@@ -30,9 +30,13 @@
             <div class="simple-content">
               {{ comment.commentContent }}
             </div>
-            <div class="row justify-end q-mt-md">
-              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>
-              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>
+            <div class="row justify-end ">
+              <!--              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>-->
+              <!--              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>-->
+              <q-checkbox :model-value="1 === comment.isLike" @click="updateUserLike(comment)"
+                          :label="comment.likeNum.toString()" color="red"
+                          checked-icon="fa-solid fa-heart" unchecked-icon="fa-regular fa-heart"
+                          indeterminate-icon="help"/>
             </div>
             <div v-if="comment.childData && 0 !== comment.childData.length">
               <div v-for="(childComment, index) in comment.childData" :key="index">
@@ -63,8 +67,12 @@
                       {{ childComment.commentContent }}
                     </div>
                     <div class="row justify-end q-mt-md">
-                      <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>
-                      <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>
+                      <!--                      <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>-->
+                      <!--                      <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>-->
+                      <q-checkbox :model-value="1 === childComment.isLike" @click="updateUserLike(childComment)"
+                                  :label="childComment.likeNum.toString()" color="red"
+                                  checked-icon="fa-solid fa-heart" unchecked-icon="fa-regular fa-heart"
+                                  indeterminate-icon="help"/>
                     </div>
                   </div>
                 </div>
@@ -117,11 +125,11 @@
 <script setup>
 
 import {defineProps, onMounted, onUnmounted, ref} from "vue";
-import {getCommentTree, replyComment} from "@/api/comment";
+import {getCommentTree, likeComment, replyComment} from "@/api/comment";
 import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
 import {checkReply} from "@/utils/format-check";
 import emitter from "@/utils/bus";
-import {getLoginData} from "@/utils/store";
+import {getLoginData, webIsLogin} from "@/utils/store";
 import {useQuasar} from "quasar";
 
 //notify
@@ -142,7 +150,6 @@ const props = defineProps({
     default: "UN_KNOW"
   },
 })
-
 //reply content
 let replySubMainId = ref(props.mainId)
 let commentContent = ref("")
@@ -158,9 +165,13 @@ let commentTree = ref([
     commentTime: "",
     ipAddressName: "",
     commentUserAvatar: "",
+    likeNum: 0,
+    isLike: 0,
     childData: [{
       mainSubId: "",
       mainSubUserName: "",
+      likeNum: 0,
+      isLike: 0,
     }],
   }
 ])
@@ -170,6 +181,21 @@ let userData = ref({})
 
 function initData() {
   commentTree.value = [];
+}
+
+function updateUserLike(comment) {
+  if (!webIsLogin()) {
+    commentWarningNotify("未登录用户无法点赞，请登录后操作")
+    return
+  }
+  if (0 === comment.isLike) {
+    comment.isLike = 1
+    comment.likeNum = comment.likeNum + 1
+  } else {
+    comment.isLike = 0
+    comment.likeNum = comment.likeNum - 1
+  }
+  likeComment(comment.id, comment.isLike)
 }
 
 function refreshCommentTree() {
