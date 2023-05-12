@@ -67,6 +67,7 @@ export function logout(id) {
             updateLogin(false)
             LocalStorage.remove(LOGIN_LOCAL_KEY)
             LocalStorage.remove(LOGIN_TOKEN_KEY)
+            emitter.emit("loginMessageEvent", false)
         }
     })
 }

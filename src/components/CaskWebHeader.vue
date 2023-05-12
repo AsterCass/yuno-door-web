@@ -90,7 +90,6 @@ function loginMethod() {
 //登出操作
 function logoutMethod() {
   logout(userData.value.id)
-  emitter.emit("loginMessageEvent", false)
 }
 
 //感知登录事件

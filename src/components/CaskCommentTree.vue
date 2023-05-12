@@ -242,8 +242,10 @@ function refreshCommentTree() {
 function caskCommentTreeLoginMethod(isLogin) {
   if (isLogin) {
     userData.value = getLoginData();
+    refreshCommentTree();
   } else {
     userData.value = {};
+    refreshCommentTree();
   }
 }
 
