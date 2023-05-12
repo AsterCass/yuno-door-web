@@ -1,7 +1,7 @@
 <template>
   <div class=" row justify-center">
     <div class="simple-sec-header">
-      <h4 style="margin-bottom: 0.2rem">
+      <h4>
         {{ commentSum }} 评论
       </h4>
     </div>
