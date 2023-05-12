@@ -33,10 +33,12 @@
             <div class="row justify-end ">
               <!--              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>-->
               <!--              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>-->
+
+              <q-checkbox :model-value="false" @click="updateReplyComment(comment)"
+                          :label="comment.childData.length.toString()" unchecked-icon="fa-regular fa-comment"/>
               <q-checkbox :model-value="1 === comment.isLike" @click="updateUserLike(comment)"
                           :label="comment.likeNum.toString()" color="red"
-                          checked-icon="fa-solid fa-heart" unchecked-icon="fa-regular fa-heart"
-                          indeterminate-icon="help"/>
+                          checked-icon="fa-solid fa-heart" unchecked-icon="fa-regular fa-heart"/>
             </div>
             <div v-if="comment.childData && 0 !== comment.childData.length">
               <div v-for="(childComment, index) in comment.childData" :key="index">
@@ -67,8 +69,8 @@
                       {{ childComment.commentContent }}
                     </div>
                     <div class="row justify-end q-mt-md">
-                      <!--                      <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>-->
-                      <!--                      <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>-->
+                      <q-checkbox :model-value="false" @click="updateReplyComment(childComment)"
+                                  :label="childComment.replyNum.toString()" unchecked-icon="fa-regular fa-comment"/>
                       <q-checkbox :model-value="1 === childComment.isLike" @click="updateUserLike(childComment)"
                                   :label="childComment.likeNum.toString()" color="red"
                                   checked-icon="fa-solid fa-heart" unchecked-icon="fa-regular fa-heart"
@@ -90,19 +92,27 @@
       <div class="row justify-center">
         <div class="column items-center" style="width: 80px">
           <div class="column items-center">
-            <!--            <q-avatar size="60px" style="filter: blur(6px);">-->
-            <!--              <q-img :src="userData.avatar"/>-->
-            <!--            </q-avatar>-->
-            <!--            <q-avatar size="55px" style="margin-top: -57.5px">-->
-            <!--              <q-img :src="userData.avatar"/>-->
-            <!--            </q-avatar>-->
             <q-avatar size="55px" class="q-mr-lg">
               <q-img :src="userData.avatar"/>
             </q-avatar>
 
           </div>
         </div>
-        <div class="col-10">
+        <div id="cask-comment-reply" class="col-10">
+          <div v-if="replySubContent.length !== 0">
+            <div class="row justify-between">
+              <div>
+                <span class="cask-text-thirdly-color">
+                  回复:{{ replySubUserName }}&#32;&#32;
+                </span>
+                {{ replySubContent }}
+              </div>
+              <div class="col-12 q-my-md row justify-end">
+                <q-btn flat no-wrap class="same-a-btn" label="取消回复" @click="cancelReplySub"/>
+              </div>
+
+            </div>
+          </div>
           <q-input :placeholder="0 === commentOriginObj.sum ? '还没有人评论，快来占沙发吧' : '你们说的都不对，我来'"
                    borderless hide-bottom-space lazy-rules
                    :input-style="{boxShadow: '0 0 5px 5px #2B5853',
@@ -114,7 +124,6 @@
                    label="提交" @click="replyCommentMethod"/>
           </div>
         </div>
-
       </div>
 
 
@@ -152,6 +161,8 @@ const props = defineProps({
 })
 //reply content
 let replySubMainId = ref(props.mainId)
+let replySubUserName = ref("")
+let replySubContent = ref("")
 let commentContent = ref("")
 //comment tree
 let commentOriginObj = ref({
@@ -172,6 +183,7 @@ let commentTree = ref([
       mainSubUserName: "",
       likeNum: 0,
       isLike: 0,
+      replyNum: 0,
     }],
   }
 ])
@@ -181,6 +193,24 @@ let userData = ref({})
 
 function initData() {
   commentTree.value = [];
+}
+
+function updateReplyComment(comment) {
+  replySubMainId.value = comment.id
+  replySubUserName.value = comment.commentUserName
+  replySubContent.value = comment.commentContent
+  const target = document.getElementById("cask-comment-reply");
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "nearest",
+  });
+}
+
+function cancelReplySub() {
+  replySubMainId.value = props.mainId
+  replySubUserName.value = ""
+  replySubContent.value = ""
 }
 
 function updateUserLike(comment) {

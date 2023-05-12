@@ -6,6 +6,7 @@ export function commentTree2TwoLevelTree(tree) {
         newComment.childData = [];
         twoLevelTreeAddNode(comment, newComment)
         packageComment(newComment)
+        sortComment(newComment)
         twoLevelTree.push(newComment)
     }
     return twoLevelTree
@@ -22,17 +23,26 @@ function twoLevelTreeAddNode(curNode, needMountNode) {
     return curNode
 }
 
-export function packageComment(comment) {
+function packageComment(comment) {
     if (!comment.commentUserAvatar) {
         comment.commentUserAvatar = "https://picsum.photos/100/100"
     }
     if (!comment.commentUserName) {
         comment.commentUserName = "NotLoginUser"
     }
-
+    if (!comment.mainSubUserName) {
+        comment.mainSubUserName = "NotLoginUser"
+    }
     if (!comment.ipAddressName) {
         comment.ipAddressName = "未知"
     }
+}
 
+function sortComment(comment) {
+    comment.childData.sort(sortCreateTime)
 
+}
+
+function sortCreateTime(a, b) {
+    return a.commentTime > b.commentTime ? 1 : -1;
 }
