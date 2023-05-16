@@ -17,7 +17,7 @@
                    filled color="black" lazy-rules
                    :rules="[ val => checkIsMail(val) || '邮箱格式错误']"/>
           <q-input class="dialog-input-warn" placeholder="新密码" v-model="passwd"
-                   filled color="black"  :type="isPwd ? 'password' : 'text'" lazy-rules
+                   filled color="black" :type="isPwd ? 'password' : 'text'" lazy-rules
                    :rules="[ val => checkIsPasswd(val) || '密码长度需要在8-20位并且同时含有数字和大小写字母']">
             <template v-slot:append>
               <q-icon
@@ -186,8 +186,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off('showResetPassDialogEven')
-  emitter.off("loginMessageEvent")
+  emitter.off('showResetPassDialogEven', showResetPasswdDialog)
+  emitter.off("loginMessageEvent", loginMessage)
 })
 
 

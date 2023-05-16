@@ -4,68 +4,66 @@
     基本资料
   </div>
   <q-separator spaced="1rem" size="0.05rem" inset/>
-  <div class="row">
-    <div class="col-12 row justify-start">
-      <div class="column justify-center col-3 space-card-input-name">
+  <div class="row justify-center">
+    <div class="col-10">
+
+
+      <div class="q-mt-md">
         用户名/登录账号：
       </div>
-      <q-input class="col-7 dialog-btn-small" placeholder="用户名/登录账号" v-model="userData.account"
-               filled color="black" disable/>
-    </div>
-    <div class="col-12 row justify-start">
-      <div class="column justify-center col-3 space-card-input-name">
+
+      <q-input class="dialog-btn-small" v-model="userData.account" filled color="black" disable/>
+      <div class="q-mt-md">
         邮箱：
       </div>
-      <q-input class="dialog-btn-small" placeholder="邮箱" v-model="userData.mail"
-               filled color="black" disable/>
-    </div>
-    <div class="col-12 row justify-start">
-      <div class="column justify-center col-3 space-card-input-name">
+
+      <q-input class="dialog-btn-small" v-model="userData.mail" filled color="black" disable/>
+      <div class="q-mt-md">
         昵称：
       </div>
-      <q-input class="col-7 dialog-btn-small-contain-valid" placeholder="昵称" v-model="userData.nickName"
-               filled color="black" lazy-rules
+      <q-input class="dialog-btn-small" placeholder="昵称" v-model="userData.nickName"
+               filled color="black" lazy-rules hide-bottom-space
                :rules="[ val => checkNickName(val) || '昵称不允许超过20个字符，并且不能含有某些特殊字符']"/>
-    </div>
-    <div class="col-12 row justify-start">
-      <div class="column justify-center col-3 space-card-input-name">
+
+      <div class="q-mt-md">
         性别：
       </div>
-      <q-select class="col-7 dialog-btn-small" v-model="refGender"
+      <q-select class="dialog-btn-small" v-model="refGender"
                 options-cover filled color="black" :options="genderOptEnum"/>
-    </div>
-    <div class="col-12 row justify-center">
-      <div class="col-5 row">
-        <div class="column justify-center col-3 space-card-input-name">
-          姓：
+
+      <div class="row q-mt-md justify-between">
+        <div class="col-5">
+          <div>
+            姓：
+          </div>
+          <q-input class="dialog-btn-small " placeholder="姓" v-model="userData.lastName"
+                   filled color="black" lazy-rules hide-bottom-space
+                   :rules="[ val => checkName(val) || '姓氏不合法']"/>
         </div>
-        <q-input class="col-7 dialog-btn-small-contain-valid" placeholder="姓" v-model="userData.lastName"
-                 filled color="black" lazy-rules
-                 :rules="[ val => checkName(val) || '姓氏不合法']"/>
-      </div>
-      <div class="col-5 row">
-        <div class="column justify-center col-3 space-card-input-name">
-          名：
+        <div class="col-6">
+          <div>
+            名：
+          </div>
+          <q-input class="dialog-btn-small" placeholder="名" v-model="userData.firstName"
+                   filled color="black" lazy-rules hide-bottom-space
+                   :rules="[ val => checkName(val) || '名字不合法']"/>
         </div>
-        <q-input class="col-7 dialog-btn-small-contain-valid" placeholder="名" v-model="userData.firstName"
-                 filled color="black" lazy-rules
-                 :rules="[ val => checkName(val) || '名字不合法']"/>
       </div>
-    </div>
-    <div class="col-12 row justify-start">
-      <div class="column justify-center col-3 space-card-input-name">
+
+      <div class="q-mt-md">
         生日：
       </div>
-      <q-input class="col-7 dialog-btn-small" placeholder="生日" v-model="userData.birth"
+      <q-input class="dialog-btn-small" placeholder="生日" v-model="userData.birth"
                type="date" filled color="black"/>
-    </div>
-    <div class="col-12 row justify-start not-allow-resize">
-      <div class="column justify-center col-3 space-card-input-name">
+
+      <div class="q-mt-md">
         个性签名：
       </div>
-      <q-input class="col-7 dialog-btn-small-contain-valid" placeholder="个性签名（50字以内）"
-               v-model="userData.motto" type="textarea" filled color="black"
+      <q-input class="dialog-btn-small" placeholder="个性签名（50字以内）" type="textarea"
+               v-model="userData.motto" filled color="black" hide-bottom-space
                :rules="[ val => checkMotto(val) || '签名不允许超过50个字符']"/>
+
+
     </div>
   </div>
 
@@ -85,11 +83,17 @@ import {checkMotto, checkName, checkNickName} from "@/utils/format-check";
 import {updateInfo} from "@/api/user";
 import {getLoginData, refreshLoginMessage} from "@/utils/store";
 import {useQuasar} from "quasar";
-import {onMounted, onUnmounted, ref} from "vue";
+import {defineProps, onMounted, onUnmounted, ref} from "vue";
 import {getGenderObj} from "@/utils/gender-opt";
 import emitter from "@/utils/bus";
 import {genderOptEnum} from "@/utils/gender-opt";
 
+
+const props = defineProps({
+  userData: {
+    type: Object,
+  }
+})
 //notify
 const notify = useQuasar().notify
 //user data
@@ -155,6 +159,12 @@ function saveProfile() {
   })
 }
 
+//init user info
+function initProfile() {
+  userData.value = props.userData
+  refGender.value = getGenderObj(props.userData.gender)
+}
+
 //reset user info
 function resetProfile() {
   refreshLoginMessage()
@@ -179,6 +189,8 @@ function refreshUserData(data) {
 
 
 onMounted(() => {
+  //初始化登录信息
+  initProfile()
   //登录事件
   emitter.on("loginMessageEvent", loginMessage)
   //数据更新事件
@@ -187,9 +199,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   //删除登录事件
-  emitter.off("loginMessageEvent")
+  emitter.off("loginMessageEvent", loginMessage)
   //删除数据更新事件
-  emitter.off("refreshLoginMessageEvent")
+  emitter.off("refreshLoginMessageEvent", refreshUserData)
 })
 
 

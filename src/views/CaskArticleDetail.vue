@@ -275,7 +275,7 @@ onUnmounted(() => {
   //文章标签取消
   articleDocumentDown()
   //停止屏幕事件监听
-  emitter.off('adminArticleResizing')
+  emitter.off('adminArticleResizing', adminArticleResizeEven)
 })
 
 

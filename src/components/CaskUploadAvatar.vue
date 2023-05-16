@@ -116,7 +116,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off('showUploadDialogEven')
+  emitter.off('showUploadDialogEven', showUploadDialog)
 })
 
 

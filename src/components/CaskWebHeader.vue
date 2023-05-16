@@ -133,8 +133,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off("loginMessageEvent")
-  emitter.off("refreshLoginMessageEvent")
+  emitter.off("loginMessageEvent", loginMessage)
+  emitter.off("refreshLoginMessageEvent", refreshLoginMessage)
 })
 
 </script>

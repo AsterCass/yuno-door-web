@@ -92,8 +92,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off('showLoginDiaLogEven')
-  emitter.off("loginMessageEvent")
+  emitter.off('showLoginDiaLogEven', showLoginDiaLog)
+  emitter.off("loginMessageEvent", loginMessage)
 })
 
 

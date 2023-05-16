@@ -61,7 +61,7 @@
             class="space-card-right"
         >
           <q-tab-panel name="profile">
-            <CaskUserProfile/>
+            <CaskUserProfile :user-data="userData"/>
           </q-tab-panel>
           <q-tab-panel name="article">
             <div class="space-right-coming-soon">
@@ -110,7 +110,12 @@
 <script setup>
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref
+} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData, refreshLoginMessage} from "@/utils/store";
 import emitter from "@/utils/bus";
@@ -203,9 +208,9 @@ onUnmounted(() => {
   //取消底色渲染
   removeStyle("background-color: rgb(239, 242, 245)")
   //删除登录事件
-  emitter.off("loginMessageEvent")
+  emitter.off("loginMessageEvent", loginMessage)
   //删除数据更新事件
-  emitter.off("refreshLoginMessageEvent")
+  emitter.off("refreshLoginMessageEvent", refreshUserData)
 })
 </script>
 

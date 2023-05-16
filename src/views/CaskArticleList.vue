@@ -104,7 +104,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off('searchArticleList')
+  emitter.off('searchArticleList', searchArticleListMethod)
 })
 
 

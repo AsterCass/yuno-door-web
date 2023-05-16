@@ -213,8 +213,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off('showRegistryDialogEven')
-  emitter.off("loginMessageEvent")
+  emitter.off('showRegistryDialogEven', showRegistryDialog)
+  emitter.off("loginMessageEvent", loginMessage)
 })
 
 

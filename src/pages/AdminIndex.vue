@@ -121,7 +121,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off('indexDataAlready')
+  emitter.off('indexDataAlready', loadAlready)
   timerDown()
 })
 

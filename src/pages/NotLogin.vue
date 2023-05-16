@@ -48,7 +48,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off("loginMessageEvent");
+  emitter.off("loginMessageEvent", backOriginPage);
 })
 </script>
 

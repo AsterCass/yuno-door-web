@@ -279,7 +279,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  emitter.off("loginMessageEvent")
+  emitter.off("loginMessageEvent", caskCommentTreeLoginMethod)
 })
 
 </script>
