@@ -332,7 +332,7 @@ onUnmounted(() => {
 .article-context {
   position: relative;
   padding: 0 3rem 3rem 3rem;
-  min-height: 800px;
+  min-height: 400px;
 }
 
 
