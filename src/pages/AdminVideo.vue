@@ -12,6 +12,8 @@
       <!--          src="http://localhost:8005/video/test"-->
       <!--      />-->
       <video style="height: 27rem;width: 48rem" ref="videoPlayer" class="video-js"></video>
+
+
     </div>
 
 
@@ -36,11 +38,11 @@ const props = defineProps({
     type: Object,
     default() {
       return {
-        poster: "https://api.astercasc.com/ushio/resources/snow.ico",
+        poster: "",
         controls: true,
         sources: [
           {
-            src: "https://api.astercasc.com/ushio/resources/video/xxx.mp4",
+            src: "http://localhost:8005/video/play/VC1648909883875289/1.mp4",
             type: 'video/mp4',
           }
         ],
