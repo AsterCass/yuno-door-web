@@ -72,18 +72,18 @@
           </q-item>
           <q-item clickable class="cask-video-drawer-item q-mb-sm">
             <q-item-section avatar>
-              <q-icon name="fa-solid fa-user-secret"/>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>站长视频</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item clickable class="cask-video-drawer-item q-mb-sm">
-            <q-item-section avatar>
               <q-icon name="fa-solid fa-user"/>
             </q-item-section>
             <q-item-section>
               <q-item-label>我的视频</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item clickable class="cask-video-drawer-item q-mb-sm">
+            <q-item-section avatar>
+              <q-icon name="fa-solid fa-user-secret"/>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>站长视频</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -113,9 +113,18 @@
     </q-drawer>
 
     <q-page-container>
-      <div class="imagecontainer">
+
+      <div class="row bg-secondary cask-video-main-frame">
+        <div class="col-4 bg-accent">
+
+        </div>
+        <q-space/>
+        <div class="col-4 bg-amber">
+
+        </div>
 
       </div>
+
 
       <router-view/>
     </q-page-container>
@@ -130,8 +139,7 @@ import LoginUserAvatar from "@/components/LoginUserAvatar.vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import emitter from "@/utils/bus";
 import {getLoginData} from "@/utils/store";
-import {getAllVideoCol} from "@/api/video";
-import {customPageNP} from "@/utils/page";
+import {getAdminVideo, getAllVideoCol, getPersonVideo} from "@/api/video";
 
 
 let leftDrawerOpen = ref(false)
@@ -148,9 +156,16 @@ let lastVideoColList = ref([
     collectionImg: "",
   }
 ])
+//admin video
+let adminVideoColList = ref([])
+//my video
+let myVideoColList = ref([])
+//public video
+let publicVideoColList = ref([])
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+  console.log(adminVideoColList.value, myVideoColList.value, publicVideoColList.value)
 }
 
 //登录通知
@@ -164,16 +179,47 @@ function loginMessageEventVideoCol(isOnLogin) {
 function refreshUserDataEventVideoCol(data) {
   if (data) {
     userData.value = data
+    updatePersonVideoCol()
   }
 }
 
 //最新视频
 function getLatestVideo() {
-  getAllVideoCol(customPageNP(0, 3)).then(res => {
+  getAllVideoCol().then(res => {
     if (200 === res.status) {
       lastVideoColList.value = res.data
+      updatePersonVideoCol()
     }
   })
+}
+
+//种类视频
+function getCateVideo() {
+  getAdminVideo().then(res => {
+    if (200 === res.status) {
+      adminVideoColList.value = res.data
+    }
+  })
+  getPersonVideo().then(res => {
+    if (200 === res.status) {
+      publicVideoColList.value = res.data
+    }
+  })
+  updatePersonVideoCol()
+}
+
+//个人视频更新
+function updatePersonVideoCol() {
+  console.log(userData.value.id)
+  if (userData.value.id && 0 !== userData.value.id.length) {
+
+
+    getPersonVideo({userId: userData.value.id}).then(res => {
+      if (200 === res.status) {
+        myVideoColList.value = res.data
+      }
+    })
+  }
 }
 
 //初始化最新视频
@@ -193,6 +239,8 @@ onMounted(() => {
   emitter.on("refreshLoginMessageEvent", refreshUserDataEventVideoCol)
   //更新最新视频数据
   getLatestVideo();
+  //分类视频数据
+  getCateVideo();
 
 })
 
@@ -225,6 +273,11 @@ onUnmounted(() => {
   color: white;
   text-shadow: 5px 5px 5px $cask_base_black, -5px 5px 5px $cask_base_black,
   5px -5px 5px $cask_base_black, -5px -5px 5px $cask_base_black;
+}
+
+.cask-video-main-frame {
+  margin: 2% 5%;
+  min-height: 20rem;
 }
 
 
