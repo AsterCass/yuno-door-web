@@ -5,22 +5,22 @@ export function getAllVideoCol(param) {
     return serviceShiro({
         url: `/ushio/videoCol/list`,
         method: 'get',
-        param: param,
+        params: param
     })
 }
 
-export function getAdminVideo(param) {
+export function getAdminVideoCol(param) {
     return serviceShiro({
         url: `/ushio/videoCol/person/admin`,
         method: 'get',
-        param: param,
+        params: param
     })
 }
 
-export function getPersonVideo(param) {
+export function getPersonVideoCol(param) {
     return serviceShiro({
         url: `/ushio/videoCol/person`,
         method: 'get',
-        param: param,
+        params: param
     })
 }

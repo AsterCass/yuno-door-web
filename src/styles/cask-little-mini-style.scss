@@ -4,8 +4,16 @@
   color: $cask_cactus;
 }
 
+.cask-text-secondary-deep-color {
+  color: $cask_second_deep;
+}
+
 .cask-text-thirdly-color {
   color: $cask_third;
+}
+
+.cask-bg-thirdly-color {
+  background-color: $cask_third;
 }
 
 .same-a-btn {
@@ -13,6 +21,13 @@
   min-width: 1rem;
   color: #629DD1;
   text-decoration: underline;
+}
+
+.simple-a-no-underline {
+  font-weight: 500;
+  min-height: 1rem;
+  min-width: 1rem;
+  text-decoration: none;
 }
 
 .simple-header {
@@ -36,6 +51,7 @@
 }
 
 .simple-content {
+  font-weight: 500;
   font-size: 1rem;
   white-space: pre-wrap;
   font-family: Roboto Slab, sans-serif;

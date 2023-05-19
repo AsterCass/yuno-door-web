@@ -24,10 +24,4 @@ export function getBlogList(param) {
     })
 }
 
-export function health() {
-    return serviceShiro({
-        url: `/kotomi/asGo/health`,
-        method: 'get',
-    })
-}
 

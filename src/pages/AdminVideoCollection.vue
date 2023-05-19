@@ -9,7 +9,7 @@
         />
 
         <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
-          <q-icon name="fa-solid fa-clapperboard" color="secondary" size="28px"/>
+          <q-icon name="fa-solid fa-clapperboard cask-text-secondary-deep-color" size="28px"/>
           <q-toolbar-title shrink class="simple-header">
             AsterCasc Video
           </q-toolbar-title>
@@ -17,7 +17,7 @@
 
         <q-space/>
 
-        <q-input class="cask-video-search" dense standout="bg-secondary" v-model="search" placeholder="Search">
+        <q-input class="cask-video-search" dense standout="bg-green-10" v-model="search" placeholder="Search">
           <template v-slot:prepend>
             <q-icon v-if="search === ''" name="search"/>
             <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''"/>
@@ -28,7 +28,7 @@
 
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn round dense flat icon="notifications" class="q-mr-xs">
-            <q-badge color="secondary" text-color="white" floating>
+            <q-badge color="green-10" text-color="white" floating>
               1
             </q-badge>
           </q-btn>
@@ -48,7 +48,7 @@
 
         <q-toolbar class="q-my-sm">
           <q-toolbar-title class="row items-center">
-            <q-icon name="fa-solid fa-clapperboard" color="secondary" size="32px"/>
+            <q-icon name="fa-solid fa-clapperboard cask-text-secondary-deep-color" size="32px"/>
             <q-toolbar-title shrink class="simple-header">
               AsterCasc Video
             </q-toolbar-title>
@@ -62,28 +62,13 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable class="cask-video-drawer-item q-mb-sm">
+          <q-item v-for="videoCate in videoColCategory" :key="videoCate.title"
+                  clickable class="cask-video-drawer-item q-mb-sm">
             <q-item-section avatar>
-              <q-icon name="fa-solid fa-box-open"/>
+              <q-icon :name="`${videoCate.icon}`"/>
             </q-item-section>
             <q-item-section>
-              <q-item-label>公共视频</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item clickable class="cask-video-drawer-item q-mb-sm">
-            <q-item-section avatar>
-              <q-icon name="fa-solid fa-user"/>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>我的视频</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item clickable class="cask-video-drawer-item q-mb-sm">
-            <q-item-section avatar>
-              <q-icon name="fa-solid fa-user-secret"/>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>站长视频</q-item-label>
+              <q-item-label>{{ videoCate.title }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -114,14 +99,30 @@
 
     <q-page-container>
 
-      <div class="row bg-secondary cask-video-main-frame">
-        <div class="col-4 bg-accent">
+      <div class="cask-video-main-frame">
 
-        </div>
-        <q-space/>
-        <div class="col-4 bg-amber">
 
+        <div class="q-mt-md" v-for="(videoCate, count) in videoColCategory" :key="videoCate.title">
+          <h4 class="simple-sec-header cask-text-secondary-deep-color">
+            <q-icon class="q-mr-md" :name="`${videoCate.icon}`"/>
+            {{ videoCate.title }}
+          </h4>
+          <div class="row" v-if="0 !== videoCate.refer.value.length">
+            <div class="q-ma-lg" v-for="item in videoCate.refer.value" :key="item.id"
+                 style="height: 320px; width: 180px">
+              <CaskVideoColCard :video-col-data="item"/>
+            </div>
+          </div>
+
+          <div v-else>
+            <div class="q-ma-md" style="height: 320px; width: 180px">
+              <CaskVideoColCard :is-empty="true"/>
+            </div>
+          </div>
+
+          <q-separator v-if="count !== videoColCategory.length-1" spaced="1.5rem" size="0.05rem"/>
         </div>
+
 
       </div>
 
@@ -139,9 +140,12 @@ import LoginUserAvatar from "@/components/LoginUserAvatar.vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import emitter from "@/utils/bus";
 import {getLoginData} from "@/utils/store";
-import {getAdminVideo, getAllVideoCol, getPersonVideo} from "@/api/video";
+import {getAdminVideoCol, getAllVideoCol, getPersonVideoCol} from "@/api/video";
+import {customPage} from "@/utils/page";
+import CaskVideoColCard from "@/components/CaskVideoColCard.vue";
 
 
+//variable
 let leftDrawerOpen = ref(false)
 let search = ref('')
 //user data
@@ -156,16 +160,22 @@ let lastVideoColList = ref([
     collectionImg: "",
   }
 ])
-//admin video
-let adminVideoColList = ref([])
-//my video
-let myVideoColList = ref([])
 //public video
 let publicVideoColList = ref([])
+//my video
+let myVideoColList = ref([])
+//admin video
+let adminVideoColList = ref([])
+
+//col category
+const videoColCategory = [
+  {icon: "fa-solid fa-box-open", title: "公共视频", refer: publicVideoColList},
+  {icon: "fa-solid fa-user", title: "我的视频", refer: myVideoColList},
+  {icon: "fa-solid fa-user-secret", title: "站长视频", refer: adminVideoColList},
+]
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
-  console.log(adminVideoColList.value, myVideoColList.value, publicVideoColList.value)
 }
 
 //登录通知
@@ -195,12 +205,12 @@ function getLatestVideo() {
 
 //种类视频
 function getCateVideo() {
-  getAdminVideo().then(res => {
+  getAdminVideoCol().then(res => {
     if (200 === res.status) {
       adminVideoColList.value = res.data
     }
   })
-  getPersonVideo().then(res => {
+  getPersonVideoCol().then(res => {
     if (200 === res.status) {
       publicVideoColList.value = res.data
     }
@@ -210,11 +220,9 @@ function getCateVideo() {
 
 //个人视频更新
 function updatePersonVideoCol() {
-  console.log(userData.value.id)
   if (userData.value.id && 0 !== userData.value.id.length) {
-
-
-    getPersonVideo({userId: userData.value.id}).then(res => {
+    let param = {userId: userData.value.id}
+    getPersonVideoCol(customPage(param)).then(res => {
       if (200 === res.status) {
         myVideoColList.value = res.data
       }
