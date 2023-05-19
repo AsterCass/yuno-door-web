@@ -4,20 +4,17 @@
 
     <div v-if="isEmpty" class="video-col-card-new">
       <q-btn class="row video-col-card-new-inner bg-grey-3" style="padding: 1%" label="UPLOAD"
-             icon="fa-solid fa-plus" text-color="green-10" stack size="25px"/>
+             icon="fa-solid fa-plus" text-color="green-10" stack size="25px" @click="uploadVideo"/>
 
       <div class="text-center q-mt-sm video-col-title">
         <div class="text-center text-grey-7 simple-content simple-a-no-underline">上传视频</div>
       </div>
 
-
     </div>
-
 
     <div v-else class="video-col-card-list">
 
-
-      <q-btn class="video-col-card-img bg-white">
+      <q-btn class="video-col-card-img bg-white" @click="playVideoList">
         <q-img :src="`${videoColData.collectionImg}`" :ratio="9/16" style="border-radius: 1rem">
         </q-img>
       </q-btn>
@@ -26,7 +23,6 @@
           {{ videoColData.collectionName }}
         </div>
       </div>
-
 
     </div>
 
@@ -38,14 +34,61 @@
 
 <script setup>
 import {defineProps} from "vue";
+import {useQuasar} from "quasar";
+import {getVideoListByColId} from "@/api/video";
+import {webIsLogin} from "@/utils/store";
 
-defineProps({
+//notify
+const notify = useQuasar().notify
+//prop
+const props = defineProps({
   isEmpty: {
     type: Boolean,
     default: false
   },
-  videoColData: {}
+  videoColData: {
+    id: ""
+  }
 })
+
+function videoColWarningNotify(notifyMessage) {
+  notify({
+    message: notifyMessage,
+    position: 'top-right',
+    type: 'warning',
+    timeout: 1000
+  })
+}
+
+
+function uploadVideo() {
+  if (webIsLogin()) {
+    videoColWarningNotify("暂未开放普通用户视频上传权限")
+  } else {
+    videoColWarningNotify("用户未登录，请登录后操作")
+  }
+
+}
+
+function playVideoList() {
+  let id = props.videoColData.id
+  if (!id || 0 === id.length) {
+    videoColWarningNotify("视频不小心走丢啦，刷新试试吧")
+    return
+  }
+  let param = {collectionId: id}
+  getVideoListByColId(param).then(res => {
+    const data = res.data
+    if (data.status && 200 !== data.status) {
+      videoColWarningNotify(data.message)
+    } else if (data && 0 === data.length) {
+      videoColWarningNotify("当前用户无权限访问，请联系站长授权")
+    } else {
+      console.log(data)
+      //todo jump
+    }
+  })
+}
 
 
 </script>

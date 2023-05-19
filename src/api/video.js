@@ -24,3 +24,11 @@ export function getPersonVideoCol(param) {
         params: param
     })
 }
+
+export function getVideoListByColId(param) {
+    return serviceShiro({
+        url: `/ushio/video/list/auth`,
+        method: 'get',
+        params: param
+    })
+}

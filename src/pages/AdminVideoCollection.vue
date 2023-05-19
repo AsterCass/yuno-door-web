@@ -170,8 +170,8 @@ let adminVideoColList = ref([])
 //col category
 const videoColCategory = [
   {icon: "fa-solid fa-box-open", title: "公共视频", refer: publicVideoColList},
-  {icon: "fa-solid fa-user", title: "我的视频", refer: myVideoColList},
   {icon: "fa-solid fa-user-secret", title: "站长视频", refer: adminVideoColList},
+  {icon: "fa-solid fa-user", title: "我的视频", refer: myVideoColList},
 ]
 
 function toggleLeftDrawer() {
