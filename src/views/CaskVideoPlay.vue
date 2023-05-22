@@ -1,6 +1,29 @@
 <template>
-  <div>
-    this place play video, collection id = {{ colId }}
+  <div class="video-play-frame row">
+
+    <div class="row justify-end video-play-epi col-md-4 col-12">
+      <q-scroll-area class="article-anchors" delay="100">
+        <h1>播放列表</h1>
+        <q-list>
+          <q-item clickable v-ripple
+                  v-for="item in vdoListData"
+                  :key="item.id"
+                  @click="playThisVideo(item)">
+            <q-item-section>
+              <p>
+                {{ item.videoName }}
+              </p>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+    </div>
+
+    <div class="col justify-start video-play-admin col-md-8 col-12">
+      <CaskVideoPlayer :video-data="vdoData"/>
+    </div>
+
+
   </div>
 </template>
 
@@ -12,6 +35,7 @@ import {getLoginData} from "@/utils/store";
 import {useRouter} from "vue-router";
 import {getVideoListByColId} from "@/api/video";
 import {useQuasar} from "quasar";
+import CaskVideoPlayer from "@/components/CaskVideoPlayer.vue";
 
 //router
 const thisRouter = useRouter()
@@ -42,10 +66,19 @@ const props = defineProps({
 let userData = ref({
   id: "",
 })
+//视频数据
+let vdoData = ref({
+  id: '',
+  videoName: '',
+  videoRes: '',
+})
+//视频组数据
+let vdoListData = ref([])
 
 //数据初始化
 function initVideoPlayData() {
-  userData = ref({})
+  userData.value = {}
+  vdoData.value = {}
 }
 
 //获取视频数据
@@ -66,12 +99,17 @@ function getCollectionVideos() {
         path: '/noAuth'
       })
     } else {
-      //todo
-      console.log(data)
+      vdoListData.value = data
+      vdoData.value = data[0]
+      emitter.emit('startPlayVideo', vdoData.value)
     }
   })
+}
 
-
+//播放
+function playThisVideo(videoData) {
+  vdoData.value = videoData
+  emitter.emit('startPlayVideo', vdoData.value)
 }
 
 //登录通知
@@ -114,6 +152,32 @@ onUnmounted(() => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/styles/cask-little-mini-style.scss";
+@import "@/styles/cask-dialog-style.scss";
+@import "@/styles/cask-primary-style.scss";
+
+.video-play-frame {
+  margin: 3% 7%;
+
+
+  .video-play-admin {
+    padding: 2%;
+  }
+
+  .video-play-epi {
+    padding: 2%;
+
+    .video-play-epi-card {
+      min-height: 20%;
+      max-height: 50%;
+      position: fixed;
+      text-align: center;
+      padding: 2%;
+      border-radius: 5%;
+    }
+
+  }
+}
 
 </style>

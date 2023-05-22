@@ -19,14 +19,15 @@
                    filled color="black" :type="'password'"/>
         </div>
 
-        <div>
-          <q-btn flat no-wrap class="same-a-btn"
-                 @click="resetPasswdMethod" label="重置密码"/>
-        </div>
 
         <div class="row justify-around dialog-btn-comb">
-          <q-btn label="登录" @click="loginMethod" class="dialog-btn-margin col-4" :disable="loginBtnDisable"/>
-          <q-btn label="注册" @click="registryMethod" class="dialog-btn-margin col-4"/>
+          <q-btn label="登 录" @click="loginMethod" class="dialog-btn-margin col-8" :disable="loginBtnDisable"/>
+          <!--          <q-btn label="注册" @click="registryMethod" class="dialog-btn-margin col-4"/>-->
+        </div>
+
+        <div class="row justify-evenly">
+          <q-btn flat no-wrap class="same-a-btn" @click="resetPasswdMethod" label="重置密码"/>
+          <q-btn flat no-wrap class="same-a-btn" @click="registryMethod" label="注册账号"/>
         </div>
 
       </q-card>
