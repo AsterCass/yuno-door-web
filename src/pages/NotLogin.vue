@@ -1,6 +1,6 @@
 <template>
-  <div style="text-align: center; padding-top: 15em;">
-    <h2>
+  <div class="error-page-admin text-indigo-6">
+    <h2 class="text-indigo-6">
       403 Forbidden
     </h2>
     <p style="font-size: 1.1rem">
@@ -17,13 +17,9 @@
   </div>
 
   <CaskLogin/>
-  <div style="position: absolute; bottom: 0; right: 0;left: 0">
-    <CopyrightFooter/>
-  </div>
 </template>
 
 <script setup>
-import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import CaskLogin from "@/components/CaskLogin.vue";
 import emitter from "@/utils/bus";
 import {onMounted, onUnmounted} from "vue";
@@ -53,6 +49,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="sass" scoped>
+@import "@/styles/cask-little-mini-style.scss"
+
 .headerBtn
   font-size: 1.5rem
   padding-top: 0.8rem

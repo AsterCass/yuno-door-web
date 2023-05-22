@@ -64,6 +64,18 @@
   font-family: Roboto Slab, sans-serif;
 }
 
+.error-page-admin {
+  text-align: center;
+  padding-top: 12%;
+  background-size: cover;
+  background-position: 100% 100%;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background-image: url('https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/404%20.svg');
+
+}
+
 @mixin cask-simple-btn($margin: 0, $min-height:2rem, $min-width:4rem,
 $background-image: linear-gradient(195deg, #42424a, #191919)) {
   margin: $margin;
