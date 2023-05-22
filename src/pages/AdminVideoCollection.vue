@@ -129,9 +129,10 @@
 
       <router-view/>
     </q-page-container>
-
-
   </q-layout>
+
+  <CopyrightFooter/>
+
 </template>
 
 <script setup>
@@ -143,6 +144,7 @@ import {getLoginData} from "@/utils/store";
 import {getAdminVideoCol, getAllVideoCol, getPersonVideoCol} from "@/api/video";
 import {customPage} from "@/utils/page";
 import CaskVideoColCard from "@/components/CaskVideoColCard.vue";
+import CopyrightFooter from "@/components/CopyrightFooter.vue";
 
 
 //variable
@@ -182,6 +184,9 @@ function toggleLeftDrawer() {
 function loginMessageEventVideoCol(isOnLogin) {
   if (isOnLogin) {
     userData.value = getLoginData()
+    updatePersonVideoCol()
+  } else {
+    myVideoColList.value = []
   }
 }
 
