@@ -10,6 +10,7 @@ import NotLogin from "@/pages/NotLogin.vue";
 import CaskVideoCollection from "@/views/CaskVideoCollection.vue";
 import CaskVideoPlay from "@/views/CaskVideoPlay.vue";
 import AdminVideo from "@/pages/AdminVideo.vue";
+import NotAuth from "@/pages/NotAuth.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -78,6 +79,7 @@ const router = createRouter({
             children: [
                 {
                     path: 'collection',
+                    name: 'caskVideoCollection',
                     component: CaskVideoCollection,
                     meta: {
                         title: '视频库'
@@ -85,14 +87,14 @@ const router = createRouter({
                 },
                 {
                     path: 'play',
+                    name: 'caskVideoPlay',
                     component: CaskVideoPlay,
-                    props: ($route) => ({
-                        col: $route.query.colId,
-                        vdo: $route.query.vdoId,
-                    }),
                     meta: {
                         title: '视频播放'
                     },
+                    props: ($route) => ({
+                        colId: $route.query.colId,
+                    }),
                 }
             ]
 
@@ -106,6 +108,11 @@ const router = createRouter({
             path: "/notLogin",
             name: 'notLogin',
             component: NotLogin
+        },
+        {
+            path: "/noAuth",
+            name: 'noAuth',
+            component: NotAuth
         },
         {
             path: "/:catchAll(.*)",

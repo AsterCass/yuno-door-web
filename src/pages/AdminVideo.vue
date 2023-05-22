@@ -211,10 +211,9 @@ function playVideoList(id) {
     } else if (data && 0 === data.length) {
       videoColWarningNotify("当前用户无权限访问，请联系站长授权")
     } else {
-      console.log(data)
       thisRouter.push({
         path: `/video/play`,
-        query: {col: id}
+        query: {colId: id}
       })
     }
   })

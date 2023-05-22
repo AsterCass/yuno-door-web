@@ -32,7 +32,7 @@ export default {
 .footer {
   //background: $cask_dune;
   background-color: $cask_dark_jungle_green;
-  padding: 0.5em 0 1.5em 0;
+  padding: 0.1rem 0 1.5em 0;
 
   a {
     color: inherit;
