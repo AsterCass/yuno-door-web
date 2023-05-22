@@ -7,7 +7,9 @@ import NotFound from "@/pages/NotFound.vue";
 import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
 import AdminSpace from "@/pages/AdminSpace.vue";
 import NotLogin from "@/pages/NotLogin.vue";
-import AdminVideoCollection from "@/pages/AdminVideoCollection.vue";
+import CaskVideoCollection from "@/views/CaskVideoCollection.vue";
+import CaskVideoPlay from "@/views/CaskVideoPlay.vue";
+import AdminVideo from "@/pages/AdminVideo.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -71,11 +73,29 @@ const router = createRouter({
         },
         {
             path: '/video',
-            name: 'adminVideoCollection',
-            component: AdminVideoCollection,
-            meta: {
-                title: '视频库'
-            }
+            name: 'adminVideo',
+            component: AdminVideo,
+            children: [
+                {
+                    path: 'collection',
+                    component: CaskVideoCollection,
+                    meta: {
+                        title: '视频库'
+                    },
+                },
+                {
+                    path: 'play',
+                    component: CaskVideoPlay,
+                    props: ($route) => ({
+                        col: $route.query.colId,
+                        vdo: $route.query.vdoId,
+                    }),
+                    meta: {
+                        title: '视频播放'
+                    },
+                }
+            ]
+
         },
         {
             path: "/404",

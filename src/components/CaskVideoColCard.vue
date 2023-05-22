@@ -37,7 +37,10 @@ import {defineProps} from "vue";
 import {useQuasar} from "quasar";
 import {getVideoListByColId} from "@/api/video";
 import {webIsLogin} from "@/utils/store";
+import {useRouter} from "vue-router";
 
+//视频组跳转
+const thisRouter = useRouter()
 //notify
 const notify = useQuasar().notify
 //prop
@@ -70,6 +73,7 @@ function uploadVideo() {
 
 }
 
+//播放视频
 function playVideoList() {
   let id = props.videoColData.id
   if (!id || 0 === id.length) {
@@ -85,7 +89,10 @@ function playVideoList() {
       videoColWarningNotify("当前用户无权限访问，请联系站长授权")
     } else {
       console.log(data)
-      //todo jump
+      thisRouter.push({
+        path: `/video/play`,
+        query: {col: id}
+      })
     }
   })
 }
