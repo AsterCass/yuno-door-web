@@ -1,7 +1,7 @@
 <template>
   <div class="video-play-frame row">
 
-    <div class="row justify-end video-play-epi col-md-4 col-12">
+    <div class="row justify-end video-play-epi col-md-4 col-12" v-show="!smallScreen">
       <q-scroll-area class="article-anchors" delay="100">
         <h1>播放列表</h1>
         <q-list>
@@ -62,6 +62,8 @@ const props = defineProps({
     default: ""
   }
 })
+//小屏幕
+let smallScreen = ref(false)
 //用户数据
 let userData = ref({
   id: "",
@@ -77,7 +79,7 @@ let vdoListData = ref([])
 
 //数据初始化
 function initVideoPlayData() {
-  userData.value = {}
+  userData.value = getLoginData()
   vdoData.value = {}
 }
 
@@ -130,15 +132,26 @@ function refreshUserDataEventVideoPlay(data) {
   getCollectionVideos()
 }
 
+//屏幕改变事件
+function screenEventHandler() {
+  //小屏幕判断
+  smallScreen.value = document.documentElement.clientWidth < 1024
+}
+
 onMounted(() => {
   //底色渲染
   addStyle("background-color: rgb(239, 242, 245)")
   //数据初始化
   initVideoPlayData()
+  //视频数据获取
+  getCollectionVideos()
   //登录事件
   emitter.on("loginMessageEvent", loginMessageEventVideoPlay)
   //数据更新事件
   emitter.on("refreshLoginMessageEvent", refreshUserDataEventVideoPlay)
+  //添加监控屏幕改变事件
+  screenEventHandler()
+  window.addEventListener("resize", screenEventHandler);
 })
 
 onUnmounted(() => {

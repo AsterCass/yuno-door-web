@@ -1,18 +1,25 @@
 <template>
-  <div>
+  <div class="row justify-center">
 
-    <h6 class="simple-sec-header ">
-      {{ videoData.videoCollectionId }} : {{ videoData.videoName }}
-    </h6>
+    <!--    <h6 class="simple-sec-header ">-->
+    <!--      {{ videoData.videoCollectionId }} : {{ videoData.videoName }}-->
+    <!--    </h6>-->
+
+
+    <div class="video-player-title col-lg-11 col-md-7 col-xs-11">
+      <div class="cask-primary-card-header-center">
+        <h1>
+          {{ videoData.videoName }}
+        </h1>
+      </div>
+    </div>
 
     <video ref="videoPlayer" class="vjs-16-9 video-js q-my-md" style="border-radius: 25px"></video>
 
-    <br>
-    <br>
-    <br>
-    <h5>
-      页面未完成
-    </h5>
+
+    <CaskCommentTree v-if="videoData.id && 0 !== videoData.id.length"
+                     class="col-12 q-mt-md" :main-id="videoData.id"/>
+
 
   </div>
 </template>
@@ -21,6 +28,7 @@
 import {defineProps, onMounted, onUnmounted, ref} from "vue";
 import videoJs from "video.js";
 import emitter from "@/utils/bus";
+import CaskCommentTree from "@/components/CaskCommentTree.vue";
 
 const props = defineProps({
   videoData: {
@@ -83,7 +91,14 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 @import "@/styles/cask-little-mini-style.scss";
+@import "@/styles/cask-primary-style.scss";
 @import "video.js/dist/video-js.css";
+
+
+.video-player-title {
+  margin-top: 5%;
+  margin-bottom: 1%;
+}
 
 
 </style>

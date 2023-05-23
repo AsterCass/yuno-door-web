@@ -8,7 +8,8 @@
             aria-label="Menu" icon="menu" class="q-mx-md"
         />
 
-        <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
+        <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs"
+               to="/video/collection">
           <q-icon name="fa-solid fa-clapperboard cask-text-secondary-deep-color" size="28px"/>
           <q-toolbar-title shrink class="simple-header">
             AsterCasc Video

@@ -93,7 +93,8 @@
         <div class="column items-center" style="width: 80px">
           <div class="column items-center">
             <q-avatar size="55px" class="q-mr-lg">
-              <q-img :src="userData.avatar"/>
+              <q-img v-if="userData.avatar && 0 !== userData.avatar.length" :src="userData.avatar"/>
+              <q-img v-else src="https://picsum.photos/100/100"/>
             </q-avatar>
 
           </div>
@@ -192,6 +193,7 @@ let commentSum = ref(0)
 let userData = ref({})
 
 function initData() {
+  userData.value = getLoginData();
   commentTree.value = [];
 }
 

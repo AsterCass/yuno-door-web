@@ -25,7 +25,7 @@ function twoLevelTreeAddNode(curNode, needMountNode) {
 
 function packageComment(comment) {
     if (!comment.commentUserAvatar) {
-        comment.commentUserAvatar = "https://picsum.photos/100/100"
+        comment.commentUserAvatar = "https://picsum.photos/50/50"
     }
     if (!comment.commentUserName) {
         comment.commentUserName = "NotLoginUser"
