@@ -230,8 +230,9 @@ function updateUserLike(comment) {
   likeComment(comment.id, comment.isLike)
 }
 
-function refreshCommentTree() {
-  getCommentTree(props.mainId).then(res => {
+function refreshCommentTree(inputMainId) {
+  let mainId = inputMainId ? inputMainId : props.mainId
+  getCommentTree(mainId).then(res => {
     const status = res.data.status
     if (200 === status) {
       commentOriginObj.value = res.data.data
@@ -278,10 +279,12 @@ onMounted(() => {
   initData();
   emitter.on("loginMessageEvent", caskCommentTreeLoginMethod)
   refreshCommentTree();
+  emitter.on("rebuildCommentTree", refreshCommentTree)
 })
 
 onUnmounted(() => {
   emitter.off("loginMessageEvent", caskCommentTreeLoginMethod)
+  emitter.off("rebuildCommentTree", refreshCommentTree)
 })
 
 </script>
