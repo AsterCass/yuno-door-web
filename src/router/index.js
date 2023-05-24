@@ -11,6 +11,7 @@ import CaskVideoCollection from "@/views/CaskVideoCollection.vue";
 import CaskVideoPlay from "@/views/CaskVideoPlay.vue";
 import AdminVideo from "@/pages/AdminVideo.vue";
 import NotAuth from "@/pages/NotAuth.vue";
+import AdminTest from "@/pages/AdminTest.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -98,6 +99,11 @@ const router = createRouter({
                 }
             ]
 
+        },
+        {
+            path: "/test",
+            name: 'test',
+            component: AdminTest
         },
         {
             path: "/404",

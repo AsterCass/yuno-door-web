@@ -14,12 +14,12 @@
     </div>
 
     <div id="videoContainer" class="col-12">
-      <video id="videoPlayer" ref="videoPlayer" class="vjs-16-9 video-js"
+      <video id="videoPlayerX" ref="videoPlayer" class="vjs-16-9 video-js"
              style="border-radius: 25px"></video>
     </div>
 
 
-    <div id="videoPlayerX"></div>
+    <div id="videoPlayer"></div>
 
 
     <CaskCommentTree v-if="currentPlayVideoData.id && 0 !== currentPlayVideoData.id.length"
@@ -35,8 +35,10 @@ import videoJs from "video.js";
 import emitter from "@/utils/bus";
 import CaskCommentTree from "@/components/CaskCommentTree.vue";
 import DPlayer from 'dplayer';
+import defaultApiBackend from '@/utils/barrage-build';
 // import Barrage from 'barrage-ui';
 // import example from 'barrage-ui/example.json';
+
 
 defineProps({
   videoData: {
@@ -56,7 +58,7 @@ function startPlayVideo(videoData) {
   myPlayer.value.src({type: 'video/mp4', src: videoData.videoRes});
 }
 
-function initPlayer(barrage) {
+function initPlayer() {
   //config
   let opt = {
     poster: "",
@@ -83,7 +85,7 @@ function initPlayer(barrage) {
     // barrage.play()
   });
   myPlayer.value.on("pause", function () {
-    barrage.pause()
+    // barrage.pause()
   });
   myPlayer.value.on("seeked", function () {
     // barrage.goto(myPlayer.value.currentTime() * 1000);
@@ -107,65 +109,30 @@ function initPlayer(barrage) {
 // }
 
 //初始化播放器
-function initPlayerX() {
+function initVideoPlayer() {
   const dp = new DPlayer({
-    container: document.getElementById('videoPlayerX'),
-    autoplay: false,
-    theme: '#FADFA3',
-    loop: true,
-    lang: 'zh-cn',
-    screenshot: true,
+    container: document.getElementById('videoPlayer'),
     hotkey: true,
-    preload: 'auto',
-    volume: 0.1,
-    mutex: true,
     playbackSpeed: [0.5, 0.75, 1, 1.5, 2, 3],
     video: {
       url: 'https://api.astercasc.com/ushio/video/play/VC1648909883875289/1.mp4',
       type: 'auto',
     },
-    subtitle: {
-      url: 'dplayer.vtt',
-      type: 'webvtt',
-      fontSize: '25px',
-      bottom: '10%',
-      color: '#b7daff',
+    danmaku: {
+      id: currentPlayVideoData.value.id,
+      api: 'https://www.baidu.com'    //这里填写弹幕地址
     },
-    contextmenu: [
-      {
-        text: 'custom1',
-        link: 'https://github.com/DIYgod/DPlayer',
-      },
-      {
-        text: 'custom2',
-        click: (player) => {
-          console.log(player);
-        },
-      },
-    ],
-    highlight: [
-      {
-        time: 20,
-        text: '这是第 20 秒',
-      },
-      {
-        time: 120,
-        text: '这是 2 分钟',
-      },
-    ],
+    apiBackend: defaultApiBackend,
   });
   console.log(dp)
 }
 
-
 onMounted(() => {
   emitter.on('startPlayVideo', startPlayVideo)
-  //初始化弹幕
-  // initBarrage()
   //初始化播放器
   initPlayer({})
   //初始化播放器
-  initPlayerX()
+  initVideoPlayer()
 
 })
 
@@ -190,5 +157,80 @@ onUnmounted(() => {
   margin-bottom: 1%;
 }
 
+</style>
 
+
+<style lang="scss">
+
+.dplayer-menu {
+  height: 0 !important;
+  width: 0 !important;
+}
+
+.dplayer-danmaku {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 22px;
+  color: #fff;
+
+  .dplayer-danmaku-item {
+    display: inline-block;
+    pointer-events: none;
+    user-select: none;
+    cursor: default;
+    white-space: nowrap;
+    text-shadow: .5px .5px .5px rgba(0, 0, 0, .5);
+
+    &--demo {
+      position: absolute;
+      visibility: hidden;
+    }
+  }
+
+  .dplayer-danmaku-right {
+    position: absolute;
+    right: 0;
+    transform: translateX(100%);
+
+    &.dplayer-danmaku-move {
+      will-change: transform;
+      animation-name: danmaku;
+      animation-timing-function: linear;
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes danmaku {
+    from {
+      transform: translateX(100%);
+    }
+  }
+
+  .dplayer-danmaku-top,
+  .dplayer-danmaku-bottom {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    visibility: hidden;
+
+    &.dplayer-danmaku-move {
+      will-change: visibility;
+      animation-name: danmaku-center;
+      animation-timing-function: linear;
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes danmaku-center {
+    from {
+      visibility: visible;
+    }
+    to {
+      visibility: visible;
+    }
+  }
+}
 </style>
