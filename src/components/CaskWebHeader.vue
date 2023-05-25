@@ -4,6 +4,7 @@
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" to="/"/>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book-bookmark" label="essay" to="/essay/list"/>
       <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" to="/article/list"/>
+      <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-clapperboard" label="video" to="/video/collection"/>
       <q-toolbar-title>Aster Casc</q-toolbar-title>
       <LoginUserAvatar/>
     </q-toolbar>

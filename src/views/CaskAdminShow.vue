@@ -45,7 +45,7 @@
 
     <div class="admin-show-base-row">
       <div class="admin-show-base-title">
-        <q-icon name="fa-solid fa-book-bookmark" size="1em"/>
+        <q-icon name="fa-solid fa-clapperboard" size="1em"/>
         视频资源
       </div>
       <div class="row col-12 justify-center">
