@@ -115,7 +115,7 @@ function playVideoList() {
     .video-col-card-new-inner {
       height: 100%;
       width: 100%;
-      box-shadow: 4px 4px 2px $cask_second_deep;
+      box-shadow: 4px 4px 2px $cask_base_black;
       border-radius: 1rem;
     }
   }
@@ -127,7 +127,7 @@ function playVideoList() {
       //animation: fadeOutDown 1.7s infinite;
       padding: 1%;
       border-radius: 1rem;
-      box-shadow: 4px 4px 2px $cask_second_deep;
+      box-shadow: 4px 4px 2px $cask_base_black;
       position: relative;
       width: 92%;
       left: 4%;
@@ -143,7 +143,7 @@ function playVideoList() {
   .video-col-card-list:hover {
     .video-col-card-img {
       margin: -20% -10%;
-      box-shadow: 8px 8px 4px $cask_second_deep;
+      box-shadow: 8px 8px 8px $cask_base_black;
       width: 110%;
     }
 

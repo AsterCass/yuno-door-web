@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="col-xs-4 col-lg-1 column justify-center">
-          <q-btn label="更多" to="/essay/list" class="col-xs-12 col-lg-2 admin-show-base-go"/>
+          <q-btn label="更多" to="/video/collection" class="col-xs-12 col-lg-2 admin-show-base-go"/>
         </div>
       </div>
     </div>
