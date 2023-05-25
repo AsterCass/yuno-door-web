@@ -19,8 +19,8 @@
       </q-scroll-area>
     </div>
 
-    <div class="col justify-start video-play-admin col-md-8 col-12">
-      <CaskVideoPlayerCommon/>
+    <div v-show="dataFinish" class="col justify-start video-play-admin col-md-8 col-12">
+      <CaskVideoPlayerD/>
     </div>
 
 
@@ -35,7 +35,8 @@ import {getLoginData} from "@/utils/store";
 import {useRouter} from "vue-router";
 import {getVideoListByColId} from "@/api/video";
 import {useQuasar} from "quasar";
-import CaskVideoPlayerCommon from "@/components/CaskVideoPlayerCommon.vue";
+import CaskVideoPlayerD from "@/components/CaskVideoPlayerD.vue";
+import {setCurVideoData} from "@/utils/store"
 
 
 //router
@@ -63,6 +64,8 @@ const props = defineProps({
     default: ""
   }
 })
+//数据准备完成
+let dataFinish = ref(false)
 //小屏幕
 let smallScreen = ref(false)
 //用户数据
@@ -74,6 +77,7 @@ let vdoData = ref({
   id: '',
   videoName: '',
   videoRes: '',
+  videoCollectionId: '',
 })
 //视频组数据
 let vdoListData = ref([])
@@ -103,16 +107,28 @@ function getCollectionVideos() {
       })
     } else {
       vdoListData.value = data
-      vdoData.value = data[0]
-      emitter.emit('startPlayVideo', vdoData.value)
+      let index = data.findIndex((vdo) => {
+        return vdo.id === props.vdoId
+      })
+      if (-1 === index) {
+        vdoData.value = data[0]
+      } else {
+        vdoData.value = data[index]
+      }
+      setCurVideoData(vdoData.value)
+      dataFinish.value = true
     }
   })
 }
 
 //播放
 function playThisVideo(videoData) {
+  setCurVideoData(videoData)
   vdoData.value = videoData
-  emitter.emit('startPlayVideo', vdoData.value)
+  thisRouter.push({
+    query: {colId: videoData.videoCollectionId, vdoId: videoData.id}
+  })
+  emitter.emit("changeVideoPlay", videoData)
 }
 
 //登录通知

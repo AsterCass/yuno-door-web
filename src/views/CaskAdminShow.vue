@@ -1,8 +1,8 @@
 <template>
   <div class="admin-show-base">
 
-    <div class="column admin-show-base-row">
-      <div class="col-2 admin-show-base-title">
+    <div class="admin-show-base-row">
+      <div class="admin-show-base-title">
         <q-icon name="fa-solid fa-book" size="1em"/>
         技术备录
       </div>
@@ -22,8 +22,8 @@
 
     <q-separator spaced="1.5rem" size="0.05rem" inset/>
 
-    <div class="column admin-show-base-row">
-      <div class="col-2 admin-show-base-title">
+    <div class="admin-show-base-row">
+      <div class="admin-show-base-title">
         <q-icon name="fa-solid fa-book-bookmark" size="1em"/>
         生活题记
       </div>
@@ -39,6 +39,28 @@
         </div>
       </div>
     </div>
+
+    <q-separator spaced="1.5rem" size="0.05rem" inset/>
+
+
+    <div class="admin-show-base-row">
+      <div class="admin-show-base-title">
+        <q-icon name="fa-solid fa-book-bookmark" size="1em"/>
+        视频资源
+      </div>
+      <div class="row col-12 justify-center">
+        <div class="row col-11 justify-center q-my-md">
+          <div v-for="(item, index) in videoColList" :key="index" class="q-mx-md q-my-md"
+               style="height: 320px; width: 180px">
+            <CaskVideoColCard :video-col-data="item"/>
+          </div>
+        </div>
+        <div class="col-xs-4 col-lg-1 column justify-center">
+          <q-btn label="更多" to="/essay/list" class="col-xs-12 col-lg-2 admin-show-base-go"/>
+        </div>
+      </div>
+    </div>
+
 
     <q-separator spaced="1.5rem" size="0.05rem" inset/>
 
@@ -63,14 +85,18 @@ import {onMounted, ref} from "vue";
 import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import CaskGameSimpleList from "@/views/CaskGameSimpleList.vue";
 import {getBlogList} from "@/api/article";
-import {customPage} from "@/utils/page";
+import {customPage, customPageNP} from "@/utils/page";
 import emitter from "@/utils/bus";
+import CaskVideoColCard from "@/components/CaskVideoColCard.vue";
+import {getAllVideoCol} from "@/api/video";
 
 
 let articleList = ref([])
 let essayList = ref([])
+let videoColList = ref([])
 let articleLoaded = ref(false)
 let essayLoaded = ref(false)
+let videoColLoaded = ref(false)
 
 function searchArticleListMethod() {
   //参数插入
@@ -79,7 +105,7 @@ function searchArticleListMethod() {
     articleList.value.push(...res.data.data)
     //报告主页已经准备完毕
     articleLoaded.value = true
-    if (articleLoaded.value && essayLoaded.value) {
+    if (articleLoaded.value && essayLoaded.value && videoColList.value) {
       emitter.emit('indexDataAlready')
     }
   })
@@ -92,8 +118,21 @@ function searchEssayListMethod() {
     essayList.value.push(...res.data.data)
     //报告主页已经准备完毕
     essayLoaded.value = true
-    if (articleLoaded.value && essayLoaded.value) {
+    if (articleLoaded.value && essayLoaded.value && videoColList.value) {
       emitter.emit('indexDataAlready')
+    }
+  })
+}
+
+function searchVideoListMethod() {
+  getAllVideoCol(customPageNP(0, 7)).then(res => {
+    if (200 === res.status) {
+      videoColList.value.push(...res.data)
+      //报告主页已经准备完毕
+      videoColLoaded.value = true
+      if (articleLoaded.value && essayLoaded.value && videoColList.value) {
+        emitter.emit('indexDataAlready')
+      }
     }
   })
 }
@@ -102,6 +141,7 @@ function searchEssayListMethod() {
 onMounted(() => {
   searchArticleListMethod()
   searchEssayListMethod()
+  searchVideoListMethod()
 })
 
 </script>

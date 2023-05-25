@@ -95,6 +95,7 @@ const router = createRouter({
                     },
                     props: ($route) => ({
                         colId: $route.query.colId,
+                        vdoId: $route.query.vdoId,
                     }),
                 }
             ]

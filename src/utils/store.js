@@ -5,6 +5,15 @@ import emitter from "@/utils/bus";
 
 const LOGIN_LOCAL_KEY = "yui-user-data"
 const LOGIN_TOKEN_KEY = "User-Token"
+const CURRENT_PLAY_VIDEO = "cur-video-data"
+
+export function setCurVideoData(data) {
+    LocalStorage.set(CURRENT_PLAY_VIDEO, data)
+}
+
+export function getCurVideoData() {
+    return LocalStorage.getItem(CURRENT_PLAY_VIDEO)
+}
 
 export function webIsLogin() {
     const hasLoginData = LocalStorage.has(LOGIN_LOCAL_KEY)

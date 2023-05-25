@@ -90,7 +90,7 @@ function playVideoList() {
     } else {
       thisRouter.push({
         path: `/video/play`,
-        query: {colId: id}
+        query: {colId: id, vdoId: data[0].id}
       })
     }
   })

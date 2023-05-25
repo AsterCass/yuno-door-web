@@ -18,7 +18,8 @@
 
         <q-space/>
 
-        <q-input class="cask-video-search" dense standout="bg-green-10" v-model="search" placeholder="Search">
+        <q-input class="cask-video-search" dense standout="bg-green-10" v-model="search"
+                 placeholder="当前页面还在开发中...">
           <template v-slot:prepend>
             <q-icon v-if="search === ''" name="search"/>
             <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''"/>
@@ -214,7 +215,7 @@ function playVideoList(id) {
     } else {
       thisRouter.push({
         path: `/video/play`,
-        query: {colId: id}
+        query: {colId: id, vdoId: data[0].id}
       })
     }
   })
