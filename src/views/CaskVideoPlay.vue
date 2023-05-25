@@ -20,7 +20,7 @@
     </div>
 
     <div class="col justify-start video-play-admin col-md-8 col-12">
-      <CaskVideoPlayer :video-data="vdoData"/>
+      <CaskVideoPlayerCommon/>
     </div>
 
 
@@ -35,7 +35,8 @@ import {getLoginData} from "@/utils/store";
 import {useRouter} from "vue-router";
 import {getVideoListByColId} from "@/api/video";
 import {useQuasar} from "quasar";
-import CaskVideoPlayer from "@/components/CaskVideoPlayer.vue";
+import CaskVideoPlayerCommon from "@/components/CaskVideoPlayerCommon.vue";
+
 
 //router
 const thisRouter = useRouter()
