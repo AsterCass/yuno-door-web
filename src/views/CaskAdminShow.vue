@@ -64,13 +64,13 @@
 
     <q-separator spaced="1.5rem" size="0.05rem" inset/>
 
-    <div class="column admin-show-base-game-content">
+    <div class="admin-show-base-game-content">
 
-      <div class="col-2 admin-show-base-title">
+      <div class="admin-show-base-title">
         <q-icon name="fa-solid fa-trophy" size="1em"/>
         游戏分享
       </div>
-      <div class="col-10">
+      <div style="height:18rem">
         <CaskGameSimpleList/>
       </div>
 
@@ -172,7 +172,7 @@ onMounted(() => {
 
 
 .admin-show-base-game-content
-  height: 30rem
+  min-height: 25rem
   width: 100%
 
 

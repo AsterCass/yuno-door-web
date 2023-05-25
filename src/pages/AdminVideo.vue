@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr fff">
-    <q-header elevated class="bg-white text-grey-8">
+
+    <q-header class="index-header">
       <q-toolbar class="cask-video-toolbar">
         <q-btn
             flat dense round
@@ -29,11 +30,6 @@
         <q-space/>
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat icon="notifications" class="q-mr-xs">
-            <q-badge color="green-10" text-color="white" floating>
-              1
-            </q-badge>
-          </q-btn>
           <LoginUserAvatar/>
         </div>
       </q-toolbar>
@@ -108,6 +104,11 @@
       <CopyrightFooter/>
     </q-footer>
 
+    <q-page-sticky position="left" :offset="[25, 25]">
+      <CaskWebFab/>
+    </q-page-sticky>
+
+
   </q-layout>
 
 
@@ -122,6 +123,7 @@ import {getAllVideoCol, getVideoListByColId} from "@/api/video";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {useQuasar} from "quasar";
 import {useRouter} from "vue-router";
+import CaskWebFab from "@/components/CaskWebFab.vue";
 
 //视频组跳转
 const thisRouter = useRouter()
@@ -245,6 +247,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 @import "@/styles/cask.sass";
+@import "@/styles/cask-primary-style.scss";
 
 .cask-video-toolbar {
   height: 4rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center admin-show-game-out">
-    <div class="col-xs-8 col-lg-4 row admin-show-game-cell" >
+    <div class="col-xs-8 col-lg-4 row admin-show-game-cell">
       <q-btn @click="changeHex" :ripple="false" unelevated class="col-12 admin-show-game-btn">
         <q-carousel
             transition-prev="scale"
@@ -76,6 +76,7 @@ const mik = ref('mik')
 function changeHex() {
   if (hex.value === 'hex') {
     hex.value = 'hexDesc'
+    mik.value = 'mik'
   } else {
     hex.value = 'hex'
   }
@@ -84,6 +85,7 @@ function changeHex() {
 function changeMik() {
   if (mik.value === 'mik') {
     mik.value = 'mikDesc'
+    hex.value = 'hex'
   } else {
     mik.value = 'mik'
   }
@@ -115,6 +117,6 @@ function changeMik() {
           .admin-show-game-cell-desc
             width: 100%
             height: 100%
-            padding: 1rem
+
 
 </style>

@@ -124,7 +124,7 @@ onUnmounted(() => {
 @import "@/styles/cask.sass";
 
 .cask-video-main-frame {
-  margin: 2% 5%;
+  margin: 3% 5%;
   min-height: 20rem;
 }
 

@@ -4,6 +4,15 @@
       <q-btn label="登录" @click="showLoginDiaLog" class="head-login"/>
     </div>
     <div class="user-simple" v-if="isLoginStatus">
+      <q-btn round flat dense icon="fa-solid fa-bell" class="q-mr-xs"/>
+      <!--      todo-->
+      <!--      <q-btn round flat dense icon="fa-solid fa-bell" class="q-mr-xs">-->
+      <!--        <q-badge color="green-10" text-color="white" floating>-->
+      <!--          1-->
+      <!--        </q-badge>-->
+      <!--      </q-btn>-->
+
+
       {{ userData.nickName }}
       <q-btn round color="white" class="header-user-avatar" to="/space"
              v-on:mouseover="userMenuTouchOver" v-on:mouseleave="userMenuTouchLeave">
