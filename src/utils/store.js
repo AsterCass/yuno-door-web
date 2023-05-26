@@ -12,7 +12,11 @@ export function setCurVideoData(data) {
 }
 
 export function getCurVideoData() {
-    return LocalStorage.getItem(CURRENT_PLAY_VIDEO)
+    let videoData = LocalStorage.getItem(CURRENT_PLAY_VIDEO)
+    if (!videoData) {
+        videoData = {}
+    }
+    return videoData
 }
 
 export function webIsLogin() {
@@ -57,7 +61,11 @@ export function refreshLoginMessage() {
 }
 
 export function getLoginData() {
-    return LocalStorage.getItem(LOGIN_LOCAL_KEY)
+    let loginData = LocalStorage.getItem(LOGIN_LOCAL_KEY)
+    if (!loginData) {
+        loginData = {}
+    }
+    return loginData
 }
 
 export function getLoginToken() {
