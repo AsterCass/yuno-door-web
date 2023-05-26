@@ -9,7 +9,16 @@
       </div>
     </div>
 
-    <div v-show="loadFinish" id="videoPlayer"></div>
+    <div class="col-12 relative-position">
+      <div v-show="loadFinish" id="videoPlayer"></div>
+      <div v-show="!loadFinish" class="video-load-screen simple-sec-header">
+        <q-inner-loading :showing="!loadFinish">
+          <q-spinner-cube size="10%" color="white"/>
+          loading...
+        </q-inner-loading>
+      </div>
+    </div>
+
 
     <CaskCommentTree v-if="currentPlayVideoData.id && 0 !== currentPlayVideoData.id.length"
                      class="col-12 q-mt-md" :main-id="currentPlayVideoData.id"/>
@@ -84,10 +93,27 @@ onUnmounted(() => {
 @import "@/styles/cask-little-mini-style.scss";
 @import "@/styles/cask-primary-style.scss";
 
+
 </style>
 
 <style lang="scss">
 @import "@/styles/fix-dplayer-barrage.scss";
+@import "@/styles/cask.sass";
+
+.video-load-screen {
+  padding-top: 56.25%;
+  background-image: linear-gradient(195deg, #42424a, #191919);
+  border-radius: 2rem;
+  color: $cask_base_white;
+
+
+  .q-inner-loading {
+    background: rgba(255, 255, 255, 0);
+  }
+
+
+}
+
 
 </style>
 

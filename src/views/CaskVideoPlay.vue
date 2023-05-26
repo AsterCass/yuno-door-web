@@ -19,7 +19,7 @@
       </q-scroll-area>
     </div>
 
-    <div v-show="dataFinish" class="col justify-start video-play-admin col-md-8 col-12">
+    <div v-if="dataFinish" class="col justify-start video-play-admin col-md-8 col-12">
       <CaskVideoPlayerD/>
     </div>
 
