@@ -31,7 +31,7 @@ import {getAdminVideoCol, getPersonVideoCol} from "@/api/video";
 import emitter from "@/utils/bus";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData} from "@/utils/store";
-import {customPage} from "@/utils/page";
+import {customPage, customPageNP} from "@/utils/page";
 
 //user data
 let userData = ref({
@@ -64,7 +64,7 @@ function updatePersonVideoCol() {
 
 //种类视频
 function getCateVideo() {
-  getAdminVideoCol().then(res => {
+  getAdminVideoCol(customPageNP(0, 100)).then(res => {
     if (200 === res.status) {
       adminVideoColList.value = res.data
     }
