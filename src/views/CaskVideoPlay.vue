@@ -2,24 +2,33 @@
   <div class="video-play-frame row">
 
     <div class="row justify-end video-play-epi col-md-4 col-12" v-show="!smallScreen">
-      <q-scroll-area class="article-anchors" delay="100">
-        <h1>播放列表</h1>
-        <q-list>
+
+      <q-img class="article-anchors-special" :src="`${vdoColData.collectionImg}`" :fit="'cover'"
+             style="filter: blur(50px)">
+      </q-img>
+
+      <q-scroll-area class="article-anchors video-play-list-scroll" delay="100">
+        <h1 class="video-play-list-scroll-title">播放列表</h1>
+        <q-list class="video-play-list-scroll-item">
           <q-item clickable v-ripple
                   v-for="(item, index) in vdoListData"
                   :key="index"
                   @click="playThisVideo(index)">
             <q-item-section>
               <p>
-                {{ colName }}&#32;:&#32;第&#32;{{ item.videoNum }}&#32;集
+                {{ vdoColData.collectionName }}&#32;:&#32;第&#32;{{ item.videoNum }}&#32;集
               </p>
             </q-item-section>
           </q-item>
         </q-list>
+
+
       </q-scroll-area>
+
+
     </div>
 
-    <div v-if="dataFinish" class="col justify-start video-play-admin col-md-8 col-12">
+    <div v-if="dataFinish && colDataFinish" class="col justify-start video-play-admin col-md-8 col-12">
       <CaskVideoPlayerD/>
     </div>
 
@@ -31,12 +40,11 @@
 import {defineProps, onMounted, onUnmounted, ref} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import emitter from "@/utils/bus";
-import {getLoginData} from "@/utils/store";
+import {addCurVideoData, getLoginData} from "@/utils/store";
 import {useRouter} from "vue-router";
-import {getVideoListByColId} from "@/api/video";
+import {getVideoListByColId, geVideoColDetail} from "@/api/video";
 import {useQuasar} from "quasar";
 import CaskVideoPlayerD from "@/components/CaskVideoPlayerD.vue";
-import {setCurVideoData} from "@/utils/store"
 import {extend} from "quasar";
 
 
@@ -60,10 +68,6 @@ const props = defineProps({
     type: String,
     default: ""
   },
-  colName: {
-    type: String,
-    default: ""
-  },
   vdoId: {
     type: String,
     default: ""
@@ -71,6 +75,7 @@ const props = defineProps({
 })
 //数据准备完成
 let dataFinish = ref(false)
+let colDataFinish = ref(false)
 //小屏幕
 let smallScreen = ref(false)
 //用户数据
@@ -86,6 +91,8 @@ let vdoData = ref({
 })
 //视频组数据
 let vdoListData = ref([])
+//视频集数据
+let vdoColData = ref({})
 
 //数据初始化
 function initVideoPlayData() {
@@ -120,23 +127,34 @@ function getCollectionVideos() {
       } else {
         vdoData.value = data[index]
       }
-      setCurVideoData(extend(true, vdoData.value,
-          {colName: props.colName, colSize: vdoListData.value.length}))
+      addCurVideoData(extend(true, vdoData.value,
+          {colSize: vdoListData.value.length}))
       dataFinish.value = true
     }
   })
+  geVideoColDetail(props.colId).then(res => {
+        const data = res.data
+        if (data.status && 200 !== data.status) {
+          videoPlayWarningNotify(data.message)
+        } else {
+          addCurVideoData({colName: data.collectionName})
+          vdoColData.value = data
+          colDataFinish.value = true
+        }
+      }
+  )
+
+
 }
 
 //播放
 function playThisVideo(index) {
   let videoData = vdoListData.value[index];
-  setCurVideoData(extend(true, videoData,
-      {colName: props.colName, colSize: vdoListData.value.length}))
-  vdoData.value = videoData
+  extend(true, vdoData.value, addCurVideoData(videoData))
   thisRouter.push({
-    query: {colId: videoData.videoCollectionId, colName: props.colName, vdoId: videoData.id}
+    query: {colId: vdoData.value.videoCollectionId, vdoId: vdoData.value.id}
   })
-  emitter.emit("changeVideoPlay", videoData)
+  emitter.emit("changeVideoPlay", vdoData.value)
 }
 
 //登录通知
@@ -198,6 +216,24 @@ onUnmounted(() => {
 @import "@/styles/cask-little-mini-style.scss";
 @import "@/styles/cask-dialog-style.scss";
 @import "@/styles/cask-primary-style.scss";
+
+.video-play-list-scroll {
+  background-color: rgba(0, 0, 0, 0);
+  border-bottom: groove 5px #2B5853;
+  border-top: groove 5px #2B5853;
+
+  .video-play-list-scroll-title {
+    text-shadow: 1px 1px 2px white, -1px 1px 2px white,
+    1px -1px 2px white, -1px -1px 2px white;
+  }
+
+  .video-play-list-scroll-item {
+    color: white;
+    text-shadow: 1px 1px 2px $cask_dark_jungle_green, -1px 1px 2px $cask_dark_jungle_green,
+    1px -1px 2px $cask_dark_jungle_green, -1px -1px 2px $cask_dark_jungle_green;
+  }
+
+}
 
 .video-play-frame {
   margin: 3% 7%;

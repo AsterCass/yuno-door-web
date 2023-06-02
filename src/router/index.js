@@ -95,7 +95,6 @@ const router = createRouter({
                     },
                     props: ($route) => ({
                         colId: $route.query.colId,
-                        colName: $route.query.colName,
                         vdoId: $route.query.vdoId,
                     }),
                 }

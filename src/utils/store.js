@@ -1,4 +1,4 @@
-import {LocalStorage} from 'quasar'
+import {extend, LocalStorage} from 'quasar'
 import {updateLogin} from "@/utils/share-data"
 import {userDetail, userIsLogin, userLogout} from "@/api/user";
 import emitter from "@/utils/bus";
@@ -7,8 +7,10 @@ const LOGIN_LOCAL_KEY = "yui-user-data"
 const LOGIN_TOKEN_KEY = "User-Token"
 const CURRENT_PLAY_VIDEO = "cur-video-data"
 
-export function setCurVideoData(data) {
-    LocalStorage.set(CURRENT_PLAY_VIDEO, data)
+export function addCurVideoData(data) {
+    let oldData = getCurVideoData()
+    LocalStorage.set(CURRENT_PLAY_VIDEO, extend(true, oldData, data))
+    return getCurVideoData()
 }
 
 export function getCurVideoData() {

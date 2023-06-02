@@ -32,3 +32,10 @@ export function getVideoListByColId(param) {
         params: param
     })
 }
+
+export function geVideoColDetail(id) {
+    return serviceShiro({
+        url: `/ushio/videoCol/detail/${id}`,
+        method: 'get',
+    })
+}
