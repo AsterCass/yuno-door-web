@@ -134,7 +134,7 @@
 
 <script setup>
 
-import {defineProps, onMounted, onUnmounted, ref} from "vue";
+import {defineProps, onMounted, onUnmounted, ref, watch} from "vue";
 import {getCommentTree, likeComment, replyComment} from "@/api/comment";
 import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
 import {checkReply} from "@/utils/format-check";
@@ -191,9 +191,16 @@ let commentTree = ref([
 let commentSum = ref(0)
 //user data
 let userData = ref({})
+//sub follow main
+watch(() => props.mainId, (mainId) => {
+  replySubMainId.value = mainId
+  initData();
+  refreshCommentTree();
+});
 
 function initData() {
   userData.value = getLoginData();
+  commentSum.value = 0;
   commentTree.value = [];
 }
 

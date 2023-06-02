@@ -1,3 +1,28 @@
+.dplayer-menu {
+  height: 0 !important;
+  width: 0 !important;
+}
+
+.dplayer-controller {
+
+  .dplayer-comment-box {
+    display: none;
+  }
+
+  .dplayer-icons-left {
+    display: none;
+  }
+
+  .dplayer-icons-right {
+    display: none;
+  }
+
+  .dplayer-bar-wrap {
+    bottom: 10px
+  }
+
+}
+
 .dplayer-danmaku {
   position: absolute;
   left: 0;

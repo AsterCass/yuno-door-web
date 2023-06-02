@@ -6,12 +6,12 @@
         <h1>播放列表</h1>
         <q-list>
           <q-item clickable v-ripple
-                  v-for="item in vdoListData"
-                  :key="item.id"
-                  @click="playThisVideo(item)">
+                  v-for="(item, index) in vdoListData"
+                  :key="index"
+                  @click="playThisVideo(index)">
             <q-item-section>
               <p>
-                {{ item.videoName }}
+                {{ colName }}&#32;:&#32;第&#32;{{ item.videoNum }}&#32;集
               </p>
             </q-item-section>
           </q-item>
@@ -37,6 +37,7 @@ import {getVideoListByColId} from "@/api/video";
 import {useQuasar} from "quasar";
 import CaskVideoPlayerD from "@/components/CaskVideoPlayerD.vue";
 import {setCurVideoData} from "@/utils/store"
+import {extend} from "quasar";
 
 
 //router
@@ -56,6 +57,10 @@ function videoPlayWarningNotify(notifyMessage) {
 //props
 const props = defineProps({
   colId: {
+    type: String,
+    default: ""
+  },
+  colName: {
     type: String,
     default: ""
   },
@@ -115,18 +120,21 @@ function getCollectionVideos() {
       } else {
         vdoData.value = data[index]
       }
-      setCurVideoData(vdoData.value)
+      setCurVideoData(extend(true, vdoData.value,
+          {colName: props.colName, colSize: vdoListData.value.length}))
       dataFinish.value = true
     }
   })
 }
 
 //播放
-function playThisVideo(videoData) {
-  setCurVideoData(videoData)
+function playThisVideo(index) {
+  let videoData = vdoListData.value[index];
+  setCurVideoData(extend(true, videoData,
+      {colName: props.colName, colSize: vdoListData.value.length}))
   vdoData.value = videoData
   thisRouter.push({
-    query: {colId: videoData.videoCollectionId, vdoId: videoData.id}
+    query: {colId: videoData.videoCollectionId, colName: props.colName, vdoId: videoData.id}
   })
   emitter.emit("changeVideoPlay", videoData)
 }
@@ -166,6 +174,8 @@ onMounted(() => {
   emitter.on("loginMessageEvent", loginMessageEventVideoPlay)
   //数据更新事件
   emitter.on("refreshLoginMessageEvent", refreshUserDataEventVideoPlay)
+  //播放事件
+  emitter.on("playThisVideoEvent", playThisVideo)
   //添加监控屏幕改变事件
   screenEventHandler()
   window.addEventListener("resize", screenEventHandler);
@@ -178,6 +188,8 @@ onUnmounted(() => {
   emitter.off("loginMessageEvent", loginMessageEventVideoPlay)
   //删除数据更新事件
   emitter.off("refreshLoginMessageEvent", refreshUserDataEventVideoPlay)
+  //播放事件
+  emitter.off("playThisVideoEvent", playThisVideo)
 })
 
 </script>

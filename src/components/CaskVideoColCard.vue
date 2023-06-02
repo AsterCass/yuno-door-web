@@ -76,6 +76,7 @@ function uploadVideo() {
 //播放视频
 function playVideoList() {
   let id = props.videoColData.id
+  let name = props.videoColData.collectionName
   if (!id || 0 === id.length) {
     videoColWarningNotify("视频不小心走丢啦，刷新试试吧")
     return
@@ -90,7 +91,7 @@ function playVideoList() {
     } else {
       thisRouter.push({
         path: `/video/play`,
-        query: {colId: id, vdoId: data[0].id}
+        query: {colId: id, colName: name, vdoId: data[0].id}
       })
     }
   })

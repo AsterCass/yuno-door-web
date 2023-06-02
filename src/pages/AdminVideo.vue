@@ -81,7 +81,8 @@
           </q-item>
 
 
-          <q-item v-for="videoCol in lastVideoColList" :key="videoCol.id" @click="playVideoList(videoCol.id)"
+          <q-item v-for="videoCol in lastVideoColList" :key="videoCol.id"
+                  @click="playVideoList(videoCol.id, videoCol.collectionName)"
                   clickable class="cask-video-drawer-item cask-video-drawer-latest-item q-mb-sm"
                   :style="{'background': `url(${videoCol.collectionImg}) no-repeat`, 'background-size': 'cover'}">
             <q-item-section>
@@ -202,7 +203,7 @@ function initLatestVideo() {
 }
 
 //播放视频
-function playVideoList(id) {
+function playVideoList(id, name) {
   if (!id || 0 === id.length) {
     videoColWarningNotify("视频不小心走丢啦，刷新试试吧")
     return
@@ -217,7 +218,7 @@ function playVideoList(id) {
     } else {
       thisRouter.push({
         path: `/video/play`,
-        query: {colId: id, vdoId: data[0].id}
+        query: {colId: id, colName: name, vdoId: data[0].id}
       })
     }
   })
