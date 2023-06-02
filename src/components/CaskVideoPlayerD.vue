@@ -90,6 +90,8 @@ let playerSetting = ref({
   volume: 0.5,
   playbackSpeed: 1,
   showDanmaku: true,
+  autoNext: true,
+  autoPlay: true,
 })
 //volume
 let showVolumeSlider = ref(false)
@@ -106,6 +108,7 @@ function initPlayerD() {
     theme: '#2B5853',
     playbackSpeed: [0.75, 1, 1.25, 1.5, 2, 3],
     volume: playerSetting.value.volume,
+    autoplay: playerSetting.value.autoPlay,
     video: {
       url: currentPlayVideoData.value.videoRes,
       type: 'auto',
@@ -124,6 +127,11 @@ function initPlayerD() {
   });
   dp.on('pause', () => {
     isPlaying.value = false
+  });
+  dp.on('ended', () => {
+    if (!isLastVideo.value) {
+      videoPlayNext()
+    }
   });
   //data
   videoDPlayer.value = dp;
