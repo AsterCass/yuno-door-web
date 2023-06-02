@@ -140,7 +140,6 @@ function initPlayerD() {
 function changeVideoPlayD(videoData) {
   //data
   currentPlayVideoData.value = videoData
-  console.log(currentPlayVideoData.value)
   //is last video
   isLastVideo.value = currentPlayVideoData.value.videoNum === currentPlayVideoData.value.colSize
   //change resource
