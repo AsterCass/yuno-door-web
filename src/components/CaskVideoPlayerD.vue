@@ -1,21 +1,38 @@
 <template>
 
   <div class="row justify-center">
-    <!--    <div class="video-player-title col-lg-11 col-md-7 col-xs-11">-->
-    <!--      <div class="cask-primary-card-header-center">-->
-    <!--        <h1>-->
-    <!--          当前页面还在开发中-->
-    <!--        </h1>-->
-    <!--      </div>-->
-    <!--    </div>-->
 
     <div class="col-12 relative-position">
-
       <div class="justify-between video-player-header q-px-md">
         <div class="simple-bold-title">
           {{ currentPlayVideoData.colName }}&#32;:&#32;第&#32;{{ currentPlayVideoData.videoNum }}&#32;集
         </div>
-        <q-btn class="text-white" round flat dense stack icon="fa-solid fa-gear"/>
+
+        <q-btn-dropdown class="text-white video-player-setting-drop" dropdown-icon="fa-solid fa-gear" round flat dense
+                        rounded
+                        menu-anchor="bottom middle" menu-self="top middle" :menu-offset="[0, 10]">
+          <div class="row video-player-setting-frame">
+            <div class="col-8 simple-bold-little-title">
+              全局设置
+            </div>
+            <q-toggle class="col-6" color="secondary" label="自动播放"
+                      v-model="playerSetting.autoPlay" @click="resetGlobalVideoSetting"/>
+            <q-toggle class="col-6" color="secondary" label="自动下一集"
+                      v-model="playerSetting.autoNext" @click="resetGlobalVideoSetting"/>
+            <q-toggle class="col-6" color="secondary" label="开启弹幕"
+                      v-model="playerSetting.showDanmaku" @click="resetGlobalVideoSetting"/>
+            <div class="row col-12 justify-center q-my-md">
+              <div class="simple-content-semi col-3 items-center flex">
+                视频速度
+              </div>
+              <q-slider class="col-7" :min="5" :max="30" color="secondary" thumb-size="15px"
+                        v-model="ratioSliderNum" @change="resetGlobalVideoSetting"/>
+              <div class="simple-content-semi col-2 items-center flex justify-center text-secondary">
+                {{ playerSetting.playbackSpeed }} &#32;
+              </div>
+            </div>
+          </div>
+        </q-btn-dropdown>
       </div>
 
       <div v-show="loadFinish" id="videoPlayer"></div>
@@ -44,7 +61,8 @@
                    round flat dense stack @click="changeShowVolumeSlider"/>
 
             <div id="volume-slider" v-if="showVolumeSlider" style="width: 8rem">
-              <q-slider :min="0" :max="10" color="white" thumb-size="15px" v-model="volumeSliderNum"/>
+              <q-slider :min="0" :max="10" color="white" thumb-size="15px"
+                        v-model="volumeSliderNum" @change="changeVolume"/>
             </div>
 
           </div>
@@ -66,11 +84,12 @@
 
 <script setup>
 import CaskCommentTree from "@/components/CaskCommentTree.vue";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import emitter from "@/utils/bus";
 import DPlayer from "dplayer";
 import defaultApiBackend from "@/utils/barrage-build";
-import {getCurVideoData} from "@/utils/store"
+import {addCurVideoSetting, getCurVideoData, getCurVideoSetting} from "@/utils/store";
+import {extend} from "quasar";
 
 //data
 let currentPlayVideoData = ref({
@@ -96,13 +115,23 @@ let playerSetting = ref({
 //volume
 let showVolumeSlider = ref(false)
 let volumeSliderNum = ref(5)
-playerSetting.value.volume = computed(() => {
-  let volPercent = (0.1 * volumeSliderNum.value).toFixed(1)
+watch(() => volumeSliderNum.value, (volumeSliderNum) => {
+  let volPercent = parseFloat((0.1 * volumeSliderNum).toFixed(1))
   let videoOri = videoDPlayer.value.video
   if (videoOri) {
     videoOri.volume = volPercent
+    playerSetting.value.volume = volPercent
   }
-  return volPercent
+})
+//video ratio
+let ratioSliderNum = ref(10)
+watch(() => ratioSliderNum.value, (ratioSliderNum) => {
+  let volPercent = parseFloat((0.1 * ratioSliderNum).toFixed(1))
+  let videoOri = videoDPlayer.value.video
+  if (videoOri) {
+    videoOri.playbackRate = volPercent
+    playerSetting.value.playbackSpeed = volPercent
+  }
 })
 
 
@@ -111,9 +140,8 @@ function initPlayerD() {
     container: document.getElementById('videoPlayer'),
     hotkey: true,
     theme: '#2B5853',
-    playbackSpeed: [0.75, 1, 1.25, 1.5, 2, 3],
-    volume: playerSetting.value.volume,
     autoplay: playerSetting.value.autoPlay,
+    volume: playerSetting.value.volume,
     video: {
       url: currentPlayVideoData.value.videoRes,
       type: 'auto',
@@ -126,6 +154,8 @@ function initPlayerD() {
   //event
   dp.on('loadeddata', () => {
     loadFinish.value = true
+    dp.speed(playerSetting.value.playbackSpeed)
+    syncUserSetting(true)
   });
   dp.on('play', () => {
     isPlaying.value = true
@@ -134,7 +164,7 @@ function initPlayerD() {
     isPlaying.value = false
   });
   dp.on('ended', () => {
-    if (!isLastVideo.value) {
+    if (!isLastVideo.value && playerSetting.value.autoNext) {
       videoPlayNext()
     }
   });
@@ -158,6 +188,10 @@ function changeVideoPlayD(videoData) {
 function initVideoData() {
   //base data
   currentPlayVideoData.value = getCurVideoData()
+  //base setting
+  extend(true, playerSetting.value, getCurVideoSetting())
+  ratioSliderNum.value = parseFloat((10 * playerSetting.value.playbackSpeed).toFixed(0))
+  volumeSliderNum.value = parseFloat((10 * playerSetting.value.volume).toFixed(0))
 }
 
 function videoFullScreen() {
@@ -180,6 +214,36 @@ function videoPlayNext() {
 
 function changeShowVolumeSlider() {
   showVolumeSlider.value = !showVolumeSlider.value
+}
+
+function changeVolume() {
+  addCurVideoSetting(playerSetting.value)
+}
+
+function resetGlobalVideoSetting() {
+  //sync
+  syncUserSetting(false)
+  //save
+  addCurVideoSetting(playerSetting.value)
+}
+
+
+function syncUserSetting(isInit) {
+  //danmaku
+  if (playerSetting.value.showDanmaku) {
+    videoDPlayer.value.danmaku.show()
+  } else {
+    videoDPlayer.value.danmaku.hide()
+  }
+  //auto play
+  if (!isInit && playerSetting.value.autoPlay
+      && 0 === videoDPlayer.value.video.currentTime && videoDPlayer.value.video.paused) {
+    videoPlay()
+  }
+  //auto next
+  if (playerSetting.value.autoNext && videoDPlayer.value.video.ended && !isLastVideo.value) {
+    videoPlayNext()
+  }
 }
 
 
@@ -224,6 +288,12 @@ onUnmounted(() => {
   border-radius: 0 0 1rem 1rem;
 }
 
+.video-player-setting-frame {
+  width: 20rem;
+  padding: .8rem;
+
+}
+
 
 </style>
 
@@ -237,11 +307,9 @@ onUnmounted(() => {
   background-color: black;
   color: $cask_base_white;
 
-
   .q-inner-loading {
     background: rgba(255, 255, 255, 0);
   }
-
 
 }
 

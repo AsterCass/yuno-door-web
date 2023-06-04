@@ -6,6 +6,22 @@ import emitter from "@/utils/bus";
 const LOGIN_LOCAL_KEY = "yui-user-data"
 const LOGIN_TOKEN_KEY = "User-Token"
 const CURRENT_PLAY_VIDEO = "cur-video-data"
+const PERSON_VIDEO_SETTING = "person-video-setting"
+
+
+export function addCurVideoSetting(data) {
+    let oldData = getCurVideoSetting()
+    LocalStorage.set(PERSON_VIDEO_SETTING, extend(true, oldData, data))
+    return getCurVideoData()
+}
+
+export function getCurVideoSetting() {
+    let videoSetting = LocalStorage.getItem(PERSON_VIDEO_SETTING)
+    if (!videoSetting) {
+        videoSetting = {}
+    }
+    return videoSetting
+}
 
 export function addCurVideoData(data) {
     let oldData = getCurVideoData()

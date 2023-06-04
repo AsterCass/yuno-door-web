@@ -22,7 +22,7 @@
 
         <q-menu :model-value="userMenuShow"
                 v-on:mouseover="userMenuTouchOver" v-on:mouseleave="userMenuTouchLeave"
-                style="background-color:rgba(0,0,0,0);box-shadow:none;"
+                style="background-color:rgba(0,0,0,0);box-shadow:none;backdrop-filter: none"
                 transition-hide="fade" transition-duration="800" no-parent-event
                 anchor="bottom middle" self="top middle" :offset="[0, 3]">
 

@@ -72,6 +72,13 @@
   font-family: Roboto Slab, sans-serif;
 }
 
+.simple-content-semi {
+  font-size: 0.9rem;
+  color: $cask_base_black;
+  opacity: 0.9;
+  font-family: Roboto Slab, sans-serif;
+}
+
 .simple-content-tag {
   font-size: 0.8rem;
   color: $cask_base_black;
@@ -88,7 +95,6 @@
   width: 100%;
   position: fixed;
   background-image: url('https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/404%20.svg');
-
 }
 
 .video-player-title {
