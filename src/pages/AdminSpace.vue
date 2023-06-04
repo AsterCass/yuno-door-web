@@ -46,7 +46,7 @@
           </q-tabs>
         </div>
         <div class="col-12 row space-profile-integrity">
-          资料完整度：{{ Math.floor(profileIntegrity * 100) }}%
+          资料完整度：{{ Math.round(profileIntegrity * 100) }}%
           <q-linear-progress stripe rounded size="10px" :value="profileIntegrity" color="secondary" class="q-mt-sm"/>
         </div>
       </div>

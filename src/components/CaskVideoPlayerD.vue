@@ -97,7 +97,12 @@ let playerSetting = ref({
 let showVolumeSlider = ref(false)
 let volumeSliderNum = ref(5)
 playerSetting.value.volume = computed(() => {
-  return 0.1 * volumeSliderNum.value
+  let volPercent = (0.1 * volumeSliderNum.value).toFixed(1)
+  let videoOri = videoDPlayer.value.video
+  if (videoOri) {
+    videoOri.volume = volPercent
+  }
+  return volPercent
 })
 
 

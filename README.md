@@ -1,24 +1,9 @@
 # admin-door
 
-## Project setup
-```
-yarn install
-```
+## 注意
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. dPlayer的patch
+    1. 删除视频右击菜单栏默认选项
+    2. 删除默认日志打印提示
+    3. 删除视频控制台下`<label for="">`浏览器报错相关代码，其实整个控制台除了进度条可以删除
+       但是一些div和js逻辑有联动会导致项目报错，所以只删除label相关代码
