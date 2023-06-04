@@ -16,17 +16,17 @@
               全局设置
             </div>
             <q-toggle class="col-6" color="secondary" label="自动播放"
-                      v-model="playerSetting.autoPlay" @click="resetGlobalVideoSetting"/>
+                      v-model="playerSetting.autoPlay" @click="resetAutoPlay"/>
             <q-toggle class="col-6" color="secondary" label="自动下一集"
-                      v-model="playerSetting.autoNext" @click="resetGlobalVideoSetting"/>
+                      v-model="playerSetting.autoNext" @click="resetAutoNext"/>
             <q-toggle class="col-6" color="secondary" label="开启弹幕"
-                      v-model="playerSetting.showDanmaku" @click="resetGlobalVideoSetting"/>
+                      v-model="playerSetting.showDanmaku" @click="resetDanmaku"/>
             <div class="row col-12 justify-center q-my-md">
               <div class="simple-content-semi col-3 items-center flex">
                 视频速度
               </div>
               <q-slider class="col-7" :min="5" :max="30" color="secondary" thumb-size="15px"
-                        v-model="ratioSliderNum" @change="resetGlobalVideoSetting"/>
+                        v-model="ratioSliderNum" @change="resetVideoSpeed"/>
               <div class="simple-content-semi col-2 items-center flex justify-center text-secondary">
                 {{ playerSetting.playbackSpeed }} &#32;
               </div>
@@ -155,7 +155,7 @@ function initPlayerD() {
   dp.on('loadeddata', () => {
     loadFinish.value = true
     dp.speed(playerSetting.value.playbackSpeed)
-    syncUserSetting(true)
+    resetDanmaku()
   });
   dp.on('play', () => {
     isPlaying.value = true
@@ -220,30 +220,38 @@ function changeVolume() {
   addCurVideoSetting(playerSetting.value)
 }
 
-function resetGlobalVideoSetting() {
-  //sync
-  syncUserSetting(false)
+function resetAutoPlay() {
+  //destroy
+  videoDPlayer.value.destroy()
+  //初始化播放器
+  initPlayerD()
   //save
   addCurVideoSetting(playerSetting.value)
 }
 
+function resetAutoNext() {
+  //auto next
+  if (playerSetting.value.autoNext && videoDPlayer.value.video.ended && !isLastVideo.value) {
+    videoPlayNext()
+  }
+  //save
+  addCurVideoSetting(playerSetting.value)
+}
 
-function syncUserSetting(isInit) {
+function resetDanmaku() {
   //danmaku
   if (playerSetting.value.showDanmaku) {
     videoDPlayer.value.danmaku.show()
   } else {
     videoDPlayer.value.danmaku.hide()
   }
-  //auto play
-  if (!isInit && playerSetting.value.autoPlay
-      && 0 === videoDPlayer.value.video.currentTime && videoDPlayer.value.video.paused) {
-    videoPlay()
-  }
-  //auto next
-  if (playerSetting.value.autoNext && videoDPlayer.value.video.ended && !isLastVideo.value) {
-    videoPlayNext()
-  }
+  //save
+  addCurVideoSetting(playerSetting.value)
+}
+
+function resetVideoSpeed() {
+  //save
+  addCurVideoSetting(playerSetting.value)
 }
 
 
