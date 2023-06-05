@@ -122,6 +122,9 @@ function sendEmail() {
       resetPassWarningNotify("邮件发送失败：" + res.data.message)
       sendingMail.value = false
     }
+  }).catch(() => {
+    resetPassWarningNotify("IP地址被锁定，请稍后重试")
+    sendingMail.value = false
   })
 }
 

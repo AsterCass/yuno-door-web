@@ -137,6 +137,9 @@ function sendEmail() {
       regWarningNotify("邮件发送失败：" + res.data.message)
       sendingMail.value = false
     }
+  }).catch(() => {
+    regWarningNotify("IP地址被锁定，请稍后重试")
+    sendingMail.value = false
   })
 
 
