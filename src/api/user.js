@@ -34,7 +34,7 @@ export function userLogout() {
 
 export function userIsLogin() {
     return serviceShiro({
-        url: `/yui/user/isLogin`,
+        url: `/yui/user/isLogin/authNoError`,
         method: 'get',
     })
 }
