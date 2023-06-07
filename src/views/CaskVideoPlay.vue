@@ -13,7 +13,9 @@
           <q-item clickable v-ripple
                   v-for="(item, index) in vdoListData"
                   :key="index"
-                  @click="playThisVideo(index)">
+                  @click="playThisVideo(index)"
+                  :class="{'video-play-list-scroll-item-playing': item.id === vdoId}"
+          >
             <q-item-section>
               <p>
                 {{ vdoColData.collectionName }}&#32;:&#32;第&#32;{{ item.videoNum }}&#32;集
@@ -123,9 +125,9 @@ function getCollectionVideos() {
         return vdo.id === props.vdoId
       })
       if (-1 === index) {
-        vdoData.value = data[0]
+        extend(true, vdoData.value, data[0])
       } else {
-        vdoData.value = data[index]
+        extend(true, vdoData.value, data[index])
       }
       addCurVideoData(extend(true, vdoData.value,
           {colSize: vdoListData.value.length}))
@@ -231,6 +233,11 @@ onUnmounted(() => {
     color: white;
     text-shadow: 1px 1px 2px $cask_dark_jungle_green, -1px 1px 2px $cask_dark_jungle_green,
     1px -1px 2px $cask_dark_jungle_green, -1px -1px 2px $cask_dark_jungle_green;
+
+    .video-play-list-scroll-item-playing {
+      background-image: linear-gradient(195deg, #447550, #2B5853 50%);
+      border-radius: 1.5rem;
+    }
   }
 
 }
