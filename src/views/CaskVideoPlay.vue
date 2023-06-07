@@ -229,6 +229,8 @@ onUnmounted(() => {
   emitter.off("playThisVideoEvent", playThisVideo)
   //视频数据准备完成时间
   emitter.off("videoDataIsFinish", execDataFinish)
+  //删除屏幕改变事件
+  window.removeEventListener("resize", screenEventHandler);
 })
 
 </script>

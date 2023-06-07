@@ -224,6 +224,12 @@ function changeVolume() {
 function resetAutoPlay() {
   //destroy
   videoDPlayer.value.destroy()
+  //clear data
+  {
+    loadFinish.value = false
+    isPlaying.value = false
+    showVolumeSlider.value = false
+  }
   //初始化播放器
   initPlayerD()
   //save
