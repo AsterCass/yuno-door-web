@@ -156,6 +156,7 @@ function initPlayerD() {
     loadFinish.value = true
     dp.speed(playerSetting.value.playbackSpeed)
     resetDanmaku()
+    emitter.emit("videoDataIsFinish")
   });
   dp.on('play', () => {
     isPlaying.value = true

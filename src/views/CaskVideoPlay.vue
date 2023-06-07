@@ -10,7 +10,7 @@
       <q-scroll-area class="article-anchors video-play-list-scroll" delay="100">
         <h1 class="video-play-list-scroll-title">播放列表</h1>
         <q-list class="video-play-list-scroll-item">
-          <q-item clickable v-ripple
+          <q-item :id="item.id" clickable v-ripple
                   v-for="(item, index) in vdoListData"
                   :key="index"
                   @click="playThisVideo(index)"
@@ -145,8 +145,12 @@ function getCollectionVideos() {
         }
       }
   )
+}
 
-
+//视频数据加载完成后续操作
+function execDataFinish() {
+  //播放集数居中
+  videoItemGo(props.vdoId)
 }
 
 //播放
@@ -177,6 +181,16 @@ function refreshUserDataEventVideoPlay(data) {
   getCollectionVideos()
 }
 
+//播放集数居中
+function videoItemGo(id) {
+  const target = document.getElementById(id);
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+    inline: "nearest",
+  });
+}
+
 //屏幕改变事件
 function screenEventHandler() {
   //小屏幕判断
@@ -196,8 +210,11 @@ onMounted(() => {
   emitter.on("refreshLoginMessageEvent", refreshUserDataEventVideoPlay)
   //播放事件
   emitter.on("playThisVideoEvent", playThisVideo)
+  //视频数据准备完成时间
+  emitter.on("videoDataIsFinish", execDataFinish)
   //添加监控屏幕改变事件
   screenEventHandler()
+  //event
   window.addEventListener("resize", screenEventHandler);
 })
 
@@ -210,6 +227,8 @@ onUnmounted(() => {
   emitter.off("refreshLoginMessageEvent", refreshUserDataEventVideoPlay)
   //播放事件
   emitter.off("playThisVideoEvent", playThisVideo)
+  //视频数据准备完成时间
+  emitter.off("videoDataIsFinish", execDataFinish)
 })
 
 </script>
