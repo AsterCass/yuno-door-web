@@ -14,7 +14,6 @@ export default {
                 options.error && options.error("弹幕数据加载失败");
                 return;
             }
-            console.log(data.data)
             options.success && options.success(data.data);
         }).catch((e) => {
             console.error(e);
