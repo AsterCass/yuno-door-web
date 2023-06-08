@@ -8,12 +8,13 @@ export default {
     },
 
     read: (options) => {
-        getVideoBarrage("2342432").then((response) => {
-            const data = response.data;
+        getVideoBarrage(options.url).then((response) => {
+            const data = response;
             if (!data || 200 !== data.status) {
-                options.error && options.error(data && data.msg);
+                options.error && options.error("弹幕数据加载失败");
                 return;
             }
+            console.log(data.data)
             options.success && options.success(data.data);
         }).catch((e) => {
             console.error(e);
