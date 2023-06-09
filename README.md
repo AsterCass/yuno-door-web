@@ -2,7 +2,7 @@
 
 ## 网站说明
 
-[网站地址](www.astercasc.com)，本项目为个人网站的构建，涵盖技术文章、视频分享、个人日志、游戏等等功能，
+[网站地址](https://www.astercasc.com)，本项目为个人网站的构建，涵盖技术文章、视频分享、个人日志、游戏等等功能，
 由`vue3`构建，UI组件大部分使用的是`quasar`， 没有使用`element-ui`的原因是这个组件样式已经看吐了，换个新鲜点的
 
 后端使用主体为`spring cloud`架构，实际代码由于数据安全原因不能开源，后端相关技术栈在网站内文章都有分享，
@@ -40,7 +40,7 @@
 ## 包引用
 
 * fontsource/roboto-slab：字体
-* quasar/extras:quasar附加功能
+* quasar/extras：quasar附加功能
 * animate.css：动画
 * axios：接口调用
 * core-js：base
@@ -51,7 +51,7 @@
 * mitt：事件总线
 * patch-package：源码补丁
 * pinia：本地存储
-* qs:接口调用序列化
+* qs：接口调用序列化
 * quasar：ui美化
 * video.js：视频样式分装（暂未用到）
 * vue：vue
