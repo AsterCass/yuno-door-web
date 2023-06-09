@@ -78,6 +78,12 @@ const articleTagEnums = [
         color: "green-10",
         rbg: "#1B5E20",
     },
+    {
+        name: "Html/Css/Js",
+        code: 8192,
+        color: "blue-10",
+        rbg: "#0D47A1",
+    },
 ]
 
 function getArticleTagDesc(code) {
