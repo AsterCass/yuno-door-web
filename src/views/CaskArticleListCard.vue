@@ -26,7 +26,7 @@
       </div>
       <div class="col-4">
         <q-btn class="admin-article-list-card-in"
-               :to="`/article/detail?articleId=${intro.id}`">Go
+               :to="`/article/detail?articleId=${intro.id}`" target="_blank">Go
         </q-btn>
       </div>
     </q-card-section>
