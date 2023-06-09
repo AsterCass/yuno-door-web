@@ -58,6 +58,16 @@
   font-family: Roboto Slab, sans-serif;
 }
 
+.simple-bold-little-title-mini {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.225;
+  color: $cask_cactus;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Roboto Slab, sans-serif;
+}
+
 .simple-bold-title {
   font-weight: 600;
   font-size: 1.5rem;
@@ -68,6 +78,13 @@
 .simple-content {
   font-weight: 500;
   font-size: 1rem;
+  white-space: pre-wrap;
+  font-family: Roboto Slab, sans-serif;
+}
+
+.simple-content-mini {
+  font-weight: 500;
+  font-size: 0.9rem;
   white-space: pre-wrap;
   font-family: Roboto Slab, sans-serif;
 }

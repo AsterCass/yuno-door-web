@@ -7,7 +7,7 @@
     </div>
     <div class="col-11 q-mx-md">
       <div v-for="(comment, index) in commentTree" :key="index">
-        <div class="row justify-center q-my-lg">
+        <div class="row justify-center q-my-sm">
           <div class="column items-center" style="width: 80px">
             <div class="column items-center">
               <q-avatar size="60px" style="filter: blur(6px);">
@@ -42,33 +42,33 @@
             </div>
             <div v-if="comment.childData && 0 !== comment.childData.length">
               <div v-for="(childComment, index) in comment.childData" :key="index">
-                <div class="row justify-center q-my-lg">
+                <div class="row justify-center">
                   <div class="column items-center" style="width: 80px">
                     <div class="column items-center">
-                      <q-avatar size="60px" style="filter: blur(6px);">
+                      <q-avatar size="45px" style="filter: blur(6px);">
                         <q-img :src="childComment.commentUserAvatar"/>
                       </q-avatar>
-                      <q-avatar size="55px" style="margin-top: -57.5px">
+                      <q-avatar size="40px" style="margin-top: -42.5px">
                         <q-img :src="childComment.commentUserAvatar"/>
                       </q-avatar>
                     </div>
                   </div>
                   <div class="col-10">
                     <div>
-                      <div class="simple-bold-little-title">
+                      <div class="simple-bold-little-title-mini">
                         {{ childComment.commentUserName }}
                         <span class="simple-content-tag">
                   &#32;·&#32;{{ childComment.commentTime }}&#32;·&#32;{{ childComment.ipAddressName }}
                 </span>
                       </div>
                     </div>
-                    <div class="simple-content">
+                    <div class="simple-content-mini">
                       <span v-if=" comment.id !== childComment.mainSubId" class="cask-text-thirdly-color">
                         @{{ childComment.mainSubUserName }}:
                       </span>
                       {{ childComment.commentContent }}
                     </div>
-                    <div class="row justify-end q-mt-md">
+                    <div class="row justify-end">
                       <q-checkbox :model-value="false" @click="updateReplyComment(childComment)"
                                   :label="childComment.replyNum.toString()" unchecked-icon="fa-regular fa-comment"/>
                       <q-checkbox :model-value="1 === childComment.isLike" @click="updateUserLike(childComment)"
