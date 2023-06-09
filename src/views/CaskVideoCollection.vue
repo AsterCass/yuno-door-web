@@ -12,11 +12,12 @@
           <CaskVideoColCard :video-col-data="item"/>
         </div>
       </div>
-      <div v-else>
+      <div v-else-if="!isSearch || 0 === isSearch">
         <div class="q-ma-md" style="height: 320px; width: 180px">
           <CaskVideoColCard :is-empty="true"/>
         </div>
       </div>
+      <div v-else class="q-my-xl"/>
       <q-separator v-if="count !== videoColCategory.length-1" spaced="1.5rem" size="0.05rem"/>
     </div>
   </div>
@@ -26,12 +27,23 @@
 
 <script setup>
 import CaskVideoColCard from "@/components/CaskVideoColCard.vue";
-import {onMounted, onUnmounted, ref} from "vue";
+import {defineProps, onMounted, onUnmounted, ref, watch} from "vue";
 import {getAdminVideoCol, getPersonVideoCol} from "@/api/video";
 import emitter from "@/utils/bus";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData} from "@/utils/store";
-import {customPage, customPageNP} from "@/utils/page";
+import {customPage} from "@/utils/page";
+
+
+const props = defineProps({
+  isSearch: {
+    type: Number,
+    default: 0
+  },
+  videoColNameLike: {
+    type: String,
+  }
+})
 
 //user data
 let userData = ref({
@@ -50,11 +62,16 @@ const videoColCategory = [
   {icon: "fa-solid fa-user", title: "我的视频", refer: myVideoColList},
 ]
 
+//检索视频
+watch(() => props.videoColNameLike, () => {
+  getCateVideo()
+})
+
 //个人视频更新
-function updatePersonVideoCol() {
+function updatePersonVideoCol(searchParam) {
   if (userData.value.id && 0 !== userData.value.id.length) {
     let param = {userId: userData.value.id}
-    getPersonVideoCol(customPage(param)).then(res => {
+    getPersonVideoCol(customPage(Object.assign(param, searchParam))).then(res => {
       if (200 === res.status) {
         myVideoColList.value = res.data
       }
@@ -64,17 +81,21 @@ function updatePersonVideoCol() {
 
 //种类视频
 function getCateVideo() {
-  getAdminVideoCol(customPageNP(0, 100)).then(res => {
+  let searchParam = {}
+  if (props.videoColNameLike) {
+    searchParam = {videoColName: props.videoColNameLike}
+  }
+  getAdminVideoCol(customPage(searchParam, 0, 100)).then(res => {
     if (200 === res.status) {
       adminVideoColList.value = res.data
     }
   })
-  getPersonVideoCol().then(res => {
+  getPersonVideoCol(searchParam).then(res => {
     if (200 === res.status) {
       publicVideoColList.value = res.data
     }
   })
-  updatePersonVideoCol()
+  updatePersonVideoCol(searchParam)
 }
 
 

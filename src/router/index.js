@@ -85,6 +85,10 @@ const router = createRouter({
                     meta: {
                         title: '视频库'
                     },
+                    props: ($route) => ({
+                        isSearch: Number($route.query.isSearch),
+                        videoColNameLike: $route.query.videoColNameLike,
+                    }),
                 },
                 {
                     path: 'play',

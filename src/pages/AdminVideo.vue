@@ -19,11 +19,11 @@
 
         <q-space/>
 
-        <q-input class="cask-video-search" dense standout="bg-green-10" v-model="search"
-                 placeholder="当前页面还在开发中...">
+        <q-input class="cask-video-search" dense standout="bg-green-10" v-model="searchColNameLike"
+                 placeholder="名称检索" @keyup.enter="searchVideoCollection">
           <template v-slot:prepend>
-            <q-icon v-if="search === ''" name="search"/>
-            <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''"/>
+            <q-icon v-if="searchColNameLike === ''" name="search"/>
+            <q-icon v-else name="clear" class="cursor-pointer" @click="clearVideoCollection"/>
           </template>
         </q-input>
 
@@ -142,7 +142,7 @@ function videoColWarningNotify(notifyMessage) {
 
 //variable
 let leftDrawerOpen = ref(false)
-let search = ref('')
+let searchColNameLike = ref('')
 //user data
 let userData = ref({
   id: "",
@@ -221,6 +221,28 @@ function playVideoList(id) {
         query: {colId: id, vdoId: data[0].id}
       })
     }
+  })
+}
+
+//检索视频
+function searchVideoCollection() {
+  if (searchColNameLike.value) {
+    thisRouter.push({
+      path: "/video/collection",
+      query: {isSearch: 1, videoColNameLike: searchColNameLike.value}
+    })
+  } else {
+    thisRouter.push({
+      path: "/video/collection"
+    })
+  }
+}
+
+//取消检索
+function clearVideoCollection() {
+  searchColNameLike.value = ''
+  thisRouter.push({
+    path: "/video/collection"
   })
 }
 
