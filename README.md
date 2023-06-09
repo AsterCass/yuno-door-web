@@ -53,7 +53,7 @@
 * pinia：本地存储
 * qs：接口调用序列化
 * quasar：ui美化
-* video.js：视频样式分装（暂未用到）
+* video.js：视频样式封装（暂未用到）
 * vue：vue
 * vue-router：vue
 
