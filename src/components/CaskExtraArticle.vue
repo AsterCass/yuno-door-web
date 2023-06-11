@@ -69,6 +69,9 @@ let smallScreen = ref(false)
 let privateMetaData = ref({
   id: ''
 })
+//页面基础元素
+let baseElement = ref({})
+//内容
 let privateContent = ref("")
 //导航信息
 let titleAnchorData = ref([])
@@ -113,9 +116,16 @@ onMounted(() => {
   window.addEventListener("resize", screenEventHandler);
   //获取隐私文章数据
   getPrivateMeta()
+  //该页面所有链接均打开新标签，不在本页面打开，目的兼容markdown语法
+  let base = document.createElement("base")
+  base.setAttribute("target", "_blank")
+  document.querySelector('head').append(base)
+  baseElement.value = base
 })
 
 onUnmounted(() => {
+  //删除页面标签基础标签
+  document.querySelector('head').removeChild(baseElement.value)
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);
   //取消底色渲染
