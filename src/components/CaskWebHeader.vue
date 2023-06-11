@@ -9,6 +9,11 @@
       </div>
       <div class="col-4 row justify-center">
         <q-toolbar-title shrink>Aster Casc</q-toolbar-title>
+        <q-btn class="q-mr-md" flat dense stack icon="fa-solid fa-sitemap" to="/profile">
+          <q-tooltip class="roboto-slab normal-letter-span bg-secondary" :offset="[0, 5]">
+            Website Profile
+          </q-tooltip>
+        </q-btn>
       </div>
       <div class="col-4 row justify-end">
         <LoginUserAvatar/>
@@ -36,6 +41,7 @@ defineProps({
 @import "@/styles/cask.sass";
 @import "@/styles/cask-dialog-style.scss";
 @import "@/styles/cask-primary-style.scss";
+@import "@/styles/cask-little-mini-style.scss";
 
 
 </style>

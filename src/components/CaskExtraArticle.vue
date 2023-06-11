@@ -47,7 +47,7 @@
 <script setup>
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
 import {getBlogContent, getBlogList} from "@/api/article";
 import {customPage} from "@/utils/page";
 import {marked} from "marked";
@@ -55,10 +55,17 @@ import {decrypt} from "@/utils/crypto";
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
-let smallScreen = ref(false)
-let privateArticleParam = ref({
-  articleType: 3
+
+const props = defineProps({
+  articleParam: {
+    type: Object,
+    default: () => {
+      return {articleType: 3}
+    },
+  }
 })
+
+let smallScreen = ref(false)
 let privateMetaData = ref({
   id: ''
 })
@@ -77,7 +84,7 @@ function anchorTogo(id) {
 }
 
 function getPrivateMeta() {
-  getBlogList(customPage(privateArticleParam.value, 0, 1)).then(res => {
+  getBlogList(customPage(props.articleParam, 0, 1)).then(res => {
     privateMetaData.value = res.data.data[0]
     titleAnchorData.value = headToHtmlTag(privateMetaData.value)
     getBlogContent({id: privateMetaData.value.id}).then(res => {
@@ -115,6 +122,7 @@ onUnmounted(() => {
   removeStyle("background-color: rgb(239, 242, 245)")
 })
 
+
 </script>
 
 <style scoped lang="scss">
@@ -134,6 +142,5 @@ onUnmounted(() => {
 .privacy-content {
   min-height: 50rem;
 }
-
 
 </style>
