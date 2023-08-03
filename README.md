@@ -46,7 +46,8 @@
 * core-js：base
 * crypto-js：解密
 * dplayer：播放器封装
-* highlight.js：markdown解析高亮
+* highlight.js：markdown解析代码高亮
+* marked-highlight: markdown解析代码高亮
 * marked：markdown解析
 * mitt：事件总线
 * patch-package：源码补丁

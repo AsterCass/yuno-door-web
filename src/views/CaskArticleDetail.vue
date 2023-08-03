@@ -82,7 +82,8 @@
 import {computed, ref, onMounted, defineProps, onUnmounted} from "vue";
 import {getBlogContent, getBlogMeta, getBlogList} from "@/api/article";
 import {marked} from "marked";
-import hljs from "highlight.js";
+import {markedHighlight} from "marked-highlight";
+import hljs from 'highlight.js';
 import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {customPageNP} from "@/utils/page";
@@ -99,6 +100,18 @@ const props = defineProps({
 })
 //无数据跳转
 const thisRouter = useRouter()
+//marked 初始化
+marked.use(markedHighlight({
+  langPrefix: 'hljs language-',
+  highlight(code, lang) {
+    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+    return hljs.highlight(code, { language }).value;
+  }
+}));
+marked.use({
+  mangle: false,
+  headerIds: false
+});
 //基础数据
 let blogContent = ref("")
 let blogMeta = ref({
@@ -237,13 +250,7 @@ function getBlogMetaMethod() {
 
 //markdown转html
 const markdownToHtml = computed(() => {
-  return marked(blogContent.value,
-      {
-        "highlight": function (markdown) {
-          return hljs.highlightAuto(markdown).value
-        }
-      }
-  )
+  return marked.parse(blogContent.value)
 })
 
 //受通知屏幕改变事件
