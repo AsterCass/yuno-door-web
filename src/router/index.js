@@ -4,7 +4,7 @@ import AdminArticleList from "@/pages/AdminArticleList.vue";
 import AdminArticleDetail from "@/pages/AdminArticleDetail.vue";
 import AdminEssayList from "@/pages/AdminEssayList.vue";
 import NotFound from "@/pages/NotFound.vue";
-import PrivacyPolicy from "@/views/PrivacyPolicy.vue";
+import AdminPrivacyPolicy from "@/pages/AdminPrivacyPolicy.vue";
 import AdminSpace from "@/pages/AdminSpace.vue";
 import NotLogin from "@/pages/NotLogin.vue";
 import CaskVideoCollection from "@/views/CaskVideoCollection.vue";
@@ -12,6 +12,7 @@ import CaskVideoPlay from "@/views/CaskVideoPlay.vue";
 import AdminVideo from "@/pages/AdminVideo.vue";
 import NotAuth from "@/pages/NotAuth.vue";
 import AdminTest from "@/pages/AdminTest.vue";
+import AdminProfile from "@/pages/AdminProfile.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -59,10 +60,18 @@ const router = createRouter({
         },
         {
             path: '/privacy',
-            name: 'privacyPolicy',
-            component: PrivacyPolicy,
+            name: 'adminPrivacyPolicy',
+            component: AdminPrivacyPolicy,
             meta: {
                 title: '隐私政策'
+            }
+        },
+        {
+            path: '/profile',
+            name: 'adminProfile',
+            component: AdminProfile,
+            meta: {
+                title: '网站简介'
             }
         },
         {

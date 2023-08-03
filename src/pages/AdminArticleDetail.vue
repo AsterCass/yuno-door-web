@@ -50,6 +50,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  //删除页面标签基础标签
   document.querySelector('head').removeChild(baseElement.value)
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);

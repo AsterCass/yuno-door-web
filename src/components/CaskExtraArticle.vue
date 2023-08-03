@@ -47,7 +47,7 @@
 <script setup>
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
 import {getBlogContent, getBlogList} from "@/api/article";
 import {customPage} from "@/utils/page";
 import {marked} from "marked";
@@ -55,13 +55,23 @@ import {decrypt} from "@/utils/crypto";
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 
-let smallScreen = ref(false)
-let privateArticleParam = ref({
-  articleType: 3
+
+const props = defineProps({
+  articleParam: {
+    type: Object,
+    default: () => {
+      return {articleType: 3}
+    },
+  }
 })
+
+let smallScreen = ref(false)
 let privateMetaData = ref({
   id: ''
 })
+//页面基础元素
+let baseElement = ref({})
+//内容
 let privateContent = ref("")
 //导航信息
 let titleAnchorData = ref([])
@@ -77,7 +87,7 @@ function anchorTogo(id) {
 }
 
 function getPrivateMeta() {
-  getBlogList(customPage(privateArticleParam.value, 0, 1)).then(res => {
+  getBlogList(customPage(props.articleParam, 0, 1)).then(res => {
     privateMetaData.value = res.data.data[0]
     titleAnchorData.value = headToHtmlTag(privateMetaData.value)
     getBlogContent({id: privateMetaData.value.id}).then(res => {
@@ -106,14 +116,22 @@ onMounted(() => {
   window.addEventListener("resize", screenEventHandler);
   //获取隐私文章数据
   getPrivateMeta()
+  //该页面所有链接均打开新标签，不在本页面打开，目的兼容markdown语法
+  let base = document.createElement("base")
+  base.setAttribute("target", "_blank")
+  document.querySelector('head').append(base)
+  baseElement.value = base
 })
 
 onUnmounted(() => {
+  //删除页面标签基础标签
+  document.querySelector('head').removeChild(baseElement.value)
   //删除屏幕改变事件
   window.removeEventListener("resize", screenEventHandler);
   //取消底色渲染
   removeStyle("background-color: rgb(239, 242, 245)")
 })
+
 
 </script>
 
@@ -134,6 +152,5 @@ onUnmounted(() => {
 .privacy-content {
   min-height: 50rem;
 }
-
 
 </style>
