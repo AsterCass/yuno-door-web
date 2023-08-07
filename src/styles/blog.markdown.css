@@ -56,6 +56,7 @@
     color: #c5c7c8 !important;
     padding: 1em 1.5em !important;
     margin: 0.5rem 0 !important;
+    white-space : pre-wrap !important;
 }
 
 .blogMarkDown code {

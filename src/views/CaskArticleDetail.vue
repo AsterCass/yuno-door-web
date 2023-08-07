@@ -1,5 +1,15 @@
 <template>
   <div class="row justify-center article-layout">
+
+    <q-dialog v-model="picShow" position="left">
+      <q-card style="max-width: 2000px; margin-left:30px; border-radius: 30px; background-color: #8F9193">
+        <q-toolbar style="padding: 0">
+          <q-img :height="picHeight" :width="picWidth" fit="contain" :src="picSrc">
+          </q-img>
+        </q-toolbar>
+      </q-card>
+    </q-dialog>
+
     <div class="col-4 row justify-end">
       <q-scroll-area class="article-anchors" delay="100" :hidden="!innerExtendVisible">
         <div :hidden="hiddenTitleAnchors">
@@ -38,6 +48,7 @@
         </div>
       </q-scroll-area>
     </div>
+
     <div class="row"
          :class="{
       'col-12 justify-center': !innerExtendVisible,
@@ -75,6 +86,7 @@
 
 
     </div>
+
   </div>
 </template>
 
@@ -91,6 +103,7 @@ import {customPageNP} from "@/utils/page";
 import emitter from "@/utils/bus";
 import {useRouter} from "vue-router";
 import CaskCommentTree from "@/components/CaskCommentTree.vue";
+import {sleep} from "@/utils/sleep";
 
 
 const props = defineProps({
@@ -105,6 +118,9 @@ const thisRouter = useRouter()
 marked.use(markedHighlight({
   langPrefix: 'hljs language-',
   highlight(code, lang) {
+    //correct
+    lang = lang === 'mysql' ? 'sql' : lang
+    //convert
     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
     return hljs.highlight(code, {language}).value;
   }
@@ -124,6 +140,11 @@ let blogMeta = ref({
   articleBrief: "description",
   articleKeyList: [],
 })
+//图片展示
+let picShow = ref(false)
+let picSrc = ref('')
+let picHeight = ref('')
+let picWidth = ref('')
 //导航信息
 let titleAnchorsNum = ref(0)
 let titleAnchorData = ref([])
@@ -252,8 +273,35 @@ function getBlogMetaMethod() {
 
 //markdown转html
 const markdownToHtml = computed(() => {
-  return marked.parse(blogContent.value)
+  const html = marked.parse(blogContent.value)
+  buildImgFormat()
+  return html
 })
+
+
+async function buildImgFormat() {
+  await sleep(1000);
+  let imgList = document.getElementsByTagName("img");
+  for (let i = 0; i < imgList.length; i++) {
+    if (imgList[i].classList.length > 0) {
+      continue
+    }
+    imgList[i].onclick = function () {
+      picSrc.value = imgList[i].src
+      const picWidthHeightRatio = imgList[i].width / imgList[i].height
+      let picH = 0.8 * document.documentElement.clientHeight;
+      let picW = picH * picWidthHeightRatio
+      if (picW > 0.8 * document.documentElement.clientWidth) {
+        picW = 0.8 * document.documentElement.clientWidth
+        picH = picW / picWidthHeightRatio
+      }
+      picHeight.value = Math.round(picH) + 'px'
+      picWidth.value = Math.round(picW) + 'px'
+      console.log(picHeight.value, picWidth.value)
+      picShow.value = true
+    }
+  }
+}
 
 //受通知屏幕改变事件
 function adminArticleResizeEven(extendVisible) {
