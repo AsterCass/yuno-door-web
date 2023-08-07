@@ -93,10 +93,7 @@
 <script setup>
 import {computed, ref, onMounted, defineProps, onUnmounted} from "vue";
 import {getBlogContent, getBlogMeta, getBlogList} from "@/api/article";
-import {marked} from "marked";
-import {gfmHeadingId} from "marked-gfm-heading-id";
-import {markedHighlight} from "marked-highlight";
-import hljs from 'highlight.js';
+import {marked} from "@/utils/marked-factory";
 import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {customPageNP} from "@/utils/page";
@@ -114,22 +111,6 @@ const props = defineProps({
 })
 //无数据跳转
 const thisRouter = useRouter()
-//marked 初始化
-marked.use(markedHighlight({
-  langPrefix: 'hljs language-',
-  highlight(code, lang) {
-    //correct
-    lang = lang === 'mysql' ? 'sql' : lang
-    //convert
-    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-    return hljs.highlight(code, {language}).value;
-  }
-}));
-marked.use(gfmHeadingId({}));
-marked.use({
-  mangle: false,
-  headerIds: false
-});
 //基础数据
 let blogContent = ref("")
 let blogMeta = ref({
@@ -299,6 +280,7 @@ async function buildImgFormat() {
       picWidth.value = Math.round(picW) + 'px'
       picShow.value = true
     }
+    imgList[i].style.cursor = 'zoom-in'
   }
 }
 
@@ -319,8 +301,6 @@ function checkData(data) {
 }
 
 onMounted(() => {
-  //markdown代码渲染
-  hljs.highlightAll()
   //获取文章元数据
   getBlogMetaMethod()
   //受通知屏幕改变事件

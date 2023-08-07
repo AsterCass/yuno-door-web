@@ -50,11 +50,10 @@ import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
 import {getBlogContent, getBlogList} from "@/api/article";
 import {customPage} from "@/utils/page";
-import {marked} from "marked";
+import {marked} from "@/utils/marked-factory";
 import {decrypt} from "@/utils/crypto";
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-
 
 const props = defineProps({
   articleParam: {
@@ -65,6 +64,7 @@ const props = defineProps({
   }
 })
 
+//screen
 let smallScreen = ref(false)
 let privateMetaData = ref({
   id: ''
@@ -72,7 +72,7 @@ let privateMetaData = ref({
 //页面基础元素
 let baseElement = ref({})
 //内容
-let privateContent = ref("")
+let thisContent = ref("")
 //导航信息
 let titleAnchorData = ref([])
 
@@ -92,7 +92,7 @@ function getPrivateMeta() {
     titleAnchorData.value = headToHtmlTag(privateMetaData.value)
     getBlogContent({id: privateMetaData.value.id}).then(res => {
       decrypt(res.data).then(text => {
-            privateContent.value = text
+            thisContent.value = text
           }
       )
     })
@@ -100,7 +100,7 @@ function getPrivateMeta() {
 }
 
 const markdownToHtml = computed(() => {
-  return marked(privateContent.value)
+  return marked.parse(thisContent.value)
 })
 
 function screenEventHandler() {
