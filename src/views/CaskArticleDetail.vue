@@ -297,7 +297,6 @@ async function buildImgFormat() {
       }
       picHeight.value = Math.round(picH) + 'px'
       picWidth.value = Math.round(picW) + 'px'
-      console.log(picHeight.value, picWidth.value)
       picShow.value = true
     }
   }
