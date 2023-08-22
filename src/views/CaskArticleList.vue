@@ -119,7 +119,7 @@ onUnmounted(() => {
   color: $cask_dark_jungle_green
   margin-bottom: 1rem
   font-weight: 400
-  max-width: 30%
+  max-width: 50%
 
 .admin-article-list-head
   font-family: Roboto Slab, sans-serif
