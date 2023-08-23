@@ -93,7 +93,7 @@
 <script setup>
 import {computed, ref, onMounted, defineProps, onUnmounted} from "vue";
 import {getBlogContent, getBlogMeta, getBlogList} from "@/api/article";
-import {marked} from "@/utils/marked-factory";
+import {marked, importStyle} from "@/utils/marked-factory";
 import {decrypt} from '@/utils/crypto'
 import {headToHtmlTag} from "@/utils/head-to-html-tag";
 import {customPageNP} from "@/utils/page";
@@ -301,6 +301,8 @@ function checkData(data) {
 }
 
 onMounted(() => {
+  //随机导入code样式
+  importStyle()
   //获取文章元数据
   getBlogMetaMethod()
   //受通知屏幕改变事件
@@ -321,7 +323,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 @import "@/styles/blog.markdown.css";
 @import "@/styles/cask-primary-style.scss";
-@import "../../node_modules/highlight.js/styles/hybrid.css";
+//@import "../../node_modules/highlight.js/styles/codepen-embed.css";
 
 .article-layout {
   padding: 12% 2% 5% 2%
