@@ -79,11 +79,13 @@ let titleAnchorData = ref([])
 //导航跳转
 function anchorTogo(id) {
   const target = document.getElementById(id);
-  target.scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-    inline: "nearest",
-  });
+  if (target) {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
+  }
 }
 
 function getPrivateMeta() {

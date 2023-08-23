@@ -82,11 +82,13 @@ function onIntersection(entry) {
 
 function togo(id) {
   const target = document.getElementById(id);
-  target.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-    inline: "nearest",
-  });
+  if(target) {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
+  }
 }
 
 //载入完成

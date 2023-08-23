@@ -184,11 +184,13 @@ function refreshUserDataEventVideoPlay(data) {
 //播放集数居中
 function videoItemGo(id) {
   const target = document.getElementById(id);
-  target.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-    inline: "nearest",
-  });
+  if(target){
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
+  }
 }
 
 //屏幕改变事件

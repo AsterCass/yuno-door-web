@@ -152,11 +152,13 @@ let articleContextFinish = ref(false)
 //跳转
 function togo(id) {
   const target = document.getElementById(id);
-  target.scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-    inline: "nearest",
-  });
+  if(target) {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
+  }
 }
 
 //文章标签渲染

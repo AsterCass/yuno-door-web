@@ -19,7 +19,7 @@ export function headToHtmlTag(meta) {
             //value
             headTag.value = heads[index]
                 .title.replace(".", "")
-                .replace(/[@$)]/g, "")
+                .replace(/[@$)，（）]/g, "")
                 .replace(/[( ]/g, "-")
                 .toLowerCase()
             headTags.push(headTag)

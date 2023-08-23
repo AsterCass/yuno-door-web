@@ -30,7 +30,6 @@ const styleEnums = [
 function importStyle() {
     const random = Math.floor(Math.random() * 10000)
     const randomStyle = styleEnums[random % styleEnums.length]
-    console.log(randomStyle)
     import('../../node_modules/highlight.js/styles/' + randomStyle + '.css')
 }
 
