@@ -5,12 +5,12 @@
         <a target="_blank" href="https://beian.miit.gov.cn/">浙ICP备2022023127号</a>
       </li>
       <li>
-        <q-icon name="fa-brands fa-weibo"/>
-        新浪微博: <a target="_blank" href="https://weibo.com/u/5177219464">AsterCass</a>
-      </li>
-      <li>
         <q-icon name="eva-github"/>
         Github: <a target="_blank" href="https://github.com/AsterCass?tab=repositories">AsterCass</a>
+      </li>
+      <li>
+        <q-icon name="fa-solid fa-envelope"/>
+        Mail: astercass@qq.com
       </li>
       <li>
         <q-icon name="fa-brands fa-qq"/>
