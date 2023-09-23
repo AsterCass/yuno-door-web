@@ -3,9 +3,43 @@
     <q-toolbar class="row justify-between">
       <div class="col-4 row justify-start">
         <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" to="/"/>
+        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="artic" to="/article/list"/>
         <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book-bookmark" label="essay" to="/essay/list"/>
-        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="article" to="/article/list"/>
         <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-clapperboard" label="video" to="/video/collection"/>
+
+        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-toolbox" label="kit"
+               v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave">
+
+
+          <q-menu :model-value="kitMenuShow"
+                  v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave"
+                  style="background-color:rgba(0,0,0,0);box-shadow:none;backdrop-filter: none"
+                  transition-hide="fade" transition-duration="800" no-parent-event
+                  self="top middle" :offset="[-100, 3]">
+
+            <q-item>
+              <q-card class="header-kit-card row q-pa-sm">
+
+                <i class=""></i>
+
+
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-brands fa-square-steam" label="Steam游戏查询" @click="headerKitInDeveloping"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-face-grin-tongue-wink" label="表情包电子包浆" @click="headerKitInDeveloping"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-object-group" label="Java对象转换" @click="headerKitInDeveloping"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-scissors" label="audio在线剪辑" @click="headerKitInDeveloping"/>
+
+              </q-card>
+            </q-item>
+
+          </q-menu>
+
+
+        </q-btn>
+
       </div>
       <div class="col-4 row justify-center">
         <q-toolbar-title shrink>Aster Casc</q-toolbar-title>
@@ -25,8 +59,12 @@
 
 <script setup>
 import LoginUserAvatar from "@/components/LoginUserAvatar.vue";
-import {defineProps} from "vue";
+import {defineProps, ref} from "vue";
+import {delay} from "@/utils/delay-exe";
+import {useQuasar} from "quasar";
 
+//notify
+const notify = useQuasar().notify
 
 defineProps({
   headerVisible: {
@@ -35,13 +73,59 @@ defineProps({
   }
 })
 
+
+//user menu
+let onKitZone = ref(false)
+let kitMenuShow = ref(false)
+
+
+//感知菜单鼠标进入事件
+function kitMenuTouchOver() {
+  onKitZone.value = true
+  kitMenuShow.value = onKitZone.value
+}
+
+//感知菜单鼠标离开事件
+function kitMenuTouchLeave() {
+  onKitZone.value = false
+  delay(200).then(() => {
+    kitMenuShow.value = onKitZone.value
+  })
+}
+
+//功能正在开发中
+function headerKitInDeveloping() {
+  notify({
+    color: "cyan-9",
+    message: "该功能正在开发中...",
+    position: 'top-left',
+    type: 'info',
+    timeout: 2000
+  })
+}
+
+
 </script>
 
-<style lang="scss" scoped>
-@import "@/styles/cask.sass";
-@import "@/styles/cask-dialog-style.scss";
-@import "@/styles/cask-primary-style.scss";
-@import "@/styles/cask-little-mini-style.scss";
+<style lang="sass" scoped>
+@import "@/styles/cask.sass"
+@import "@/styles/cask-dialog-style.scss"
+@import "@/styles/cask-primary-style.scss"
+@import "@/styles/cask-little-mini-style.scss"
+
+
+.header-kit-card
+  color: $cask_base_black
+  background-color: rgba(255, 255, 255, 0.8)
+  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
+  backdrop-filter: saturate(200%) blur(30px)
+  border-radius: 1rem
+  font-size: 0.1rem
+  font-family: Roboto Slab, sans-serif
+  line-height: 1.625
+  margin: 5%
+  width: 300px
+  min-height: 150px
 
 
 </style>

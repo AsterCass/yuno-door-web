@@ -156,7 +156,6 @@ onUnmounted(() => {
 
 .user-data-card
   color: $cask_dark_jungle_green
-
   background-image: linear-gradient(#4DB7AC 50%, white)
   box-shadow: 5 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05)
   border-radius: 1rem
