@@ -13,6 +13,7 @@ import AdminVideo from "@/pages/AdminVideo.vue";
 import NotAuth from "@/pages/NotAuth.vue";
 import AdminTest from "@/pages/AdminTest.vue";
 import AdminProfile from "@/pages/AdminProfile.vue";
+import AdminSteamSearch from "@/pages/AdminSteamSearch.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -48,6 +49,19 @@ const router = createRouter({
                         title: '技术备录'
                     },
                 }
+            ]
+        },
+        {
+            path: "/steam",
+            children: [
+                {
+                    path: 'search',
+                    name: "adminSteamSearch",
+                    component: AdminSteamSearch,
+                    meta: {
+                        title: 'Steam游戏检索'
+                    },
+                },
             ]
         },
         {

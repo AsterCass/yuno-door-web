@@ -8,7 +8,7 @@
     <q-input
         rounded
         outlined
-        placeholder="输入查询文章关键词"
+        :placeholder="searchPlaceholder"
         v-model="text"
         @keyup.enter="search"
         class="col-12 article-list-search-input"
@@ -20,8 +20,15 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {defineProps, ref} from "vue";
 import emitter from '@/utils/bus';
+
+defineProps({
+  searchPlaceholder: {
+    type: String,
+    default: "输入查询文章关键词"
+  }
+})
 
 let text = ref("")
 
@@ -51,9 +58,14 @@ function search() {
 
 <style lang="sass" scoped>
 
+</style>
+
+<style lang="sass">
+
 .article-list-search-input
   border-radius: 30px
-  font-size: 1rem
+  font-size: 1.1rem !important
+  font-family: Roboto Slab, sans-serif
   line-height: 1.625
   height: 2rem
   background-color: rgba(255, 255, 255, 0.8)
@@ -61,7 +73,10 @@ function search() {
   backdrop-filter: saturate(200%) blur(30px)
 
   .q-field__native
+    font-weight: 550
+    color: rgba(0, 0, 0, 0.75)
     padding: 6px 12px
 
-
 </style>
+
+
