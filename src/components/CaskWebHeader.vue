@@ -20,9 +20,6 @@
             <q-item>
               <q-card class="header-kit-card row q-pa-sm">
 
-                <i class=""></i>
-
-
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-brands fa-square-steam" label="Steam游戏查询" @click="headerKitInDeveloping"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
@@ -30,7 +27,7 @@
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-solid fa-object-group" label="Java对象转换" @click="headerKitInDeveloping"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
-                       icon="fa-solid fa-scissors" label="audio在线剪辑" @click="headerKitInDeveloping"/>
+                       icon="fa-solid fa-scissors" label="Audio在线剪辑" @click="headerKitInDeveloping"/>
 
               </q-card>
             </q-item>
@@ -120,7 +117,7 @@ function headerKitInDeveloping() {
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
   backdrop-filter: saturate(200%) blur(30px)
   border-radius: 1rem
-  font-size: 0.1rem
+
   font-family: Roboto Slab, sans-serif
   line-height: 1.625
   margin: 5%
