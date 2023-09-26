@@ -152,7 +152,7 @@ function fabKitInDeveloping() {
 .q-fab-bt {
   color: rgba($cask_dune, 0.9);
   background-color: white;
-  margin-bottom: 15rem;
+  margin-bottom: 18rem;
   //opacity: 0.9;
 }
 
