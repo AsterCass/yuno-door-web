@@ -11,7 +11,7 @@
     </q-dialog>
 
     <div class="col-4 row justify-end">
-      <q-scroll-area class="article-anchors" delay="100" :hidden="!innerExtendVisible">
+      <q-scroll-area class="article-anchors" delay="100" :hidden="hiddenNavigation || !innerExtendVisible">
         <div :hidden="hiddenTitleAnchors">
           <h1>导航</h1>
           <q-list>
@@ -101,6 +101,7 @@ import emitter from "@/utils/bus";
 import {useRouter} from "vue-router";
 import CaskCommentTree from "@/components/CaskCommentTree.vue";
 import {sleep} from "@/utils/sleep";
+import {delay} from "@/utils/delay-exe";
 
 
 const props = defineProps({
@@ -109,6 +110,9 @@ const props = defineProps({
     default: "AT123"
   },
 })
+
+//等待左侧导航信息完全加载完后显示，防止抖动
+let hiddenNavigation = ref(true)
 //无数据跳转
 const thisRouter = useRouter()
 //基础数据
@@ -152,7 +156,7 @@ let articleContextFinish = ref(false)
 //跳转
 function togo(id) {
   const target = document.getElementById(id);
-  if(target) {
+  if (target) {
     target.scrollIntoView({
       behavior: "smooth",
       block: "center",
@@ -250,6 +254,10 @@ function getBlogMetaMethod() {
       hiddenRefAnchors.value = shortfallAnchorsNum.value <= 0 && titleRefNum.value <= 0
       //当标题或者推荐任意一个隐藏时，隐藏分隔符
       hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
+      //等待左侧导航信息完全加载完后显示，防止抖动
+      delay(50).then(() => {
+        hiddenNavigation.value = false
+      })
     }
   })
 }
