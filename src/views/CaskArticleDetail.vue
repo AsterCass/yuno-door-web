@@ -255,7 +255,7 @@ function getBlogMetaMethod() {
       //当标题或者推荐任意一个隐藏时，隐藏分隔符
       hiddenSep.value = hiddenRefAnchors.value || hiddenTitleAnchors.value
       //等待左侧导航信息完全加载完后显示，防止抖动
-      delay(200).then(() => {
+      delay(50).then(() => {
         hiddenNavigation.value = false
       })
     }
