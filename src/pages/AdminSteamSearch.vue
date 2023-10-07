@@ -14,8 +14,8 @@
     <CaskSearch searchPlaceholder="输入查询游戏名称"/>
 
 
-    <div class="article-list-main">
-      <!--      <CaskArticleList list-name="文章列表" :list-type="1" :hide-tag-enum="false"/>-->
+    <div class="steam-search-list-main">
+      <CaskSteamSearchList/>
     </div>
 
     <CopyrightFooter/>
@@ -31,6 +31,7 @@ import {onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskSearch from "@/components/CaskSearch.vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
+import CaskSteamSearchList from "@/views/CaskSteamSearchList.vue";
 
 onMounted(() => {
   //底色渲染
@@ -51,7 +52,7 @@ onUnmounted(() => {
 .index-img
   z-index: -1
 
-.article-list-main
+.steam-search-list-main
   margin: 5rem 2rem 5rem 2rem
   border-radius: 15px
   background-color: rgba(255, 255, 255, 0.8)

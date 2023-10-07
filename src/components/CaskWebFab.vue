@@ -63,7 +63,7 @@
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
                       label="Steam游戏查询" external-label label-position="bottom"
-                      @click="fabKitInDeveloping" icon="fa-brands fa-square-steam"/>
+                      to="/steam/search" icon="fa-brands fa-square-steam"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
