@@ -1,0 +1,92 @@
+.steam-game-desc {
+    font-size: 1rem;
+    line-height: 1.625;
+    margin-bottom: 0.5rem;
+    font-family: Roboto Slab, sans-serif;
+}
+
+.steam-game-desc-title {
+    font-size: 1.7rem;
+    line-height: 1.375;
+    font-weight: 600;
+    color: black;
+    opacity: .8;
+    margin-bottom: .3rem;
+    margin-top: .3rem;
+    font-family: Roboto Slab, sans-serif;
+    text-transform: unset;
+    text-align: center;
+}
+
+.steam-game-desc h1 {
+    font-size: 1.3rem;
+    color: black;
+    line-height: 1.625;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: .8rem;
+    text-transform: unset;
+}
+
+
+.steam-game-desc h2 {
+    font-size: 1.25rem;
+    color: black;
+    line-height: 1.625;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: .8rem;
+    text-transform: unset;
+}
+
+.steam-game-desc h3 {
+    font-size: 1.2rem;
+    color: black;
+    line-height: 1.625;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: .8rem;
+    text-transform: unset;
+}
+
+.steam-game-desc h4 {
+    font-size: 1.15rem;
+    color: black;
+    line-height: 1.625;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: .8rem;
+    text-transform: unset;
+}
+
+.steam-game-desc h5 {
+    font-size: 1.1rem;
+    color: black;
+    line-height: 1.625;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: .8rem;
+    text-transform: unset;
+}
+
+.steam-game-desc h6 {
+    font-size: 1.05rem;
+    color: black;
+    line-height: 1.625;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: .8rem;
+    text-transform: unset;
+}
+
+.steam-game-desc p {
+    font-size: 1rem;
+    line-height: 1.625;
+    margin-bottom: 0.5rem;
+    text-transform: unset;
+}
+
+
+.steam-game-desc strong {
+    color: #B56536
+}

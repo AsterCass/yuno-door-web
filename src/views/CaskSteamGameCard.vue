@@ -36,7 +36,7 @@
             Steam商店
           </q-btn>
           <q-btn class="admin-steam-game-card-store-btn q-ma-md" no-caps target="_blank"
-                 @click="headerKitInDeveloping">
+                 @click="toShowGameDetail">
             游戏详情
           </q-btn>
 
@@ -52,12 +52,9 @@
 <script setup>
 
 import {defineProps} from "vue";
-import {useQuasar} from "quasar";
+import emitter from "@/utils/bus";
 
-//notify
-const notify = useQuasar().notify
-
-defineProps({
+const props = defineProps({
   gameIntro: {
     steamId: "",
     imageUrl: "",
@@ -69,16 +66,8 @@ defineProps({
   },
 });
 
-
-//功能正在开发中
-function headerKitInDeveloping() {
-  notify({
-    color: "cyan-9",
-    message: "该功能正在开发中...",
-    position: 'top-left',
-    type: 'info',
-    timeout: 2000
-  })
+function toShowGameDetail() {
+  emitter.emit("showGameDetail", props.gameIntro.steamId)
 }
 
 </script>
