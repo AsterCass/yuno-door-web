@@ -11,7 +11,7 @@
              :fit="'cover'">
       </q-img>
     </div>
-    <CaskSearch searchPlaceholder="输入查询游戏名称"/>
+    <CaskSearch searchPlaceholder="输入查询游戏名称（非中文游戏请用英文原名）"/>
 
 
     <div class="steam-search-list-main">

@@ -4,8 +4,14 @@
 
     <q-card-section class="row">
       <div class="admin-steam-game-card-img">
-        <q-img :src="gameIntro.imageUrl" :ratio="32/15"
-               style="border-radius: 1rem" class="shadow-15"/>
+        <q-img :src="gameIntro.imageUrl" :ratio="32/15" alt="some thing"
+               style="border-radius: 1rem" class="shadow-15">
+          <template v-slot:error>
+            <div class="absolute-full flex flex-center admin-steam-game-card-img-not-found">
+              Not Found
+            </div>
+          </template>
+        </q-img>
       </div>
       <div class="col q-ml-md col-12 col-lg">
         <h6 class="col-12">
@@ -20,19 +26,20 @@
             最低国区价格：{{ gameIntro.lowestPrice }} 元
           </div>
           <div>
-            上次最低价格开始时间：{{ gameIntro.lowestPriceTime }}
+            首次最低价格时间：{{ gameIntro.lowestPriceTime }}
           </div>
         </div>
 
         <div class="col-6 row justify-end">
           <q-btn class="admin-steam-game-card-store-btn q-ma-md" no-caps target="_blank"
-                 @click="headerKitInDeveloping">
-            游戏详情
-          </q-btn>
-          <q-btn class=" justify-end  admin-steam-game-card-store-btn q-ma-md" no-caps target="_blank"
                  :href="gameIntro.storeUrl">
             Steam商店
           </q-btn>
+          <q-btn class="admin-steam-game-card-store-btn q-ma-md" no-caps target="_blank"
+                 @click="headerKitInDeveloping">
+            游戏详情
+          </q-btn>
+
         </div>
 
       </div>
@@ -107,6 +114,9 @@ function headerKitInDeveloping() {
   border-radius: 1rem
   width: 25rem
   margin: -1.5rem 0 0  -2rem
+
+.admin-steam-game-card-img-not-found
+  font-size: 2rem
 
 
 .admin-steam-game-card-store-btn
