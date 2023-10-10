@@ -8,11 +8,19 @@ export function gameDetail(steamId) {
     })
 }
 
-export function searchGames(name) {
+export function searchGames(params) {
     return serviceShiro({
         url: `/nezuko/steam/game/search`,
         method: 'get',
-        params: name
+        params: params
+    })
+}
+
+export function checkUrlListAvailable(params) {
+    return serviceShiro({
+        url: `/nezuko/steam/checkUrlList`,
+        method: 'get',
+        params: params
     })
 }
 

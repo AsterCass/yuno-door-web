@@ -126,10 +126,10 @@
 
 import {onMounted, onUnmounted, ref} from "vue";
 import CaskSteamGameCard from "@/views/CaskSteamGameCard.vue";
-import {gameDetail, getPopularGames, searchGames} from "@/api/steam";
+import {gameDetail, getPopularGames, searchGames, checkUrlListAvailable} from "@/api/steam";
 import emitter from "@/utils/bus";
 import {delay} from "@/utils/delay-exe";
-import {useQuasar} from "quasar";
+import {extend, useQuasar} from "quasar";
 
 //notify
 const notify = useQuasar().notify
@@ -165,6 +165,30 @@ let gameDetailData = ref(
     },
 )
 
+function checkImgUrlMethod(searchGameResList) {
+  let urlList = searchGameResList.map(function (game) {
+    return game.imageUrl
+  })
+  let copySearchGameResList = extend(true, [], searchGameResList)
+  for (let gameRes of searchGameResList) {
+    gameRes.imageUrl = ""
+  }
+  let param = {urlList: urlList.join(",")}
+  checkUrlListAvailable(param).then(res => {
+    if (200 === res.status && 200 === res.data.status) {
+      const imgUrlAvailableMap = new Map(Object.entries(res.data.data))
+      const imgConvertMap = new Map();
+      for (let gameRes of copySearchGameResList) {
+        if (imgUrlAvailableMap.get(gameRes.imageUrl)) {
+          imgConvertMap.set(gameRes.steamId, gameRes.imageUrl)
+        }
+      }
+      emitter.emit('checkUrlListAvailableFinishEvent', imgConvertMap)
+    }
+  })
+}
+
+
 function searchPopularGameMethod() {
   getPopularGames().then(res => {
     if (200 === res.status) {
@@ -187,6 +211,7 @@ function searchGameListMethod(searchGameKeyword) {
   searchGames(param).then(res => {
     if (200 === res.status) {
       curGameList.value.push(...res.data.data)
+      checkImgUrlMethod(curGameList.value)
       inLoadData.value = false
     }
   })
@@ -195,6 +220,7 @@ function searchGameListMethod(searchGameKeyword) {
 function showGameDetailMethod(steamId) {
   gameDetailShow.value = true
   inLoadDetailData.value = true
+  gameDetailCurPic.value = 0
   gameDetail(steamId).then(res => {
     if (200 === res.status && 200 === res.data.status) {
       gameDetailData.value = res.data.data

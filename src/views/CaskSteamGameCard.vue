@@ -4,9 +4,9 @@
 
     <q-card-section class="row">
       <div class="admin-steam-game-card-img">
-        <q-img :src="gameIntro.imageUrl" :ratio="32/15" alt="some thing"
+        <q-img :src="checkedImgUrl" :ratio="32/15" alt="some thing"
                style="border-radius: 1rem" class="shadow-15">
-          <template v-slot:error>
+          <template v-slot:loading>
             <div class="absolute-full flex flex-center admin-steam-game-card-img-not-found">
               Not Found
             </div>
@@ -51,7 +51,7 @@
 
 <script setup>
 
-import {defineProps} from "vue";
+import {defineProps, onMounted, onUnmounted, ref} from "vue";
 import emitter from "@/utils/bus";
 
 const props = defineProps({
@@ -66,9 +66,32 @@ const props = defineProps({
   },
 });
 
+let checkedImgUrl = ref("")
+
+
+//如果想在js中直接消除由于链接404导致的控制台报错，参考
+//https://stackoverflow.com/questions/4500741/suppress-chrome-failed-to-load-resource-messages-in-console
+//我看来下，比较麻烦，就在后端处理了，保证前端拿到的url都是后端校验过的
+function checkUrlListAvailableFinishMethod(imgConvertMap) {
+  if (imgConvertMap.get(props.gameIntro.steamId)) {
+    checkedImgUrl.value = imgConvertMap.get(props.gameIntro.steamId)
+  }
+}
+
+
 function toShowGameDetail() {
   emitter.emit("showGameDetail", props.gameIntro.steamId)
 }
+
+onMounted(() => {
+  checkedImgUrl.value = props.gameIntro.imageUrl
+  emitter.on('checkUrlListAvailableFinishEvent', checkUrlListAvailableFinishMethod)
+
+})
+
+onUnmounted(() => {
+  emitter.off('checkUrlListAvailableFinishEvent', checkUrlListAvailableFinishMethod)
+})
 
 </script>
 
