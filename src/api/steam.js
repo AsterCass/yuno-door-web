@@ -16,6 +16,14 @@ export function searchGames(params) {
     })
 }
 
+export function checkUrlAvailable(params) {
+    return serviceShiro({
+        url: `/nezuko/steam/checkUrl`,
+        method: 'get',
+        params: params
+    })
+}
+
 export function checkUrlListAvailable(params) {
     return serviceShiro({
         url: `/nezuko/steam/checkUrlList`,

@@ -6,11 +6,9 @@
       <div class="admin-steam-game-card-img">
         <q-img :src="checkedImgUrl" :ratio="32/15" alt="some thing"
                style="border-radius: 1rem" class="shadow-15">
-          <template v-slot:loading>
-            <div class="absolute-full flex flex-center admin-steam-game-card-img-not-found">
-              Not Found
-            </div>
-          </template>
+          <div v-show="!checkImgUrlRes" class="absolute-full flex flex-center admin-steam-game-card-img-not-found">
+            Not Found
+          </div>
         </q-img>
       </div>
       <div class="col q-ml-md col-12 col-lg">
@@ -51,7 +49,8 @@
 
 <script setup>
 
-import {defineProps, onMounted, onUnmounted, ref} from "vue";
+import {defineProps, onMounted, ref} from "vue";
+import {checkUrlAvailable} from "@/api/steam";
 import emitter from "@/utils/bus";
 
 const props = defineProps({
@@ -64,17 +63,31 @@ const props = defineProps({
     curPrice: 0.0,
     lowestPrice: 0.0,
   },
+  needCheck: {
+    type: Boolean,
+    default: false
+  },
 });
 
 let checkedImgUrl = ref("")
+let checkImgUrlRes = ref(true)
 
 
 //如果想在js中直接消除由于链接404导致的控制台报错，参考
 //https://stackoverflow.com/questions/4500741/suppress-chrome-failed-to-load-resource-messages-in-console
 //我看来下，比较麻烦，就在后端处理了，保证前端拿到的url都是后端校验过的
-function checkUrlListAvailableFinishMethod(imgConvertMap) {
-  if (imgConvertMap.get(props.gameIntro.steamId)) {
-    checkedImgUrl.value = imgConvertMap.get(props.gameIntro.steamId)
+function checkUrlAvailableFinishMethod() {
+  if (props.needCheck) {
+    let param = {url: props.gameIntro.imageUrl}
+    checkUrlAvailable(param).then(res => {
+      if (200 === res.status && 200 === res.data.status && res.data.data) {
+        checkedImgUrl.value = props.gameIntro.imageUrl
+      } else {
+        checkImgUrlRes.value = false
+      }
+    })
+  } else {
+    checkedImgUrl.value = props.gameIntro.imageUrl
   }
 }
 
@@ -84,13 +97,7 @@ function toShowGameDetail() {
 }
 
 onMounted(() => {
-  checkedImgUrl.value = props.gameIntro.imageUrl
-  emitter.on('checkUrlListAvailableFinishEvent', checkUrlListAvailableFinishMethod)
-
-})
-
-onUnmounted(() => {
-  emitter.off('checkUrlListAvailableFinishEvent', checkUrlListAvailableFinishMethod)
+  checkUrlAvailableFinishMethod()
 })
 
 </script>

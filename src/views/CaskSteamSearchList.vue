@@ -104,7 +104,7 @@
 
       <CaskSteamGameCard v-show="!inLoadData" class="col-7 justify-center" style="margin: 0 0 4rem 0;"
                          v-for="item in curGameList" :key="item"
-                         :gameIntro="item">
+                         :gameIntro="item" :need-check="needCheckImgUrl">
       </CaskSteamGameCard>
 
 
@@ -126,10 +126,10 @@
 
 import {onMounted, onUnmounted, ref} from "vue";
 import CaskSteamGameCard from "@/views/CaskSteamGameCard.vue";
-import {gameDetail, getPopularGames, searchGames, checkUrlListAvailable} from "@/api/steam";
+import {gameDetail, getPopularGames, searchGames} from "@/api/steam";
 import emitter from "@/utils/bus";
 import {delay} from "@/utils/delay-exe";
-import {extend, useQuasar} from "quasar";
+import {useQuasar} from "quasar";
 
 //notify
 const notify = useQuasar().notify
@@ -137,6 +137,7 @@ const notify = useQuasar().notify
 let topGameList = ref([])
 let curGameList = ref([])
 let inLoadData = ref(false)
+let needCheckImgUrl = ref(false)
 
 let gameDetailShow = ref(false)
 let gameDetailHeight = ref("0px")
@@ -165,29 +166,6 @@ let gameDetailData = ref(
     },
 )
 
-function checkImgUrlMethod(searchGameResList) {
-  let urlList = searchGameResList.map(function (game) {
-    return game.imageUrl
-  })
-  let copySearchGameResList = extend(true, [], searchGameResList)
-  for (let gameRes of searchGameResList) {
-    gameRes.imageUrl = ""
-  }
-  let param = {urlList: urlList.join(",")}
-  checkUrlListAvailable(param).then(res => {
-    if (200 === res.status && 200 === res.data.status) {
-      const imgUrlAvailableMap = new Map(Object.entries(res.data.data))
-      const imgConvertMap = new Map();
-      for (let gameRes of copySearchGameResList) {
-        if (imgUrlAvailableMap.get(gameRes.imageUrl)) {
-          imgConvertMap.set(gameRes.steamId, gameRes.imageUrl)
-        }
-      }
-      emitter.emit('checkUrlListAvailableFinishEvent', imgConvertMap)
-    }
-  })
-}
-
 
 function searchPopularGameMethod() {
   getPopularGames().then(res => {
@@ -204,6 +182,7 @@ function searchGameListMethod(searchGameKeyword) {
   curGameList.value.splice(0, curGameList.value.length)
   if (!searchGameKeyword) {
     curGameList.value.push(...topGameList.value)
+    needCheckImgUrl.value = false
     inLoadData.value = false
     return
   }
@@ -211,7 +190,7 @@ function searchGameListMethod(searchGameKeyword) {
   searchGames(param).then(res => {
     if (200 === res.status && 200 === res.data.status) {
       curGameList.value.push(...res.data.data)
-      checkImgUrlMethod(curGameList.value)
+      needCheckImgUrl.value = true
       inLoadData.value = false
     }
   })
