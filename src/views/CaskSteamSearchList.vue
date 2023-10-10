@@ -209,7 +209,7 @@ function searchGameListMethod(searchGameKeyword) {
   }
   let param = {name: searchGameKeyword}
   searchGames(param).then(res => {
-    if (200 === res.status) {
+    if (200 === res.status && 200 === res.data.status) {
       curGameList.value.push(...res.data.data)
       checkImgUrlMethod(curGameList.value)
       inLoadData.value = false
