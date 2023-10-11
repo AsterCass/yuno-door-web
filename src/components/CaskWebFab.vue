@@ -61,19 +61,19 @@
       >
 
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
                       label="Steam游戏查询" external-label label-position="bottom"
                       to="/steam/search" icon="fa-brands fa-square-steam"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
+                      label="SQL生成Kotlin类" external-label label-position="bottom"
+                      to="/code/generator" icon="fa-solid fa-object-group"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
-                      label="Java对象转换" external-label label-position="bottom"
-                      @click="fabKitInDeveloping" icon="fa-solid fa-object-group"/>
-        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
                       label="Audio在线剪辑" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
       </q-fab>

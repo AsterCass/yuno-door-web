@@ -14,6 +14,7 @@ import NotAuth from "@/pages/NotAuth.vue";
 import AdminTest from "@/pages/AdminTest.vue";
 import AdminProfile from "@/pages/AdminProfile.vue";
 import AdminSteamSearch from "@/pages/AdminSteamSearch.vue";
+import AdminCodeGenerator from "@/pages/AdminCodeGenerator.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -63,6 +64,14 @@ const router = createRouter({
                     },
                 },
             ]
+        },
+        {
+            path: '/code/generator',
+            name: 'adminCodeGenerator',
+            component: AdminCodeGenerator,
+            meta: {
+                title: '代码生成'
+            }
         },
         {
             path: '/essay/list',

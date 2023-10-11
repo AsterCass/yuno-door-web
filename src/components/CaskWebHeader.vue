@@ -23,9 +23,9 @@
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-brands fa-square-steam" label="Steam游戏查询" to="/steam/search"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
-                       icon="fa-solid fa-face-grin-tongue-wink" label="表情包电子包浆" @click="headerKitInDeveloping"/>
+                       icon="fa-solid fa-object-group" label="SQL生成Kotlin类" to="/code/generator"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
-                       icon="fa-solid fa-object-group" label="Java对象转换" @click="headerKitInDeveloping"/>
+                       icon="fa-solid fa-face-grin-tongue-wink" label="表情包电子包浆" @click="headerKitInDeveloping"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-solid fa-scissors" label="Audio在线剪辑" @click="headerKitInDeveloping"/>
 
