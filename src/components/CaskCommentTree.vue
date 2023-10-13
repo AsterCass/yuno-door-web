@@ -115,10 +115,10 @@
             </div>
           </div>
           <q-input :placeholder="0 === commentOriginObj.sum ? '还没有人评论，快来占沙发吧' : '你们说的都不对，我来'"
-                   borderless hide-bottom-space lazy-rules
+                   borderless hide-bottom-space lazy-rules autogrow
                    :input-style="{boxShadow: '0 0 5px 5px #2B5853',
                    backgroundImage: 'linear-gradient(195deg, #447550, #2B5853 50%)',
-                   borderRadius: '12px', padding: '1.2rem', fontSize: '1rem',color: 'white'}"
+                   borderRadius: '12px', padding: '1.2rem', fontSize: '1rem',color: 'white', minHeight: '150px'}"
                    v-model="commentContent" type="textarea" color="secondary"/>
           <div class="q-mt-md">
             <q-btn icon="mail" class="cask-simple-btn-margin-sec"

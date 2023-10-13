@@ -60,7 +60,8 @@
         个性签名：
       </div>
       <q-input class="dialog-btn-small" placeholder="个性签名（50字以内）" type="textarea"
-               v-model="userData.motto" filled color="black" hide-bottom-space
+               v-model="userData.motto" filled color="black" hide-bottom-space autogrow
+               :input-style="{minHeight: '150px'}"
                :rules="[ val => checkMotto(val) || '签名不允许超过50个字符']"/>
 
 
