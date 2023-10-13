@@ -192,6 +192,8 @@ function generateSql2KotlinCode() {
     codeGenerateNotifyFail("包名不能为空")
     return
   }
+
+  convertOptions.packageName = packageName.value
   convertOptions.isLocalDateTime = isLocalDateTime.value
   convertOptions.isNeedComment = isNeedComment.value
   convertOptions.isBigDecimal = isBigDecimal.value
