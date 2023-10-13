@@ -1,20 +1,26 @@
 import {Parser} from 'sql-ddl-to-json-schema'
 
 //to delete
-const sql = `
-CREATE TABLE users_some_abc (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  nickname VARCHAR(255) NOT NULL,
-  deleted_at TIMESTAMP NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  updated_at json COMMENT 'abdcfdsjfds' ,
-  update_time datetime NOT NULL COMMENT '更新时间',
-  rent_money_month decimal(11,2) DEFAULT NULL COMMENT '月支付租金',
-  rent_money_months DOUBLE(11,2) DEFAULT NULL COMMENT '月支付租金',
-  PRIMARY KEY (id) 
-) ENGINE MyISAM COMMENT 'All system users';
+export const defaultSql = `
+CREATE TABLE \`goods\` (
 
-ALTER TABLE users ADD UNIQUE KEY unq_nick (nickname);
+  \`item_id\` varchar(20) NOT NULL COMMENT '商品id',
+  
+  \`item_name\` varchar(200) NOT NULL COMMENT '商品标题',
+  
+  \`item_desc\` varchar(200)  COMMENT '商品描述',
+  
+  \`item_price\` decimal(8,2)  NOT NULL DEFAULT 0 COMMENT '商品价格',
+  
+  \`status\` int NOT NULL COMMENT '商品状态，0-正常，1- 下架 2-删除',
+  
+  \`create_time\` datetime NOT NULL COMMENT '创建时间',
+  
+  \`update_time\` datetime NOT NULL COMMENT '更新时间',
+  
+  PRIMARY KEY (\`goods_id\`)
+  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品表';
 `;
 
 //sql data type to kotlin map
@@ -49,7 +55,7 @@ export let convertOptions = {
 const parser = new Parser('mysql');
 let tableObj = {}
 
-function parseSql() {
+function parseSql(sql) {
     try {
         const compactJsonTablesArray = parser.feed(sql).toCompactJson(parser.results);
         tableObj = compactJsonTablesArray[0]
@@ -96,7 +102,8 @@ function addPackage() {
 function addImport() {
     const dataTypeArr = tableObj.columns.map(col => col.type.datatype)
     //date time
-    if (dataTypeArr.includes("timestamp")) {
+    if (dataTypeArr.includes("timestamp") || dataTypeArr.includes("date") ||
+        dataTypeArr.includes("time") || dataTypeArr.includes("datetime")) {
         if (convertOptions.isLocalDateTime) {
             resCode = wrapWrite(resCode, "import java.time.LocalDateTime")
         } else {
@@ -132,16 +139,19 @@ function addProperty() {
 
         if (convertOptions.isNeedComment) {
             let comment = curColumn.options.comment ? curColumn.options.comment : curName
-            resCode = wrapWrite(resCode, `\n\t/**\n\t * ${comment}\n\t */`)
+            resCode = wrapWrite(resCode, `\n    /**\n     * ${comment}\n     */`)
         }
 
-        let defaultValueStr = " = null"
-        if (convertOptions.isSetDefaultValue && !isAllowNull) {
-            defaultValueStr = defaultValueMap.get(curType)
+        let defaultValueStr = ""
+        if (convertOptions.isSetDefaultValue) {
+            defaultValueStr = " = null"
+            if (!isAllowNull) {
+                defaultValueStr = defaultValueMap.get(curType)
+            }
         }
 
         resCode = wrapWrite(resCode,
-            `\tvar ${curName}: ${curType}${isAllowNullNotation}${defaultValueStr},`)
+            `    var ${curName}: ${curType}${isAllowNullNotation}${defaultValueStr},`)
     }
 }
 
@@ -153,14 +163,16 @@ function addBody() {
 }
 
 function buildResCode() {
+    resCode = ""
     addPackage()
     addImport()
     addBody()
     return resCode
 }
 
-export function test() {
-    if (parseSql()) {
-        console.log(buildResCode())
+export function ddlConvertKotlinDataClass(sql) {
+    if (parseSql(sql) && tableObj) {
+        return buildResCode()
     }
+    return ""
 }
