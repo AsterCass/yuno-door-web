@@ -12,11 +12,11 @@
         </div>
 
 
-        <div>
+        <form>
           <q-input class="dialog-input-warn-first" placeholder="邮箱" v-model="mail"
-                   filled color="black" lazy-rules
+                   filled color="black" lazy-rules autocomplete="on"
                    :rules="[ val => checkIsMail(val) || '邮箱格式错误']"/>
-          <q-input class="dialog-input-warn" placeholder="新密码" v-model="passwd"
+          <q-input class="dialog-input-warn" placeholder="新密码" v-model="passwd" autocomplete="on"
                    filled color="black" :type="isPwd ? 'password' : 'text'" lazy-rules
                    :rules="[ val => checkIsPasswd(val) || '密码长度需要在8-20位并且同时含有数字和大小写字母']">
             <template v-slot:append>
@@ -36,7 +36,7 @@
             </div>
           </div>
 
-        </div>
+        </form>
 
 
         <div class="dialog-btn-comb">

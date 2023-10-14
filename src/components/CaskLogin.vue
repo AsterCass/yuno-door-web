@@ -12,12 +12,12 @@
         </div>
 
 
-        <div>
+        <form>
           <q-input class="dialog-input" placeholder="账号" v-model="account"
-                   filled color="black"/>
+                   filled color="black" autocomplete="on"/>
           <q-input class="dialog-input" placeholder="密码" v-model="passwd"
-                   filled color="black" :type="'password'"/>
-        </div>
+                   filled color="black" :type="'password'" autocomplete="on"/>
+        </form>
 
 
         <div class="row justify-around dialog-btn-comb">
