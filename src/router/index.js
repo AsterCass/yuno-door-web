@@ -15,6 +15,7 @@ import AdminTest from "@/pages/AdminTest.vue";
 import AdminProfile from "@/pages/AdminProfile.vue";
 import AdminSteamSearch from "@/pages/AdminSteamSearch.vue";
 import AdminCodeGenerator from "@/pages/AdminCodeGenerator.vue";
+import AdminMessageBoard from "@/pages/AdminMessageBoard.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -103,6 +104,14 @@ const router = createRouter({
             component: AdminSpace,
             meta: {
                 title: '个人中心'
+            }
+        },
+        {
+            path: '/board',
+            name: 'messageBoard',
+            component: AdminMessageBoard,
+            meta: {
+                title: '留言板'
             }
         },
         {
