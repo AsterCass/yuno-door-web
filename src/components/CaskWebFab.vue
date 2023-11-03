@@ -54,7 +54,7 @@
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Music音乐" external-label label-position="bottom"
-                      @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
+                      @click="fabKitInDeveloping" icon="fa-solid fa-headphones"/>
       </q-fab>
 
 
