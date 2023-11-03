@@ -2,21 +2,39 @@
   <q-header :modelValue="headerVisible" class="index-header">
     <q-toolbar class="row justify-between">
       <div class="col-4 row justify-start">
-        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-house" label="home" to="/"/>
-        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book" label="artic" to="/article/list"/>
-        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-book-bookmark" label="essay" to="/essay/list"/>
-        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-clapperboard" label="video" to="/video/collection"/>
 
-        <q-btn class="headerBtn" flat dense stack icon="fa-solid fa-toolbox" label="kit"
-               v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave">
+        <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-house" label="Home" to="/"/>
 
+        <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-photo-film" label="Media"
+               v-on:mouseover="mediaMenuTouchOver" v-on:mouseleave="mediaMenuTouchLeave" @click="mediaMenuShow=true">
+          <q-menu :model-value="mediaMenuShow"
+                  v-on:mouseover="mediaMenuTouchOver" v-on:mouseleave="mediaMenuTouchLeave"
+                  style="background-color:rgba(0,0,0,0);box-shadow:none;backdrop-filter: none"
+                  transition-hide="fade" transition-duration="800" no-parent-event
+                  self="top middle" :offset="[-100, 3]">
+            <q-item>
+              <q-card class="header-kit-card row q-pa-sm">
 
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-book" label="Article备录" to="/article/list"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-book-bookmark" label="Essay题记" to="/essay/list"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-clapperboard" label="Video视频" to="/video/collection"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-headphones" label="Music音乐" @click="headerKitInDeveloping"/>
+              </q-card>
+            </q-item>
+          </q-menu>
+        </q-btn>
+
+        <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-toolbox" label="Kit"
+               v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave" @click="kitMenuShow=true">
           <q-menu :model-value="kitMenuShow"
                   v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave"
                   style="background-color:rgba(0,0,0,0);box-shadow:none;backdrop-filter: none"
                   transition-hide="fade" transition-duration="800" no-parent-event
                   self="top middle" :offset="[-100, 3]">
-
             <q-item>
               <q-card class="header-kit-card row q-pa-sm">
 
@@ -28,18 +46,20 @@
                        icon="fa-solid fa-face-grin-tongue-wink" label="表情包电子包浆" @click="headerKitInDeveloping"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-solid fa-scissors" label="Audio在线剪辑" @click="headerKitInDeveloping"/>
-
               </q-card>
             </q-item>
-
           </q-menu>
-
-
         </q-btn>
+
+
+        <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-clipboard"
+               label="Board" @click="headerKitInDeveloping"/>
 
       </div>
       <div class="col-4 row justify-center">
-        <q-toolbar-title shrink>Aster Casc</q-toolbar-title>
+        <q-toolbar-title shrink style="font-family: Roboto Slab, sans-serif;letter-spacing: -.01rem">
+          Aster Casc
+        </q-toolbar-title>
         <q-btn class="q-mr-md" flat dense stack icon="fa-solid fa-sitemap" to="/profile">
           <q-tooltip class="roboto-slab normal-letter-span bg-secondary" :offset="[0, 5]">
             Website Profile
@@ -74,19 +94,37 @@ defineProps({
 //user menu
 let onKitZone = ref(false)
 let kitMenuShow = ref(false)
+let onMediaZone = ref(false)
+let mediaMenuShow = ref(false)
 
 
 //感知菜单鼠标进入事件
 function kitMenuTouchOver() {
-  onKitZone.value = true
-  kitMenuShow.value = onKitZone.value
+  if (!mediaMenuShow.value) {
+    onKitZone.value = true
+    kitMenuShow.value = onKitZone.value
+  }
+}
+
+function mediaMenuTouchOver() {
+  if (!kitMenuShow.value) {
+    onMediaZone.value = true
+    mediaMenuShow.value = onMediaZone.value
+  }
 }
 
 //感知菜单鼠标离开事件
 function kitMenuTouchLeave() {
   onKitZone.value = false
-  delay(200).then(() => {
+  delay(300).then(() => {
     kitMenuShow.value = onKitZone.value
+  })
+}
+
+function mediaMenuTouchLeave() {
+  onMediaZone.value = false
+  delay(300).then(() => {
+    mediaMenuShow.value = onMediaZone.value
   })
 }
 

@@ -11,17 +11,16 @@
     >
 
       <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                    label="Home" hide-label external-label glossy class="q-fab-sub-right-bt"
+                    label="Home" hide-label external-label glossy class="q-fab-sub-left-bt"
                     to="/" icon="fa-solid fa-house"/>
-      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                    label="Essay" hide-label external-label glossy class="q-fab-sub-left-bt"
-                    to="/essay/list" icon="fa-solid fa-book-bookmark"/>
-      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                    label="Article" hide-label external-label glossy class="q-fab-sub-right-bt"
-                    to="/article/list" icon="fa-solid fa-book"/>
-      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                    label="Video" hide-label external-label glossy class="q-fab-sub-left-bt"
-                    to="/video/collection" icon="fa-solid fa-clapperboard"/>
+
+
+      <!--      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"-->
+      <!--                    label="Article" hide-label external-label glossy class="q-fab-sub-right-bt"-->
+      <!--                    to="/article/list" icon="fa-solid fa-book"/>-->
+      <!--      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"-->
+      <!--                    label="Video" hide-label external-label glossy class="q-fab-sub-left-bt"-->
+      <!--                    to="/video/collection" icon="fa-solid fa-clapperboard"/>-->
 
 
       <!--The default padding for QFab is “md” and for QFabAction is “sm”.
@@ -34,6 +33,38 @@
       不知道这个问题后续会不会修复-->
       <q-fab
           label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+          :label="fabExternMap.get('Media').name" glossy class="fix-fab-action-for-fab-right"
+          :external-label="fabExternMap.get('Media').labelVisible"
+          icon="fa-solid fa-photo-film" direction="right" padding="sm"
+          @update:modelValue="updateMediaFab"
+          ref="mediaCollectionFab"
+      >
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin: 0 1.5rem 0 1.5rem!important;"
+                      label="Essay题记" external-label label-position="bottom"
+                      to="/essay/list" icon="fa-solid fa-book-bookmark"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="Article备录" external-label label-position="bottom"
+                      to="/article/list" icon="fa-solid fa-book"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="Video视频" external-label label-position="bottom"
+                      to="/video/collection" icon="fa-solid fa-clapperboard"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="Music音乐" external-label label-position="bottom"
+                      @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
+      </q-fab>
+
+
+      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                    label="Board" hide-label external-label glossy class="q-fab-sub-left-bt"
+                    @click="fabKitInDeveloping" icon="fa-solid fa-clipboard"/>
+
+
+      <q-fab
+          label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
           :label="fabExternMap.get('Game').name" glossy class="fix-fab-action-for-fab-right"
           :external-label="fabExternMap.get('Game').labelVisible"
           icon="fa-solid fa-trophy" direction="right" padding="sm"
@@ -41,11 +72,11 @@
           ref="gameCollectionFab"
       >
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin:0 1.5rem 0 1.5rem!important;"
                       label="Hextris" external-label label-position="bottom"
                       @click="toHex" icon="mdi-hexagon-slice-6"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Mikutap" external-label label-position="bottom"
                       @click="toMik" icon="fa-solid fa-music"/>
       </q-fab>
@@ -61,19 +92,19 @@
       >
 
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin:0 1.5rem 0 1.5rem!important;"
                       label="Steam游戏查询" external-label label-position="bottom"
                       to="/steam/search" icon="fa-brands fa-square-steam"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="SQL生成Kotlin类" external-label label-position="bottom"
                       to="/code/generator" icon="fa-solid fa-object-group"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
-                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 2.5rem!important;"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Audio在线剪辑" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
       </q-fab>
@@ -93,6 +124,7 @@ const notify = useQuasar().notify
 const pageInstance = getCurrentInstance();
 
 let fabExternMap = ref(new Map([
+  ["Media", {name: "Media", labelVisible: true, domRef: "mediaCollectionFab"}],
   ["Game", {name: "Game", labelVisible: true, domRef: "gameCollectionFab"}],
   ["Kit", {name: "Kit", labelVisible: true, domRef: "kitCollectionFab"}],
 ]))
@@ -122,6 +154,10 @@ function updateExternFab(isActionsVisible, curFabName) {
     fabExternMap.value.get(curFabName).name = curFabName
   }
   fabExternMap.value.get(curFabName).labelVisible = !isActionsVisible
+}
+
+function updateMediaFab(isActionsVisible) {
+  updateExternFab(isActionsVisible, "Media")
 }
 
 function updateGameFab(isActionsVisible) {
