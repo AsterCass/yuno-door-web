@@ -1,5 +1,11 @@
 # admin-door
 
+## 启动
+
+```shell
+yarn serve
+```
+
 ## 网站说明
 
 [网站地址](https://www.astercasc.com)，本项目为个人网站的构建，涵盖技术文章、视频分享、个人日志、游戏等等功能，
