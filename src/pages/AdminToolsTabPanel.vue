@@ -32,6 +32,8 @@
                      no-caps to="/tools/steam/search" class="tools-tab"/>
         <q-route-tab name="code-sql2kotlin" icon="fa-solid fa-object-group" label="SQL转Kotlin类"
                      no-caps to="/tools/code/sql2kotlin" class="tools-tab"/>
+        <q-route-tab name="timestamp" icon="fa-solid fa-clock-rotate-left" label="时间戳格式转换"
+                     no-caps to="/tools/timestamp" class="tools-tab"/>
       </q-tabs>
 
       <router-view/>

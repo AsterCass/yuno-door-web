@@ -105,8 +105,8 @@
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
-                      label="Audio在线剪辑" external-label label-position="bottom"
-                      @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
+                      label="时间戳格式转换" external-label label-position="bottom"
+                      to="/tools/timestamp" icon="fa-solid fa-clock-rotate-left"/>
       </q-fab>
 
 

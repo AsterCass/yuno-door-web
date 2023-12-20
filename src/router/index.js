@@ -17,6 +17,7 @@ import AdminMessageBoard from "@/pages/AdminMessageBoard.vue";
 import CaskSteamSearchList from "@/views/CaskSteamSearchList.vue";
 import CaskSqlKotlinGenerator from "@/views/CaskSqlKotlinGenerator.vue";
 import AdminToolsTabPanel from "@/pages/AdminToolsTabPanel.vue";
+import CaskTimestampConverter from "@/views/CaskTimestampConverter.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -59,6 +60,14 @@ const router = createRouter({
             name: 'adminToolsTabPanel',
             component: AdminToolsTabPanel,
             children: [
+                {
+                    path: 'timestamp',
+                    name: 'caskTimestampConverter',
+                    component: CaskTimestampConverter,
+                    meta: {
+                        title: '时间戳转换'
+                    },
+                },
                 {
                     path: 'code/sql2kotlin',
                     name: 'caskSqlKotlinGenerator',
