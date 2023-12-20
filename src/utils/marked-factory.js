@@ -27,12 +27,26 @@ const styleEnums = [
     'panda-syntax-dark', 'paraiso-dark', 'srcery', 'stackoverflow-dark', 'tomorrow-night-bright', 'vs2015'
 ]
 
+const styleEnumsLight = [
+    'panda-syntax-light',
+    'stackoverflow-light',
+    'tokyo-night-light',
+    'codepen-embed',
+    'hybrid',
+]
+
 function importStyle() {
     const random = Math.floor(Math.random() * 10000)
     const randomStyle = styleEnums[random % styleEnums.length]
     import('../../node_modules/highlight.js/styles/' + randomStyle + '.css')
 }
 
+function importStyleLight() {
+    const random = Math.floor(Math.random() * 10000)
+    const randomStyle = styleEnumsLight[random % styleEnumsLight.length]
+    import('../../node_modules/highlight.js/styles/' + randomStyle + '.css')
+}
+
 export {
-    marked, importStyle
+    marked, importStyle, importStyleLight
 }

@@ -20,9 +20,9 @@
               autogrow borderless
               placeholder="请输入需要转换的DDL语句"
               :input-style="{fontSize: '1.1rem', padding: '1.2rem',
-              letterSpacing: '.05rem', boxShadow:'8px 8px 8px #555f66', opacity:'0.9',
-              backgroundImage: 'linear-gradient(to bottom, #111, #222, #222, #111)',
-              minHeight: '300px', borderRadius: '12px', color: '#eee'}"
+              letterSpacing: '.05rem',  border: '2.5px solid #888',opacity:'0.9',
+              backgroundImage: 'linear-gradient(to bottom, #eee, #eee)',
+              minHeight: '300px', borderRadius: '12px', color: '#111'}"
           />
         </div>
 
@@ -116,7 +116,7 @@
             复制
           </q-btn>
           <div v-html="generateResultMarkdownToHtml"
-               class="col-12 blogMarkDown"/>
+               class="col-12 blogMarkDownLight"/>
         </div>
 
       </div>
@@ -131,7 +131,7 @@
 import {computed, onMounted, ref} from "vue";
 import {convertOptions, ddlConvertKotlinDataClass, defaultSql} from "@/utils/ddl-to-kotlin";
 import {useQuasar} from "quasar";
-import {importStyle, marked} from "@/utils/marked-factory";
+import {importStyleLight, marked} from "@/utils/marked-factory";
 
 const notify = useQuasar().notify
 
@@ -223,7 +223,7 @@ onMounted(() => {
   //初始值设置
   inputDDL.value = defaultSql
   //随机导入code样式
-  importStyle()
+  importStyleLight()
 })
 
 
@@ -231,7 +231,7 @@ onMounted(() => {
 
 <style lang="sass" scoped>
 @import "@/styles/cask.sass"
-@import "@/styles/blog.markdown.css"
+@import "@/styles/blog.markdown.light.css"
 @import "@/styles/cask-dialog-style.scss"
 
 .code-generator-tag-title
@@ -259,7 +259,7 @@ onMounted(() => {
   margin: 0 1rem -5rem 0
   padding: .5rem
   border-radius: .2rem
-  background-color: $cask_second_deep
+  background-color: #333
   color: $cask_base_grey
 
 
