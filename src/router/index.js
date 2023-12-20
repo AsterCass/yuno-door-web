@@ -13,9 +13,10 @@ import AdminVideo from "@/pages/AdminVideo.vue";
 import NotAuth from "@/pages/NotAuth.vue";
 import AdminTest from "@/pages/AdminTest.vue";
 import AdminProfile from "@/pages/AdminProfile.vue";
-import AdminSteamSearch from "@/pages/AdminSteamSearch.vue";
-import AdminCodeGenerator from "@/pages/AdminCodeGenerator.vue";
 import AdminMessageBoard from "@/pages/AdminMessageBoard.vue";
+import CaskSteamSearchList from "@/views/CaskSteamSearchList.vue";
+import CaskSqlKotlinGenerator from "@/views/CaskSqlKotlinGenerator.vue";
+import AdminToolsTabPanel from "@/pages/AdminToolsTabPanel.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -54,25 +55,30 @@ const router = createRouter({
             ]
         },
         {
-            path: "/steam",
+            path: '/tools',
+            name: 'adminToolsTabPanel',
+            component: AdminToolsTabPanel,
             children: [
                 {
-                    path: 'search',
-                    name: "adminSteamSearch",
-                    component: AdminSteamSearch,
+                    path: 'code/sql2kotlin',
+                    name: 'caskSqlKotlinGenerator',
+                    component: CaskSqlKotlinGenerator,
                     meta: {
-                        title: 'Steam游戏检索'
+                        title: 'SQL转Kotlin类'
                     },
                 },
+                {
+                    path: 'steam/search',
+                    name: 'caskSteamSearchList',
+                    component: CaskSteamSearchList,
+                    meta: {
+                        title: 'Steam史低查询'
+                    },
+                    // props: ($route) => ({
+                    //     gameKey: $route.query.gameKey,
+                    // }),
+                }
             ]
-        },
-        {
-            path: '/code/generator',
-            name: 'adminCodeGenerator',
-            component: AdminCodeGenerator,
-            meta: {
-                title: '代码生成'
-            }
         },
         {
             path: '/essay/list',

@@ -52,7 +52,7 @@ function search() {
 
 .article-list-search
   align-items: center
-  margin: -15% 35% 0 35%
+  margin: -20% 32% 0 32%
 
 </style>
 

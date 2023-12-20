@@ -9,7 +9,7 @@
              placeholder-src=
                  "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg2-half-dim.jpg"
              alt=""
-             :ratio="3"
+             :ratio="2.5"
              :fit="'cover'">
       </q-img>
     </div>

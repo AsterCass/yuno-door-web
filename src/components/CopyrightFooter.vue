@@ -16,6 +16,9 @@
         <q-icon name="fa-brands fa-qq"/>
         QQ: 404919617
       </li>
+      <li>
+        ASC AWebsite Version: 1.21.4
+      </li>
     </ul>
   </div>
 </template>

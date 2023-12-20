@@ -12,7 +12,7 @@
              placeholder-src=
                  "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg1-half-dim.jpg"
              alt=""
-             :ratio="3"
+             :ratio="2.5"
              :fit="'cover'">
       </q-img>
     </div>
@@ -66,7 +66,7 @@
           <q-tab-panel name="article">
             <div class="space-right-coming-soon">
               COMING SOON
-              <div style="font-size: 0.5rem">
+              <div style="font-size: 0.8rem">
                 敬请期待
               </div>
             </div>
@@ -74,7 +74,7 @@
           <q-tab-panel name="friend">
             <div class="space-right-coming-soon">
               COMING SOON
-              <div style="font-size: 0.5rem">
+              <div style="font-size: 0.8rem">
                 敬请期待
               </div>
             </div>
@@ -82,7 +82,7 @@
           <q-tab-panel name="security">
             <div class="space-right-coming-soon">
               COMING SOON
-              <div style="font-size: 0.5rem">
+              <div style="font-size: 0.8rem">
                 敬请期待
               </div>
             </div>
@@ -90,7 +90,7 @@
           <q-tab-panel name="setting">
             <div class="space-right-coming-soon">
               COMING SOON
-              <div style="font-size: 0.5rem">
+              <div style="font-size: 0.8rem">
                 敬请期待
               </div>
             </div>
@@ -218,7 +218,7 @@ onUnmounted(() => {
 @import "@/styles/cask-dialog-style.scss";
 
 .page-main-card {
-  margin: -5% 10% 5% 10%;
+  margin: -8% 10% 5% 10%;
   border-radius: 50px;
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);

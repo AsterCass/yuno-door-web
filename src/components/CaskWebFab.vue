@@ -94,11 +94,11 @@
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin:0 1.5rem 0 1.5rem!important;"
                       label="Steam游戏查询" external-label label-position="bottom"
-                      to="/steam/search" icon="fa-brands fa-square-steam"/>
+                      to="/tools/steam/search" icon="fa-brands fa-square-steam"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="SQL生成Kotlin类" external-label label-position="bottom"
-                      to="/code/generator" icon="fa-solid fa-object-group"/>
+                      to="/tools/code/sql2kotlin" icon="fa-solid fa-object-group"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
