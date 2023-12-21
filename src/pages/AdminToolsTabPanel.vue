@@ -34,6 +34,8 @@
                      no-caps to="/tools/code/sql2kotlin" class="tools-tab"/>
         <q-route-tab name="timestamp" icon="fa-solid fa-clock-rotate-left" label="时间戳格式转换"
                      no-caps to="/tools/timestamp" class="tools-tab"/>
+        <q-route-tab name="qrcode" icon="fa-solid fa-qrcode" label="QR二维码生成"
+                     no-caps to="/tools/qrcode" class="tools-tab"/>
       </q-tabs>
 
       <router-view/>

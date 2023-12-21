@@ -18,6 +18,7 @@ import CaskSteamSearchList from "@/views/CaskSteamSearchList.vue";
 import CaskSqlKotlinGenerator from "@/views/CaskSqlKotlinGenerator.vue";
 import AdminToolsTabPanel from "@/pages/AdminToolsTabPanel.vue";
 import CaskTimestampConverter from "@/views/CaskTimestampConverter.vue";
+import CaskQrcodeGenerator from "@/views/CaskQrcodeGenerator.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -61,11 +62,19 @@ const router = createRouter({
             component: AdminToolsTabPanel,
             children: [
                 {
+                    path: 'qrCode',
+                    name: 'caskQrcodeGenerator',
+                    component: CaskQrcodeGenerator,
+                    meta: {
+                        title: '在线生成二维码工具'
+                    },
+                },
+                {
                     path: 'timestamp',
                     name: 'caskTimestampConverter',
                     component: CaskTimestampConverter,
                     meta: {
-                        title: '时间戳转换'
+                        title: '在线时间戳转换工具'
                     },
                 },
                 {
@@ -81,7 +90,7 @@ const router = createRouter({
                     name: 'caskSteamSearchList',
                     component: CaskSteamSearchList,
                     meta: {
-                        title: 'Steam史低查询'
+                        title: 'Steam史低查询工具'
                     },
                     // props: ($route) => ({
                     //     gameKey: $route.query.gameKey,
