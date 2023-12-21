@@ -26,7 +26,7 @@
       <q-tabs
           v-model="toolTab"
           align="left" dense
-          active-color="secondary"
+          active-color="light-green-10"
       >
         <q-route-tab name="steam-search" icon="fa-brands fa-square-steam" label="Steam史低查询"
                      no-caps to="/tools/steam/search" class="tools-tab"/>

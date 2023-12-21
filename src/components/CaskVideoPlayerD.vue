@@ -12,7 +12,7 @@
                         rounded
                         menu-anchor="bottom middle" menu-self="top middle" :menu-offset="[0, 10]">
           <div class="row video-player-setting-frame">
-            <div class="col-8 simple-bold-little-title">
+            <div class="col-8 simple-bold-little-title-secondary">
               全局设置
             </div>
             <q-toggle class="col-6" color="secondary" label="自动播放"

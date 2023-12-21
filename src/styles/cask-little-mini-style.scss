@@ -56,7 +56,31 @@
   font-family: Roboto Slab, sans-serif;
 }
 
+.simple-bold-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.625;
+  font-family: Roboto Slab, sans-serif;
+}
+
+.simple-bold-title-secondary {
+  font-weight: 600;
+  color: $cask_cactus;
+  font-size: 1.5rem;
+  line-height: 1.625;
+  font-family: Roboto Slab, sans-serif;
+}
+
 .simple-bold-little-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.625;
+  margin: 0;
+  font-family: Roboto Slab, sans-serif;
+}
+
+
+.simple-bold-little-title-secondary {
   font-weight: 600;
   font-size: 1.2rem;
   line-height: 1.625;
@@ -73,13 +97,6 @@
   color: $cask_cactus;
   margin-top: 0;
   margin-bottom: 0;
-  font-family: Roboto Slab, sans-serif;
-}
-
-.simple-bold-title {
-  font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 1.625;
   font-family: Roboto Slab, sans-serif;
 }
 

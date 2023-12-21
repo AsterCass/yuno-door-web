@@ -20,7 +20,7 @@
           </div>
           <div class="col-10">
             <div>
-              <div class="simple-bold-little-title">
+              <div class="simple-bold-little-title-secondary">
                 {{ comment.commentUserName }}
                 <span class="simple-content-tag">
                   &#32;·&#32;{{ comment.commentTime }}&#32;·&#32;{{ comment.ipAddressName }}

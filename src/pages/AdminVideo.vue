@@ -54,7 +54,7 @@
         </q-toolbar>
 
         <q-list padding>
-          <q-item class="cask-video-drawer-header simple-bold-little-title">
+          <q-item class="cask-video-drawer-header simple-bold-little-title-secondary">
             <q-item-section>
               <q-item-label>视频集合</q-item-label>
             </q-item-section>
@@ -74,7 +74,7 @@
           <q-separator class="q-my-md"/>
 
 
-          <q-item class="cask-video-drawer-header simple-bold-little-title">
+          <q-item class="cask-video-drawer-header simple-bold-little-title-secondary">
             <q-item-section>
               <q-item-label>最新上线</q-item-label>
             </q-item-section>
