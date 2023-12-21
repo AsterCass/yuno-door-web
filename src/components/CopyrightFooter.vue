@@ -17,7 +17,7 @@
         QQ: 404919617
       </li>
       <li>
-        ASC AWebsite Version: 1.23.0
+        ASC AWebsite Version: 1.23.1
       </li>
     </ul>
   </div>
