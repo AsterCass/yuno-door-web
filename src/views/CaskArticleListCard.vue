@@ -7,9 +7,13 @@
         </div>
       </div>
       <div class="col-4 row justify-end">
-        <q-avatar class="admin-article-list-card-head">
-          <q-img :src="require('../assets/img/head.jpg')"/>
-        </q-avatar>
+        <div>
+          <q-btn round color="white">
+            <q-avatar class="admin-article-list-card-head">
+              <q-img :src="intro.authorAvatar"/>
+            </q-avatar>
+          </q-btn>
+        </div>
       </div>
     </q-card-section>
     <q-card-section>
@@ -57,6 +61,7 @@ const props = defineProps({
     articleTagList: [],
     createTime: "",
     updateTime: "",
+    authorAvatar: "",
   },
 });
 

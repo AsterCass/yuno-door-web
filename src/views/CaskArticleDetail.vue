@@ -59,11 +59,23 @@
         'col-12': !innerExtendVisible,
         'col-10': innerExtendVisible
       }">
-        <div class="cask-primary-card-header-left">
-          <h1>{{ blogMeta.articleTitle }}</h1>
-          <p>创建时间: {{ blogMeta.createTime }}</p>
-          <p>更新时间: {{ blogMeta.updateTime }}</p>
+        <div class="row cask-primary-card-header-left">
+          <div class="col-11">
+            <h1>{{ blogMeta.articleTitle }}</h1>
+            <p>创建时间: {{ blogMeta.createTime }}</p>
+            <p>更新时间: {{ blogMeta.updateTime }}</p>
+          </div>
+          <div class="col-1 row justify-end">
+            <div>
+              <q-btn round color="black">
+                <q-avatar size="60px" style="margin: .1rem">
+                  <q-img :src="blogMeta.authorAvatar"/>
+                </q-avatar>
+              </q-btn>
+            </div>
+          </div>
         </div>
+
         <div class="article-context">
           <div>
             <div v-html="markdownToHtml" class="blogMarkDown"></div>
@@ -124,6 +136,7 @@ let blogMeta = ref({
   refArticleList: [],
   articleBrief: "description",
   articleKeyList: [],
+  authorAvatar: "",
 })
 //图片展示
 let picShow = ref(false)
