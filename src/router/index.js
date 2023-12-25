@@ -128,7 +128,10 @@ const router = createRouter({
             component: AdminSpace,
             meta: {
                 title: '个人中心'
-            }
+            },
+            props: ($route) => ({
+                userId: $route.query.id,
+            })
         },
         {
             path: '/board',

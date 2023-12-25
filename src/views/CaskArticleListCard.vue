@@ -8,7 +8,7 @@
       </div>
       <div class="col-4 row justify-end">
         <div>
-          <q-btn round color="white">
+          <q-btn round push color="white">
             <q-avatar class="admin-article-list-card-head">
               <q-img :src="intro.authorAvatar"/>
             </q-avatar>

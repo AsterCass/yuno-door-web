@@ -67,7 +67,7 @@
           </div>
           <div class="col-1 row justify-end">
             <div>
-              <q-btn round color="black">
+              <q-btn round push color="black">
                 <q-avatar size="60px" style="margin: .1rem">
                   <q-img :src="blogMeta.authorAvatar"/>
                 </q-avatar>

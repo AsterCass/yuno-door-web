@@ -3,7 +3,6 @@
 
     <CaskWebHeader :header-visible="true"/>
 
-
     <div style="z-index: -1">
       <q-img class="index-img"
              :no-native-menu="false"
@@ -17,7 +16,7 @@
       </q-img>
     </div>
 
-    <div class="page-main-card row">
+    <div v-if="!userId" class="page-main-card row">
       <div class="col-4 space-card-left row justify-center">
         <div class="col-12 justify-center space-head">
           <q-avatar size="150px">
@@ -97,6 +96,22 @@
           </q-tab-panel>
         </q-tab-panels>
       </div>
+    </div>
+    <div v-else class="page-main-card">
+
+      <div class="row justify-center" style="transform: translateY(-55%);">
+        <q-btn round :ripple="false" class="q-pa-xs bg-green-1 cursor-inherit">
+          <q-avatar size="10rem" class="shadow-15">
+            <q-img :src="userData.avatar"/>
+          </q-avatar>
+        </q-btn>
+
+      </div>
+
+
+      <div style="min-height: 300px">
+
+      </div>
 
     </div>
 
@@ -111,7 +126,7 @@
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {
-  computed,
+  computed, defineProps,
   onMounted,
   onUnmounted,
   ref
@@ -122,6 +137,14 @@ import emitter from "@/utils/bus";
 import CaskUploadAvatar from "@/components/CaskUploadAvatar.vue";
 import {useRouter} from "vue-router";
 import CaskUserProfile from "@/views/CaskUserProfile.vue";
+
+
+const props = defineProps({
+  userId: {
+    type: String,
+    default: ""
+  }
+})
 
 //无数据跳转
 const thisRouter = useRouter()
@@ -196,21 +219,37 @@ function refreshUserData(data) {
 onMounted(() => {
   //底色渲染
   addStyle("background-color: rgb(239, 242, 245)")
-  //初始化登录信息
-  resetProfile()
-  //登录事件
-  emitter.on("loginMessageEvent", loginMessage)
-  //数据更新事件
-  emitter.on("refreshLoginMessageEvent", refreshUserData)
+  if (props.userId) {
+    //request user detail
+    userData.value.mail = "astercass@qq.com"
+    userData.value.avatar = "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU11703238536596.jpg"
+    userData.value.nickName = "AsterCasc"
+    userData.value.gender = 1
+    userData.value.birth = "1998-12-30"
+    userData.value.motto = "那双小手不知何时，已经拥有了超越你我的坚强"
+  } else {
+    //初始化登录信息
+    resetProfile()
+    //登录事件
+    emitter.on("loginMessageEvent", loginMessage)
+    //数据更新事件
+    emitter.on("refreshLoginMessageEvent", refreshUserData)
+  }
+
 })
 
 onUnmounted(() => {
   //取消底色渲染
   removeStyle("background-color: rgb(239, 242, 245)")
-  //删除登录事件
-  emitter.off("loginMessageEvent", loginMessage)
-  //删除数据更新事件
-  emitter.off("refreshLoginMessageEvent", refreshUserData)
+  if (props.userId) {
+    //...
+  } else {
+    //删除登录事件
+    emitter.off("loginMessageEvent", loginMessage)
+    //删除数据更新事件
+    emitter.off("refreshLoginMessageEvent", refreshUserData)
+  }
+
 })
 </script>
 
