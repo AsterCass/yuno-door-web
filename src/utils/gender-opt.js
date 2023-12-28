@@ -31,6 +31,10 @@ export const genderOptEnum = [
         label: '武装直升飞机',
         category: 7
     },
+    {
+        label: '沃尔玛购物袋',
+        category: 8
+    },
 ]
 
 export function getGenderObj(category) {
