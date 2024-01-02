@@ -64,7 +64,7 @@
 import {onMounted, onUnmounted, ref} from "vue";
 import emitter from "@/utils/bus";
 import {useQuasar} from "quasar";
-import {genderOptEnum} from "@/utils/gender-opt";
+import {genderOptEnum} from "@/utils/enums/gender-opt";
 import {checkIsMail, checkIsPasswd, checkAccount, checkTrue} from "@/utils/format-check";
 import {sendRegMail, registry} from "@/api/user";
 import {authLogin} from "@/utils/user-auth";

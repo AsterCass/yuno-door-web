@@ -51,7 +51,7 @@
 
 <script setup>
 import {defineProps, ref} from "vue";
-import {getArticleTagDescList} from "@/utils/article-tag";
+import {getArticleTagDescList} from "@/utils/enums/article-tag";
 
 const props = defineProps({
   intro: {

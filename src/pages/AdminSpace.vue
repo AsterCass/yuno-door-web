@@ -7,9 +7,9 @@
       <q-img class="index-img"
              :no-native-menu="false"
              src=
-                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg1-half.jpg"
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg3-half.jpg"
              placeholder-src=
-                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg1-half-dim.jpg"
+                 "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg3-half-dim.jpg"
              alt=""
              :ratio="2.5"
              :fit="'cover'">
@@ -97,23 +97,48 @@
         </q-tab-panels>
       </div>
     </div>
-    <div v-else class="page-main-card">
+    <div v-else-if="existUser" class="page-main-card">
 
       <div class="row justify-center" style="transform: translateY(-55%);">
-        <q-btn round :ripple="false" class="q-pa-xs bg-green-1 cursor-inherit">
-          <q-avatar size="10rem" class="shadow-15">
-            <q-img :src="userData.avatar"/>
+        <q-btn round :ripple="false" style="padding: .15rem"
+               class="shadow-15 page-main-card-for-avatar cursor-inherit">
+          <q-avatar size="10rem" class="">
+            <q-img :src="inspectUserData.avatar"/>
           </q-avatar>
         </q-btn>
-
       </div>
 
+      <div style="min-height: 300px; transform: translateY(-5rem);">
 
-      <div style="min-height: 300px">
+        <!--部分元素居中，部分元素居右，忽略左方元素-->
+        <div class="dialog-sec-header row justify-center">
+          <div class="col">
+          </div>
+          <div class="col-auto">
+            {{ inspectUserData.nickName }}
+          </div>
+          <div class="col">
+            <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                     :color="getRoleTypeObj(inspectUserData.roleType).color"
+                     :label="getRoleTypeObj(inspectUserData.roleType).label">
+              <q-icon
+                  :name="getRoleTypeObj(inspectUserData.roleType).logo"
+                  class="q-ml-xs"
+              />
+            </q-badge>
+          </div>
+        </div>
+
+        <!-- support '\n' or '\t'-->
+        <div class="q-my-md text-center simple-content-semi" style="white-space: pre-line">
+          {{ inspectUserData.motto }}
+        </div>
 
       </div>
 
     </div>
+    <div v-else class="page-main-card"/>
+
 
   </q-layout>
 
@@ -129,16 +154,21 @@ import {
   computed, defineProps,
   onMounted,
   onUnmounted,
-  ref
+  ref, watch
 } from "vue";
+import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData, refreshLoginMessage} from "@/utils/store";
 import emitter from "@/utils/bus";
 import CaskUploadAvatar from "@/components/CaskUploadAvatar.vue";
 import {useRouter} from "vue-router";
 import CaskUserProfile from "@/views/CaskUserProfile.vue";
+import {userDetailSimple} from "@/api/user";
+import {useQuasar} from "quasar";
 
-
+//notify
+const notify = useQuasar().notify
+// props
 const props = defineProps({
   userId: {
     type: String,
@@ -159,8 +189,21 @@ let userData = ref({
   motto: "",
   firstName: "",
   lastName: "",
-  nickName: ""
+  nickName: "",
+  roleType: 1,
 })
+let inspectUserData = ref({
+  id: "",
+  avatar: "",
+  account: "",
+  mail: "",
+  gender: 0,
+  birth: "",
+  motto: "",
+  nickName: "",
+  roleType: 1,
+})
+let existUser = ref(false)
 //设置栏目
 let currentTab = ref("profile")
 //资料完整度
@@ -216,17 +259,25 @@ function refreshUserData(data) {
   }
 }
 
-onMounted(() => {
-  //底色渲染
-  addStyle("background-color: rgb(239, 242, 245)")
+function updateUserData() {
   if (props.userId) {
-    //request user detail
-    userData.value.mail = "astercass@qq.com"
-    userData.value.avatar = "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU11703238536596.jpg"
-    userData.value.nickName = "AsterCasc"
-    userData.value.gender = 1
-    userData.value.birth = "1998-12-30"
-    userData.value.motto = "那双小手不知何时，已经拥有了超越你我的坚强"
+    userDetailSimple({userId: props.userId}).then(res => {
+      const status = res.data.status
+      if (200 !== status) {
+        throw status
+      }
+      // load data
+      inspectUserData.value = res.data.data
+      // show user detail
+      existUser.value = true
+    }).catch(() => {
+      notify({
+        message: "用户不存在",
+        position: 'top',
+        type: 'negative',
+        timeout: 1000
+      })
+    })
   } else {
     //初始化登录信息
     resetProfile()
@@ -235,7 +286,12 @@ onMounted(() => {
     //数据更新事件
     emitter.on("refreshLoginMessageEvent", refreshUserData)
   }
+}
 
+onMounted(() => {
+  //底色渲染
+  addStyle("background-color: rgb(239, 242, 245)")
+  updateUserData()
 })
 
 onUnmounted(() => {
@@ -249,12 +305,17 @@ onUnmounted(() => {
     //删除数据更新事件
     emitter.off("refreshLoginMessageEvent", refreshUserData)
   }
-
 })
+
+watch(() => props.userId, () => {
+  updateUserData()
+})
+
 </script>
 
 <style scoped lang="scss">
 @import "@/styles/cask-dialog-style.scss";
+@import "@/styles/cask-little-mini-style.scss";
 
 .page-main-card {
   margin: -8% 10% 5% 10%;
@@ -263,6 +324,12 @@ onUnmounted(() => {
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
   backdrop-filter: saturate(200%) blur(30px);
   min-height: 600px;
+}
+
+.page-main-card-for-avatar {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  backdrop-filter: saturate(200%) blur(30px);
 }
 
 .space-card-left {

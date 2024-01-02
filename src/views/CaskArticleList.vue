@@ -36,7 +36,7 @@ import emitter from '@/utils/bus';
 import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import {getBlogList} from "@/api/article";
 import {simplePage} from "@/utils/page";
-import {articleTagEnums} from '@/utils/article-tag'
+import {articleTagEnums} from '@/utils/enums/article-tag'
 
 const props = defineProps({
   listName: {

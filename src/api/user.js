@@ -47,6 +47,14 @@ export function userDetail() {
     })
 }
 
+export function userDetailSimple(params) {
+    return serviceShiro({
+        url: `/yui/user/detail`,
+        params: params,
+        method: 'get',
+    })
+}
+
 
 export function updateInfo(body) {
     return serviceShiro({

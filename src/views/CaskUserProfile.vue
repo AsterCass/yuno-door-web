@@ -85,9 +85,9 @@ import {updateInfo} from "@/api/user";
 import {getLoginData, refreshLoginMessage} from "@/utils/store";
 import {useQuasar} from "quasar";
 import {defineProps, onMounted, onUnmounted, ref} from "vue";
-import {getGenderObj} from "@/utils/gender-opt";
+import {getGenderObj} from "@/utils/enums/gender-opt";
 import emitter from "@/utils/bus";
-import {genderOptEnum} from "@/utils/gender-opt";
+import {genderOptEnum} from "@/utils/enums/gender-opt";
 
 
 const props = defineProps({

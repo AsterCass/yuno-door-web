@@ -50,7 +50,7 @@ import CaskAdminShow from "@/views/CaskAdminShow.vue";
 import {useQuasar} from "quasar";
 import emitter from "@/utils/bus";
 import {QSpinnerGears} from "quasar";
-import {getLoadGarbleLang} from "@/utils/load-garble";
+import {getLoadGarbleLang} from "@/utils/enums/load-garble";
 
 
 const load = useQuasar().loading
