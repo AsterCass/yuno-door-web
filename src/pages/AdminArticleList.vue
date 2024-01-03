@@ -17,7 +17,7 @@
 
 
     <div class="article-list-main">
-      <CaskArticleList list-name="文章列表" :list-type="1" :hide-tag-enum="false"/>
+      <CaskArticleList list-name="文章列表" :list-type="1" :hide-tag-enum="false" :author-id="props.authorId"/>
     </div>
 
     <CopyrightFooter/>
@@ -29,11 +29,18 @@
 
 <script setup>
 import CaskWebFab from "@/components/CaskWebFab.vue";
-import {onMounted, onUnmounted} from "vue";
+import {defineProps, onMounted, onUnmounted} from "vue";
 import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskSearch from "@/components/CaskSearch.vue";
 import CaskArticleList from "@/views/CaskArticleList.vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
+
+const props = defineProps({
+  authorId: {
+    type: String,
+    default: ""
+  },
+});
 
 onMounted(() => {
   //底色渲染

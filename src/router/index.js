@@ -44,7 +44,7 @@ const router = createRouter({
                     },
                     props: ($route) => ({
                         articleId: $route.query.articleId,
-                    })
+                    }),
                 },
                 {
                     path: 'list',
@@ -53,6 +53,9 @@ const router = createRouter({
                     meta: {
                         title: '技术备录'
                     },
+                    props: ($route) => ({
+                        authorId: $route.query.author,
+                    }),
                 }
             ]
         },
@@ -105,6 +108,9 @@ const router = createRouter({
             meta: {
                 title: '生活题记'
             },
+            props: ($route) => ({
+                authorId: $route.query.author,
+            }),
         },
         {
             path: '/privacy',

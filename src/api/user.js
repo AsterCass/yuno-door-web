@@ -87,3 +87,11 @@ export function resetPasswd(body) {
         data: body
     })
 }
+
+export function follow(body) {
+    return serviceShiro({
+        url: `/yui/user/follow/auth`,
+        method: 'post',
+        data: body
+    })
+}

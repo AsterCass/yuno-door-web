@@ -18,6 +18,12 @@ export const roleTypeEnum = [
         code: 2
     },
     {
+        label: '炒鸡会员',
+        color: 'amber-7',
+        logo: 'fa-solid fa-drumstick-bite',
+        code: 4
+    },
+    {
         label: '站长',
         color: 'red-7',
         logo: 'fa-solid fa-user-secret',

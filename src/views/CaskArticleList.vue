@@ -43,6 +43,10 @@ const props = defineProps({
     type: String,
     default: "列表"
   },
+  authorId: {
+    type: String,
+    default: ""
+  },
   listType: {
     type: Number,
     default: 1
@@ -50,7 +54,7 @@ const props = defineProps({
   hideTagEnum: {
     type: Boolean,
     default: true
-  }
+  },
 })
 
 let selection = ref([])
@@ -83,6 +87,9 @@ function searchArticleListMethod(keywordParam) {
   currentPage.value = 1
   articleList.value.splice(0)
   //参数插入
+  if (props.authorId) {
+    currentParam.value.authorId = props.authorId
+  }
   currentParam.value.keyword = keywordParam
   currentParam.value.articleType = props.listType
   //标签参数
