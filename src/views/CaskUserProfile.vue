@@ -185,6 +185,7 @@ function loginMessage(isOnLogin) {
 function refreshUserData(data) {
   if (data) {
     userData.value = data
+    refGender.value = getGenderObj(data.gender)
   }
 }
 
