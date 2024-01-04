@@ -109,10 +109,13 @@
         </q-btn>
         <div class="col ">
           <div style="position: absolute; bottom: .25rem; right: 2.5rem">
-            <q-btn v-if="0 === alreadyFollow" label="关注" color="light-green-10" push
-                   @click="followMethod(true)"/>
-            <q-btn v-else-if="1 === alreadyFollow" label="取消关注" color="light-green-10" outline push
-                   @click="followMethod(false)"/>
+            <q-btn v-if="0 === alreadyFollow" class="simple-content-mini" style="min-width: 5rem"
+                   label="关注" color="light-green-10" push
+                   @click="followMethod(true)" :disable="inFollowOperation"/>
+            <q-btn v-else-if="1 === alreadyFollow" class="simple-content-mini" style="min-width: 5rem"
+                   label="取消关注" color="blue-grey-10" push
+                   @click="followMethod(false)" :disable="inFollowOperation"/>
+            <div v-else-if="-1 === alreadyFollow"/>
             <q-btn v-else label="不能关注自己喔" color="light-green-10" disable push/>
           </div>
         </div>
@@ -138,6 +141,21 @@
           </div>
         </div>
 
+        <div class="q-my-md row items-center justify-center simple-bold-little-title-auto-mg">
+          <q-icon :color="inspectUserData.birth? 'amber-6' : 'grey-6' "
+                  name="fa-solid fa-cake-candles" class="q-mr-sm" size="1.25rem"/>
+          {{ inspectUserData.birth ? inspectUserData.birth : 'None or Hide' }}
+          <q-separator class="q-mx-md" vertical inset/>
+          <q-icon :color="inspectUserData.start? 'indigo-6' : 'grey-6' "
+                  name="fa-solid fa-star-and-crescent" class="q-mr-sm" size="1.25rem"/>
+          {{ inspectUserData.start ? inspectUserData.start : 'None or Hide' }}
+          <q-separator class="q-mx-md" vertical inset/>
+          <q-icon :color="inspectUserData.zodiac? 'brown-6' : 'grey-6' "
+                  name="fa-solid fa-paw" class="q-mr-sm" size="1.25rem"/>
+          {{ inspectUserData.zodiac ? inspectUserData.zodiac : 'None or Hide' }}
+        </div>
+
+
         <div class="q-my-lg row justify-center simple-content-semi">
           <q-icon :color="inspectUserData.mail? 'orange-6' : 'grey-6' "
                   name="fa-solid fa-envelope" class="q-mr-sm" size="1.25rem"/>
@@ -155,6 +173,7 @@
                   name="eva-github" class="q-mr-sm" size="1.25rem"/>
           {{ inspectUserData.socialLink.github ? inspectUserData.socialLink.github : 'None or Hide' }}
         </div>
+
 
         <div class="q-my-lg row justify-center simple-bold-little-title">
           <div>
@@ -208,7 +227,7 @@
                 class="bg-transparent"
             >
               <!--隐藏滚动条-->
-              <q-tab-panel name="articles" class="row justify-center overflow-hidden">
+              <q-tab-panel name="articles" class="row justify-center overflow-hidden" style="min-height: 250px">
                 <div v-for="(item, index) in inspectUserArticleList" :key="index"
                      class="col-xs-12 col-lg-6">
                   <CaskArticleListCard :intro="item"/>
@@ -219,8 +238,21 @@
                          icon-right="fa-solid fa-circle-chevron-right" flat label="MORE"
                          :to="`/article/list?author=${inspectUserData.id}`"/>
                 </div>
+                <div v-if="inspectUserArticleList.length === 0 && !inspectUserArticleLoaded" style="min-height: 300px">
+                  <q-inner-loading :showing="inspectUserArticleList.length === 0">
+                    <q-spinner-pie size="80px" color="light-green-8"/>
+                  </q-inner-loading>
+                </div>
+                <div v-else-if="inspectUserArticleList.length === 0 && inspectUserArticleLoaded">
+                  <div class="space-right-coming-soon">
+                    Not Found
+                    <div style="font-size: 1rem">
+                      这个用户很懒，什么都没有留下😫
+                    </div>
+                  </div>
+                </div>
               </q-tab-panel>
-              <q-tab-panel name="essays" class="row justify-center overflow-hidden">
+              <q-tab-panel name="essays" class="row justify-center overflow-hidden" style="min-height: 250px">
                 <div v-for="(item, index) in inspectUserEssayList" :key="index"
                      class="col-xs-12 col-lg-6">
                   <CaskArticleListCard :intro="item"/>
@@ -230,8 +262,21 @@
                          icon-right="fa-solid fa-circle-chevron-right" flat label="MORE"
                          :to="`/essay/list?author=${inspectUserData.id}`"/>
                 </div>
+                <div v-if="inspectUserEssayList.length === 0 && !inspectUserEssayList" style="min-height: 300px">
+                  <q-inner-loading :showing="inspectUserEssayList.length === 0">
+                    <q-spinner-pie size="80px" color="light-green-8"/>
+                  </q-inner-loading>
+                </div>
+                <div v-else-if="inspectUserEssayList.length === 0 && inspectUserArticleLoaded">
+                  <div class="space-right-coming-soon">
+                    Not Found
+                    <div style="font-size: 1rem">
+                      这个用户很懒，什么都没有留下😫
+                    </div>
+                  </div>
+                </div>
               </q-tab-panel>
-              <q-tab-panel name="friends" class="row justify-start overflow-hidden">
+              <q-tab-panel name="friends" class="row justify-start overflow-hidden" style="min-height: 250px">
                 <div v-for="(item, index) in inspectUserData.friendList" :key="index" class="q-ma-lg">
                   <div class="row items-center">
                     <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${item.id}`">
@@ -259,6 +304,14 @@
                   </div>
 
                 </div>
+                <div v-if="inspectUserData.friendList.length === 0">
+                  <div class="space-right-coming-soon">
+                    Not Found
+                    <div style="font-size: 1rem">
+                      这个用户没有朋友😫
+                    </div>
+                  </div>
+                </div>
               </q-tab-panel>
             </q-tab-panels>
           </div>
@@ -268,7 +321,11 @@
       </div>
 
     </div>
-    <div v-else class="page-main-card"/>
+    <div v-else class="page-main-card" style="min-height: 300px">
+      <q-inner-loading :showing="!existUser" style="background-color: transparent">
+        <q-spinner-pie size="80px" color="light-green-8"/>
+      </q-inner-loading>
+    </div>
 
 
   </q-layout>
@@ -289,17 +346,18 @@ import {
 } from "vue";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-import {getLoginData, refreshLoginMessage} from "@/utils/store";
+import {getLoginData, refreshLoginMessage, webIsLogin} from "@/utils/store";
 import emitter from "@/utils/bus";
 import CaskUploadAvatar from "@/components/CaskUploadAvatar.vue";
 import {useRouter} from "vue-router";
 import CaskUserProfile from "@/views/CaskUserProfile.vue";
-import {follow, userDetailSimple} from "@/api/user";
+import {follow, isFollow, userDetailSimple} from "@/api/user";
 import {useQuasar} from "quasar";
 import {getBlogList, getBlogListCount} from "@/api/article";
 import {customPage} from "@/utils/page";
 import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import {getGenderObj} from "@/utils/enums/gender-opt";
+import {ZodiacSign} from "@/utils/date-to-zodiac";
 
 //notify
 const notify = useQuasar().notify
@@ -337,6 +395,8 @@ let inspectUserData = ref({
   mail: "",
   gender: 0,
   birth: "",
+  zodiac: "",
+  start: "",
   motto: "",
   nickName: "",
   roleType: 1,
@@ -358,7 +418,9 @@ let inspectUserArticleList = ref([])
 let inspectUserEssayList = ref([])
 let inspectUserTab = ref("articles")
 let existUser = ref(false)
-let alreadyFollow = ref(0)
+let alreadyFollow = ref(-1)
+let inFollowOperation = ref(false)
+let inspectUserArticleLoaded = ref(false)
 //设置栏目
 let currentTab = ref("profile")
 //资料完整度
@@ -416,11 +478,52 @@ function refreshUserData(data) {
 
 // 关注/取关
 function followMethod(isFollow) {
+  inFollowOperation.value = true
+
+  if (!webIsLogin()) {
+    notify({
+      message: "用户未登录，请登录",
+      position: 'top',
+      type: 'warning',
+      timeout: 1000
+    })
+    inFollowOperation.value = false
+    return
+  }
+
   follow({isFollow: isFollow, userId: inspectUserData.value.id}).then(res => {
-    console.log(res)
+    const status = res.data.status
+    if (200 !== status) {
+      return
+    }
+    alreadyFollow.value = isFollow ? 1 : 0
+    notify({
+      message: isFollow ? "关注成功" : "已取关",
+      position: 'top',
+      type: isFollow ? 'positive' : 'dark',
+      timeout: 1000
+    })
+    inFollowOperation.value = false
+    //refresh inspect user data
+    updateUserData(false)
   })
 }
 
+// 关注信息
+function isFollowMethod() {
+  isFollow({mainId: inspectUserData.value.id}).then(res => {
+    const status = res.data.status
+    if (200 !== status) {
+      return
+    }
+    let serviceIsFollow = res.data.data
+    if (null == serviceIsFollow) {
+      alreadyFollow.value = serviceIsFollow
+    } else {
+      alreadyFollow.value = serviceIsFollow ? 1 : 0
+    }
+  })
+}
 
 // get inspect user article data
 function searchArticleListMethod(articleType, authorId) {
@@ -434,6 +537,7 @@ function searchArticleListMethod(articleType, authorId) {
       inspectUserEssayList.value = []
       inspectUserEssayList.value.push(...res.data.data)
     }
+    inspectUserArticleLoaded.value = true
   })
   getBlogListCount(customPage(currentParam, 0, 4)).then(res => {
     if (1 === articleType) {
@@ -444,31 +548,59 @@ function searchArticleListMethod(articleType, authorId) {
   })
 }
 
-function updateUserData() {
-  if (props.userId) {
-    //pre
+// 查询其他用户信息感知当前用户登录状态变化
+function loginMessageInspect() {
+  //refresh inspect user data
+  updateUserData(false)
+}
+
+function updateUserData(resetAll) {
+  //pre
+  if (resetAll) {
     inspectUserTab.value = "articles"
-    //call
-    userDetailSimple({userId: props.userId}).then(res => {
-      const status = res.data.status
-      if (200 !== status) {
-        throw status
-      }
-      // load data
-      inspectUserData.value = res.data.data
-      // article data
-      searchArticleListMethod(1, inspectUserData.value.id)
-      searchArticleListMethod(2, inspectUserData.value.id)
-      // show user detail
-      existUser.value = true
-    }).catch(() => {
-      notify({
-        message: "用户不存在",
-        position: 'top',
-        type: 'negative',
-        timeout: 1000
-      })
+    existUser.value = false
+    inspectUserArticleLoaded.value = false
+    inspectUserData.value.articleNum = 0
+    inspectUserData.value.essayNum = 0
+    inspectUserArticleList.value = []
+    inspectUserEssayList.value = []
+  }
+  //call
+  userDetailSimple({userId: props.userId}).then(res => {
+    const status = res.data.status
+    if (200 !== status) {
+      throw status
+    }
+    // load data
+    inspectUserData.value = res.data.data
+    if (inspectUserData.value.birth) {
+      inspectUserData.value.start = new ZodiacSign(new Date(inspectUserData.value.birth), 'zh').sign
+      inspectUserData.value.zodiac = new ZodiacSign(new Date(inspectUserData.value.birth), 'zh').chinese.sign
+    }
+    // article data
+    searchArticleListMethod(1, inspectUserData.value.id)
+    searchArticleListMethod(2, inspectUserData.value.id)
+    //follow
+    isFollowMethod()
+    // show user detail
+    existUser.value = true
+  }).catch(() => {
+    notify({
+      message: "用户不存在",
+      position: 'top',
+      type: 'negative',
+      timeout: 1000
     })
+  })
+}
+
+onMounted(() => {
+  //底色渲染
+  addStyle("background-color: rgb(239, 242, 245)")
+  if (props.userId) {
+    emitter.on("loginMessageEvent", loginMessageInspect)
+    //初始化查询用户信息
+    updateUserData()
   } else {
     //初始化登录信息
     resetProfile()
@@ -477,19 +609,13 @@ function updateUserData() {
     //数据更新事件
     emitter.on("refreshLoginMessageEvent", refreshUserData)
   }
-}
-
-onMounted(() => {
-  //底色渲染
-  addStyle("background-color: rgb(239, 242, 245)")
-  updateUserData()
 })
 
 onUnmounted(() => {
   //取消底色渲染
   removeStyle("background-color: rgb(239, 242, 245)")
   if (props.userId) {
-    //...
+    emitter.off("loginMessageEvent", loginMessageInspect)
   } else {
     //删除登录事件
     emitter.off("loginMessageEvent", loginMessage)
@@ -499,12 +625,7 @@ onUnmounted(() => {
 })
 
 watch(() => props.userId, () => {
-  //删除登录事件
-  emitter.off("loginMessageEvent", loginMessage)
-  //删除数据更新事件
-  emitter.off("refreshLoginMessageEvent", refreshUserData)
-  //rebuild
-  updateUserData()
+  thisRouter.go(0)
 })
 
 </script>
@@ -548,14 +669,6 @@ watch(() => props.userId, () => {
 
 .space-card-right {
   border-radius: 0 50px 50px 0;
-}
-
-.space-right-coming-soon {
-  font-family: Roboto Slab, sans-serif;
-  text-align: center;
-  height: 50rem;
-  padding: 40% 0;
-  font-size: 3rem;
 }
 
 </style>

@@ -95,3 +95,11 @@ export function follow(body) {
         data: body
     })
 }
+
+export function isFollow(params) {
+    return serviceShiro({
+        url: `/yui/user/isFollow/authNoError`,
+        params: params,
+        method: 'post',
+    })
+}

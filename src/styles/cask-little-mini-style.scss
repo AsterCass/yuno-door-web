@@ -79,6 +79,13 @@
   font-family: Roboto Slab, sans-serif;
 }
 
+.simple-bold-little-title-auto-mg {
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.625;
+  font-family: Roboto Slab, sans-serif;
+}
+
 
 .simple-bold-little-title-secondary {
   font-weight: 600;
@@ -153,6 +160,14 @@ $background-image: linear-gradient(195deg, #42424a, #191919)) {
   min-width: $min-width;
   background-image: $background-image;
   border-radius: 0.8rem;
+}
+
+.space-right-coming-soon {
+  font-family: Roboto Slab, sans-serif;
+  text-align: center;
+  height: 10rem;
+  padding: 40% 0;
+  font-size: 3rem;
 }
 
 .cask-simple-btn-margin-sec {
