@@ -50,12 +50,16 @@ export async function serviceIsLogin() {
 
 export function isLogin() {
     serviceIsLogin().then(res => {
-        let isLoginStatus = webIsLogin() && res
+        let webIsLoginStatus = webIsLogin()
+        let isLoginStatus = webIsLoginStatus && res
+        let needSendEvent = webIsLoginStatus !== res
         if (!isLoginStatus) {
             logout()
         }
         updateLogin(isLoginStatus)
-        emitter.emit("loginMessageEvent", isLoginStatus)
+        if (needSendEvent) {
+            emitter.emit("loginMessageEvent", isLoginStatus)
+        }
     })
 }
 

@@ -8,16 +8,23 @@
     <div class="col-11 q-mx-md">
       <div v-for="(comment, index) in commentTree" :key="index">
         <div class="row justify-center q-my-sm">
+
           <div class="column items-center" style="width: 80px">
+
             <div class="column items-center">
-              <q-avatar size="60px" style="filter: blur(6px);">
+              <q-avatar size="60px" style="filter: blur(3px);">
                 <q-img :src="comment.commentUserAvatar"/>
               </q-avatar>
-              <q-avatar size="55px" style="margin-top: -57.5px">
-                <q-img :src="comment.commentUserAvatar"/>
-              </q-avatar>
+              <q-btn round color="white" :to="`/space?id=${comment.commentUserId}`" style="margin-top: -57.5px">
+                <q-avatar size="55px">
+                  <q-img :src="comment.commentUserAvatar"/>
+                </q-avatar>
+              </q-btn>
+
             </div>
+
           </div>
+
           <div class="col-10">
             <div>
               <div class="simple-bold-little-title-secondary">
@@ -45,12 +52,15 @@
                 <div class="row justify-center">
                   <div class="column items-center" style="width: 80px">
                     <div class="column items-center">
-                      <q-avatar size="45px" style="filter: blur(6px);">
+                      <q-avatar size="45px" style="filter: blur(2px);">
                         <q-img :src="childComment.commentUserAvatar"/>
                       </q-avatar>
-                      <q-avatar size="40px" style="margin-top: -42.5px">
-                        <q-img :src="childComment.commentUserAvatar"/>
-                      </q-avatar>
+                      <q-btn round color="translate" :to="`/space?id=${childComment.commentUserId}`"
+                             style="margin-top: -42.5px">
+                        <q-avatar size="40px">
+                          <q-img :src="childComment.commentUserAvatar"/>
+                        </q-avatar>
+                      </q-btn>
                     </div>
                   </div>
                   <div class="col-10">
@@ -172,6 +182,7 @@ let commentOriginObj = ref({
 })
 let commentTree = ref([
   {
+    commentUserId: "",
     commentUserName: "",
     commentContent: "",
     commentTime: "",

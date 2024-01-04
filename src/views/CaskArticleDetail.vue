@@ -67,7 +67,7 @@
           </div>
           <div class="col-1 row justify-end">
             <div>
-              <q-btn round push color="black">
+              <q-btn round push color="black" :to="`/space?id=${blogMeta.authorId}`">
                 <q-avatar size="60px" style="margin: .1rem">
                   <q-img :src="blogMeta.authorAvatar"/>
                 </q-avatar>
@@ -137,6 +137,7 @@ let blogMeta = ref({
   articleBrief: "description",
   articleKeyList: [],
   authorAvatar: "",
+  authorId: "",
 })
 //图片展示
 let picShow = ref(false)

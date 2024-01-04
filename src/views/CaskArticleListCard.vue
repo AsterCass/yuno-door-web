@@ -8,7 +8,7 @@
       </div>
       <div class="col-4 row justify-end">
         <div>
-          <q-btn round push color="white">
+          <q-btn round push color="white" :to="`/space?id=${intro.authorId}`">
             <q-avatar class="admin-article-list-card-head">
               <q-img :src="intro.authorAvatar"/>
             </q-avatar>
@@ -56,6 +56,7 @@ import {getArticleTagDescList} from "@/utils/enums/article-tag";
 const props = defineProps({
   intro: {
     id: "",
+    authorId: "",
     articleTitle: "",
     articleBrief: "",
     articleTagList: [],

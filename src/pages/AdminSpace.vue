@@ -473,6 +473,10 @@ function loginMessage(isOnLogin) {
 function refreshUserData(data) {
   if (data) {
     userData.value = data
+  } else {
+    thisRouter.push({
+      path: '/notLogin'
+    })
   }
 }
 
@@ -669,6 +673,7 @@ watch(() => props.userId, () => {
 
 .space-card-right {
   border-radius: 0 50px 50px 0;
+  background-color: transparent;
 }
 
 </style>
