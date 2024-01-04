@@ -227,7 +227,8 @@
                 class="bg-transparent"
             >
               <!--隐藏滚动条-->
-              <q-tab-panel name="articles" class="row justify-center overflow-hidden" style="min-height: 250px">
+              <q-tab-panel name="articles" class="row justify-center overflow-hidden"
+                           style="min-height: 300px">
                 <div v-for="(item, index) in inspectUserArticleList" :key="index"
                      class="col-xs-12 col-lg-6">
                   <CaskArticleListCard :intro="item"/>
@@ -238,13 +239,15 @@
                          icon-right="fa-solid fa-circle-chevron-right" flat label="MORE"
                          :to="`/article/list?author=${inspectUserData.id}`"/>
                 </div>
-                <div v-if="inspectUserArticleList.length === 0 && !inspectUserArticleLoaded" style="min-height: 300px">
+                <div v-if="inspectUserArticleList.length === 0 && !inspectUserArticleLoaded"
+                     style="min-height: 300px">
                   <q-inner-loading :showing="inspectUserArticleList.length === 0">
                     <q-spinner-pie size="80px" color="light-green-8"/>
                   </q-inner-loading>
                 </div>
-                <div v-else-if="inspectUserArticleList.length === 0 && inspectUserArticleLoaded">
-                  <div class="space-right-coming-soon">
+                <div v-else-if="inspectUserArticleList.length === 0 && inspectUserArticleLoaded"
+                     style="min-height: 300px">
+                  <div class="space-right-coming-soon-const">
                     Not Found
                     <div style="font-size: 1rem">
                       这个用户很懒，什么都没有留下😫
@@ -252,7 +255,8 @@
                   </div>
                 </div>
               </q-tab-panel>
-              <q-tab-panel name="essays" class="row justify-center overflow-hidden" style="min-height: 250px">
+              <q-tab-panel name="essays" class="row justify-center overflow-hidden"
+                           style="min-height: 300px">
                 <div v-for="(item, index) in inspectUserEssayList" :key="index"
                      class="col-xs-12 col-lg-6">
                   <CaskArticleListCard :intro="item"/>
@@ -262,13 +266,15 @@
                          icon-right="fa-solid fa-circle-chevron-right" flat label="MORE"
                          :to="`/essay/list?author=${inspectUserData.id}`"/>
                 </div>
-                <div v-if="inspectUserEssayList.length === 0 && !inspectUserEssayList" style="min-height: 300px">
+                <div v-if="inspectUserEssayList.length === 0 && !inspectUserEssayList"
+                     style="min-height: 300px">
                   <q-inner-loading :showing="inspectUserEssayList.length === 0">
                     <q-spinner-pie size="80px" color="light-green-8"/>
                   </q-inner-loading>
                 </div>
-                <div v-else-if="inspectUserEssayList.length === 0 && inspectUserArticleLoaded">
-                  <div class="space-right-coming-soon">
+                <div v-else-if="inspectUserEssayList.length === 0 && inspectUserArticleLoaded"
+                     style="min-height: 300px">
+                  <div class="space-right-coming-soon-const">
                     Not Found
                     <div style="font-size: 1rem">
                       这个用户很懒，什么都没有留下😫
@@ -276,7 +282,8 @@
                   </div>
                 </div>
               </q-tab-panel>
-              <q-tab-panel name="friends" class="row justify-start overflow-hidden" style="min-height: 250px">
+              <q-tab-panel name="friends" class="row justify-start overflow-hidden"
+                           style="min-height: 300px">
                 <div v-for="(item, index) in inspectUserData.friendList" :key="index" class="q-ma-lg">
                   <div class="row items-center">
                     <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${item.id}`">
@@ -304,11 +311,13 @@
                   </div>
 
                 </div>
-                <div v-if="inspectUserData.friendList.length === 0">
-                  <div class="space-right-coming-soon">
-                    Not Found
-                    <div style="font-size: 1rem">
-                      这个用户没有朋友😫
+                <div v-if="inspectUserData.friendList.length === 0" class="col-12 row justify-center">
+                  <div style="min-height: 300px">
+                    <div class="space-right-coming-soon-const">
+                      Not Found
+                      <div style="font-size: 1rem">
+                        这个用户没有朋友😫
+                      </div>
                     </div>
                   </div>
                 </div>

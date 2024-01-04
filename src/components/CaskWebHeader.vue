@@ -156,7 +156,7 @@ function headerKitInDeveloping() {
 .header-kit-card
   color: $cask_base_black
   background-color: rgba(255, 255, 255, 0.8)
-  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
+  //box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)
   backdrop-filter: saturate(200%) blur(30px)
   border-radius: 1rem
 
