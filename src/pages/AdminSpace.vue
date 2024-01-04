@@ -97,6 +97,11 @@
         </q-tab-panels>
       </div>
     </div>
+    <div v-else-if="inspectUserLoading" class="page-main-card" style="min-height: 300px">
+      <q-inner-loading :showing="inspectUserLoading" style="background-color: transparent">
+        <q-spinner-pie size="80px" color="light-green-8"/>
+      </q-inner-loading>
+    </div>
     <div v-else-if="existUser" class="page-main-card">
 
       <div class="row justify-center" style="transform: translateY(-55%);">
@@ -330,11 +335,7 @@
       </div>
 
     </div>
-    <div v-else class="page-main-card" style="min-height: 300px">
-      <q-inner-loading :showing="!existUser" style="background-color: transparent">
-        <q-spinner-pie size="80px" color="light-green-8"/>
-      </q-inner-loading>
-    </div>
+    <div v-else class="page-main-card"/>
 
 
   </q-layout>
@@ -426,6 +427,7 @@ let inspectUserData = ref({
 let inspectUserArticleList = ref([])
 let inspectUserEssayList = ref([])
 let inspectUserTab = ref("articles")
+let inspectUserLoading = ref(true)
 let existUser = ref(false)
 let alreadyFollow = ref(-1)
 let inFollowOperation = ref(false)
@@ -573,6 +575,7 @@ function updateUserData(resetAll) {
     inspectUserTab.value = "articles"
     existUser.value = false
     inspectUserArticleLoaded.value = false
+    inspectUserLoading.value = true
     inspectUserData.value.articleNum = 0
     inspectUserData.value.essayNum = 0
     inspectUserArticleList.value = []
@@ -597,6 +600,7 @@ function updateUserData(resetAll) {
     isFollowMethod()
     // show user detail
     existUser.value = true
+    inspectUserLoading.value = false
   }).catch(() => {
     notify({
       message: "用户不存在",
@@ -604,6 +608,7 @@ function updateUserData(resetAll) {
       type: 'negative',
       timeout: 1000
     })
+    inspectUserLoading.value = false
   })
 }
 
@@ -653,7 +658,7 @@ watch(() => props.userId, () => {
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
   backdrop-filter: saturate(200%) blur(30px);
-  min-height: 600px;
+  min-height: 300px;
 }
 
 .page-main-card-for-avatar {
