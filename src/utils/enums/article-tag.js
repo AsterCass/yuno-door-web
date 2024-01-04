@@ -45,8 +45,8 @@ const articleTagEnums = [
     {
         name: "Tool",
         code: 128,
-        color: "yellow-5",
-        rbg: "#FFEE58",
+        color: "yellow-10",
+        rbg: "#F57F17",
     },
     {
         name: "Android",
