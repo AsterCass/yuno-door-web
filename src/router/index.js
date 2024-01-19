@@ -20,6 +20,7 @@ import AdminToolsTabPanel from "@/pages/AdminToolsTabPanel.vue";
 import CaskTimestampConverter from "@/views/CaskTimestampConverter.vue";
 import CaskQrcodeGenerator from "@/views/CaskQrcodeGenerator.vue";
 import CaskMd5Encrypt from "@/views/CaskMd5Encrypt.vue";
+import CaskImgBase64Converter from "@/views/CaskImgBase64Converter.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -65,6 +66,14 @@ const router = createRouter({
             name: 'adminToolsTabPanel',
             component: AdminToolsTabPanel,
             children: [
+                {
+                    path: 'imgBase64',
+                    name: 'caskImgBase64Converter',
+                    component: CaskImgBase64Converter,
+                    meta: {
+                        title: 'Base64编码图片互转'
+                    },
+                },
                 {
                     path: 'md5',
                     name: 'caskMd5Encrypt',
