@@ -509,6 +509,13 @@ function followMethod(isFollow) {
   follow({isFollow: isFollow, userId: inspectUserData.value.id}).then(res => {
     const status = res.data.status
     if (200 !== status) {
+      inFollowOperation.value = false
+      notify({
+        message: res.data.message,
+        position: 'top',
+        type: 'warning',
+        timeout: 1000
+      })
       return
     }
     alreadyFollow.value = isFollow ? 1 : 0
