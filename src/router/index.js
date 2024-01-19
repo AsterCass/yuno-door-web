@@ -19,6 +19,7 @@ import CaskSqlKotlinGenerator from "@/views/CaskSqlKotlinGenerator.vue";
 import AdminToolsTabPanel from "@/pages/AdminToolsTabPanel.vue";
 import CaskTimestampConverter from "@/views/CaskTimestampConverter.vue";
 import CaskQrcodeGenerator from "@/views/CaskQrcodeGenerator.vue";
+import CaskMd5Encrypt from "@/views/CaskMd5Encrypt.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -64,6 +65,14 @@ const router = createRouter({
             name: 'adminToolsTabPanel',
             component: AdminToolsTabPanel,
             children: [
+                {
+                    path: 'md5',
+                    name: 'caskMd5Encrypt',
+                    component: CaskMd5Encrypt,
+                    meta: {
+                        title: '在线MD5加密'
+                    },
+                },
                 {
                     path: 'qrCode',
                     name: 'caskQrcodeGenerator',

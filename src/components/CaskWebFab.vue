@@ -109,6 +109,10 @@
                       to="/tools/qrcode" icon="fa-solid fa-qrcode"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="Md5加密" external-label label-position="bottom"
+                      to="/tools/md5" icon="fa-solid fa-location-pin-lock"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"

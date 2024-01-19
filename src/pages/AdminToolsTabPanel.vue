@@ -36,6 +36,9 @@
                      no-caps to="/tools/timestamp" class="tools-tab"/>
         <q-route-tab name="qrcode" icon="fa-solid fa-qrcode" label="QR二维码生成"
                      no-caps to="/tools/qrcode" class="tools-tab"/>
+        <q-route-tab name="md5" icon="fa-solid fa-location-pin-lock" label="MD5加密"
+                     no-caps to="/tools/md5" class="tools-tab"/>
+
       </q-tabs>
 
       <router-view/>
