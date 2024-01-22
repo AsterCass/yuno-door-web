@@ -113,6 +113,10 @@
                       to="/tools/md5" icon="fa-solid fa-location-pin-lock"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="Base64图片转换" external-label label-position="bottom"
+                      to="/tools/imgBase64" icon="fa-solid fa-camera-rotate"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"

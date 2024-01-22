@@ -38,7 +38,7 @@
                      no-caps to="/tools/qrcode" class="tools-tab"/>
         <q-route-tab name="md5" icon="fa-solid fa-location-pin-lock" label="MD5加密"
                      no-caps to="/tools/md5" class="tools-tab"/>
-        <q-route-tab name="imgBase64" icon="fa-solid fa-camera-rotate" label="Base64编码图片互转"
+        <q-route-tab name="imgBase64" icon="fa-solid fa-camera-rotate" label="Base64图片转换"
                      no-caps to="/tools/imgBase64" class="tools-tab"/>
 
       </q-tabs>

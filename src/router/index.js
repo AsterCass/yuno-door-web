@@ -71,7 +71,7 @@ const router = createRouter({
                     name: 'caskImgBase64Converter',
                     component: CaskImgBase64Converter,
                     meta: {
-                        title: 'Base64编码图片互转'
+                        title: 'Base64图片转换'
                     },
                 },
                 {

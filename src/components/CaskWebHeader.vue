@@ -49,6 +49,8 @@
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-solid fa-location-pin-lock" label="Md5加密" to="/tools/md5"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
+                       icon="fa-solid fa-camera-rotate" label="Base64图片转换" to="/tools/imgBase64"/>
+                <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-solid fa-face-grin-tongue-wink" label="表情包电子包浆" @click="headerKitInDeveloping"/>
                 <q-btn class="col-6 subHeaderBtn q-my-sm" flat dense stack no-caps
                        icon="fa-solid fa-scissors" label="Audio在线剪辑" @click="headerKitInDeveloping"/>
