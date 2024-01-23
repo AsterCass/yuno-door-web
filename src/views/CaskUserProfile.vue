@@ -153,7 +153,9 @@ function saveProfile() {
         type: 'positive',
         timeout: 1000
       })
-      refreshLoginMessage()
+      //这里如果使用false，保存后不刷新页面，会导致：同页面下，将页面上拉至顶，再鼠标碰触其他q-menu元素，
+      // 如CaskWebHeader的头像，页面滚轮滑最下页面最下端，原因不明
+      refreshLoginMessage(true)
     } else {
       regWarningNotify("保存失败：" + res.data.message)
     }
