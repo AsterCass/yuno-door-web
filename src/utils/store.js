@@ -63,7 +63,7 @@ export function isLogin() {
     })
 }
 
-export function refreshLoginMessage() {
+export function refreshLoginMessage(needReload) {
     serviceIsLogin().then(res => {
         let isLoginStatus = webIsLogin() && res
         if (!isLoginStatus) {
@@ -73,6 +73,7 @@ export function refreshLoginMessage() {
             let id = getLoginData().id
             userDetail(id).then(res => {
                 if (200 === res.data.status) {
+                    res.data.data.needReload = needReload
                     emitter.emit("refreshLoginMessageEvent", res.data.data)
                     LocalStorage.set(LOGIN_LOCAL_KEY, res.data.data)
                 }

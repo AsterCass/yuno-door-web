@@ -458,7 +458,7 @@ profileIntegrity = computed(() => {
 })
 
 //reset user info
-function resetProfile() {
+function initUserProfile() {
   refreshLoginMessage()
 }
 
@@ -483,7 +483,12 @@ function loginMessage(isOnLogin) {
 //刷新数据
 function refreshUserData(data) {
   if (data) {
+    //update data
     userData.value = data
+    // update page
+    if (data.needReload) {
+      thisRouter.go(0)
+    }
   } else {
     thisRouter.push({
       path: '/notLogin'
@@ -628,7 +633,7 @@ onMounted(() => {
     updateUserData()
   } else {
     //初始化登录信息
-    resetProfile()
+    initUserProfile()
     //登录事件
     emitter.on("loginMessageEvent", loginMessage)
     //数据更新事件

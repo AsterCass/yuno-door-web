@@ -75,7 +75,7 @@ function saveAvatar() {
   updateAvatar(formData).then(res => {
     if (200 === res.data.status) {
       //数据重新初始化
-      refreshLoginMessage()
+      refreshLoginMessage(true)
       isDatabaseAvatar.value = true
       uploadDialogShow.value = false
       notify({
