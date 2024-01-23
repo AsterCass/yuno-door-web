@@ -101,10 +101,10 @@ export function setLoginData(data, userToken) {
 }
 
 export function logout(id) {
-    updateLogin(false)
-    LocalStorage.remove(LOGIN_LOCAL_KEY)
-    LocalStorage.remove(LOGIN_TOKEN_KEY)
     userLogout(id).then(res => {
+        updateLogin(false)
+        LocalStorage.remove(LOGIN_LOCAL_KEY)
+        LocalStorage.remove(LOGIN_TOKEN_KEY)
         if (200 === res.data.status) {
             emitter.emit("loginMessageEvent", false)
         }
