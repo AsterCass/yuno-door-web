@@ -60,7 +60,7 @@
 
       <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                     label="Board" hide-label external-label glossy class="q-fab-sub-left-bt"
-                    @click="fabKitInDeveloping" icon="fa-solid fa-clipboard"/>
+                    to="/board" icon="fa-solid fa-clipboard"/>
 
 
       <q-fab

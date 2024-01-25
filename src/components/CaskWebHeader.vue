@@ -61,7 +61,7 @@
 
 
         <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-clipboard"
-               label="Board" @click="headerKitInDeveloping"/>
+               label="Board" to="/board"/>
 
       </div>
       <div class="col-4 row justify-center">

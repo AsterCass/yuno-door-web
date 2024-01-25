@@ -42,7 +42,7 @@ const router = createRouter({
                     name: "adminArticleDetail",
                     component: AdminArticleDetail,
                     meta: {
-                        title: '技术备录'
+                        title: 'AsterCasc-技术备录'
                     },
                     props: ($route) => ({
                         articleId: $route.query.articleId,
@@ -53,7 +53,7 @@ const router = createRouter({
                     name: "adminArticleList",
                     component: AdminArticleList,
                     meta: {
-                        title: '技术备录'
+                        title: 'AsterCasc-技术备录'
                     },
                     props: ($route) => ({
                         authorId: $route.query.author,
@@ -71,7 +71,7 @@ const router = createRouter({
                     name: 'caskImgBase64Converter',
                     component: CaskImgBase64Converter,
                     meta: {
-                        title: 'Base64图片转换'
+                        title: 'AsterCasc-Base64图片转换'
                     },
                 },
                 {
@@ -79,7 +79,7 @@ const router = createRouter({
                     name: 'caskMd5Encrypt',
                     component: CaskMd5Encrypt,
                     meta: {
-                        title: '在线MD5加密'
+                        title: 'AsterCasc-在线MD5加密'
                     },
                 },
                 {
@@ -87,7 +87,7 @@ const router = createRouter({
                     name: 'caskQrcodeGenerator',
                     component: CaskQrcodeGenerator,
                     meta: {
-                        title: '在线生成二维码工具'
+                        title: 'AsterCasc-在线生成二维码工具'
                     },
                 },
                 {
@@ -95,7 +95,7 @@ const router = createRouter({
                     name: 'caskTimestampConverter',
                     component: CaskTimestampConverter,
                     meta: {
-                        title: '在线时间戳转换工具'
+                        title: 'AsterCasc-在线时间戳转换工具'
                     },
                 },
                 {
@@ -103,7 +103,7 @@ const router = createRouter({
                     name: 'caskSqlKotlinGenerator',
                     component: CaskSqlKotlinGenerator,
                     meta: {
-                        title: 'SQL转Kotlin类'
+                        title: 'AsterCasc-SQL转Kotlin类'
                     },
                 },
                 {
@@ -111,7 +111,7 @@ const router = createRouter({
                     name: 'caskSteamSearchList',
                     component: CaskSteamSearchList,
                     meta: {
-                        title: 'Steam史低查询工具'
+                        title: 'AsterCasc-Steam史低查询工具'
                     },
                     // props: ($route) => ({
                     //     gameKey: $route.query.gameKey,
@@ -124,7 +124,7 @@ const router = createRouter({
             name: "adminEssayList",
             component: AdminEssayList,
             meta: {
-                title: '生活题记'
+                title: 'AsterCasc-生活题记'
             },
             props: ($route) => ({
                 authorId: $route.query.author,
@@ -135,7 +135,7 @@ const router = createRouter({
             name: 'adminPrivacyPolicy',
             component: AdminPrivacyPolicy,
             meta: {
-                title: '隐私政策'
+                title: 'AsterCasc-隐私政策'
             }
         },
         {
@@ -143,7 +143,7 @@ const router = createRouter({
             name: 'adminProfile',
             component: AdminProfile,
             meta: {
-                title: '网站简介'
+                title: 'AsterCasc-网站简介'
             }
         },
         {
@@ -151,7 +151,7 @@ const router = createRouter({
             name: 'adminSpace',
             component: AdminSpace,
             meta: {
-                title: '个人中心'
+                title: 'AsterCasc-个人中心'
             },
             props: ($route) => ({
                 userId: $route.query.id,
@@ -162,7 +162,7 @@ const router = createRouter({
             name: 'messageBoard',
             component: AdminMessageBoard,
             meta: {
-                title: '留言板'
+                title: 'AsterCasc-留言板'
             }
         },
         {
@@ -175,7 +175,7 @@ const router = createRouter({
                     name: 'caskVideoCollection',
                     component: CaskVideoCollection,
                     meta: {
-                        title: '视频库'
+                        title: 'AsterCasc-视频库'
                     },
                     props: ($route) => ({
                         isSearch: Number($route.query.isSearch),
@@ -187,7 +187,7 @@ const router = createRouter({
                     name: 'caskVideoPlay',
                     component: CaskVideoPlay,
                     meta: {
-                        title: '视频播放'
+                        title: 'AsterCasc-视频播放'
                     },
                     props: ($route) => ({
                         colId: $route.query.colId,

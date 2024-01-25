@@ -2,8 +2,8 @@
   <div style="padding: 1.5%">
 
     <div class="code-generator-tag-title">
-      <div>
-        <q-icon class="q-mx-sm" name="fa-solid fa-camera-rotate" size="1em"/>
+      <div class="row items-center">
+        <q-icon class="q-mx-sm q-mr-md" name="fa-solid fa-camera-rotate" size="1em"/>
         Base64图片转换
       </div>
     </div>

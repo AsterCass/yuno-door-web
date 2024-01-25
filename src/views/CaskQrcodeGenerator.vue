@@ -3,8 +3,8 @@
   <div style="padding: 1.5%">
 
     <div class="code-generator-tag-title">
-      <div>
-        <q-icon class="q-mx-sm" name="fa-solid fa-qrcode" size="1em"/>
+      <div class="row items-center">
+        <q-icon class="q-mx-sm q-mr-md" name="fa-solid fa-qrcode" size="1em"/>
         QRCode Generator
       </div>
     </div>

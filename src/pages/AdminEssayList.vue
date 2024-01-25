@@ -5,9 +5,9 @@
       <q-img
           :no-native-menu="false"
           src=
-              "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg3-half.jpg"
+              "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg2-half.jpg"
           placeholder-src=
-              "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg3-half-dim.jpg"
+              "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/bg2-half-dim.jpg"
           alt=""
           :ratio="2.5"
           :fit="'cover'">
