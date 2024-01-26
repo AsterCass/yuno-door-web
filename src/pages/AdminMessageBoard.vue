@@ -18,27 +18,27 @@
 
       <div class="row justify-end" style="z-index: 0; margin-top: -11%">
         <div class="col-2"
-             style="z-index: 1; margin-right: -5rem">
+             style="z-index: 1; margin-right: -5rem; height: 100px">
           <q-img
               src="https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/illustration/girl_read_1.png"
           >
           </q-img>
         </div>
         <div class="col-2"
-             style="z-index: 1; margin-right: -7.5rem">
+             style="z-index: 1; margin-right: -7.5rem; height: 100px">
           <q-img
               src="https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/illustration/boy_write_1.png"
           >
           </q-img>
         </div>
-        <div class="col-2" style="z-index: 1; margin-right: -29%; margin-top: 5.5%">
+        <div class="col-2" style="z-index: 1; margin-right: -29%; margin-top: 5.5%; height: 100px">
           <div class="column items-end q-mt-xl">
             <q-toggle keep-color color="green-10" label="更新日志" val="updateLog" v-model="commentTypeList"/>
             <q-toggle keep-color color="brown-10" label="用户评论" val="userComment" v-model="commentTypeList"/>
           </div>
         </div>
         <div class="col-5"
-             style="z-index: 0;  margin-top: -20%;">
+             style="z-index: 0;  margin-top: -20%">
           <q-img
               src="https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-img/illustration/moon_bg.png"
           >
@@ -47,21 +47,14 @@
       </div>
     </div>
 
-    <div>
-      <div class="message-board-main">
+    <div style="z-index: 5">
+      <div class="message-board-main" style="z-index: 0">
         <div class="code-generator-tag-title" style="margin-bottom: 2rem">
           <div class="row items-center">
             <q-icon class="q-mx-sm q-mr-md" name="fa-solid fa-clipboard" size="1em"/>
             网站留言板
           </div>
         </div>
-
-
-<!--        <q-separator spaced=".5rem" size="0.2rem"/>-->
-
-<!--        <q-separator spaced="0.5rem" size="0.05rem" color="green-5"/>-->
-<!--        <q-separator spaced="0.5rem" size="0.1rem" color="brown-5"/>-->
-<!--        <q-separator spaced="0.5rem" size="0.05rem" color="green-5"/>-->
 
 
         <div v-for="(comment, index) in commentTree" :key="index">
@@ -85,7 +78,76 @@
               </div>
             </div>
 
-            <div class="col-grow">
+            <div class="column justify-between col q-pt-lg q-pb-sm q-px-md simple-content">
+
+              <div style="min-height: 8rem">
+                {{ comment.commentContent }}
+              </div>
+
+              <div>
+                <div class="row justify-end q-mt-md simple-content-semi">
+                  <div class="row items-center">
+                    {{ comment.ipAddressName }}&#32;·&#32;{{ comment.floorNumber }}楼
+                    &#32;·&#32;{{ comment.commentTime }}
+                  </div>
+                  <q-btn v-if="0 === comment.childData.length" flat dense class="q-ml-sm q-pa-sm"
+                         @click="replyComment()"
+                         style="text-decoration: underline; color: #629DD1;" label="回复"/>
+                  <q-btn v-else flat dense class="q-ml-sm q-py-sm q-px-md" @click="replyComment()"
+                         style="text-decoration: underline; color: #629DD1; background-color: #eee;
+                          border-radius: .5rem .5rem 0 0" label="收起回复"/>
+                </div>
+
+                <div v-if="0 !== comment.childData.length" class="q-pa-xs"
+                     style="background-color: #eee; border-radius: 1rem 0 1rem 1rem">
+
+                  <div v-for="(childComment, childIndex) in comment.childData" :key="childIndex" class="q-mt-md">
+                    <div class="row justify-center">
+                      <div class="column items-center" style="width: 80px">
+                        <div class="column items-center">
+                          <q-avatar size="45px" style="filter: blur(2px);">
+                            <q-img :src="childComment.commentUserAvatar"/>
+                          </q-avatar>
+                          <q-btn :to="`/space?id=${childComment.commentUserId}`" color="translate" round
+                                 style="margin-top: -42.5px">
+                            <q-avatar size="40px">
+                              <q-img :src="childComment.commentUserAvatar"/>
+                            </q-avatar>
+                          </q-btn>
+                        </div>
+                      </div>
+                      <div class="col-10">
+                        <div>
+                          <div class="simple-bold-little-title-mini">
+                            {{ childComment.commentUserName }}
+                            <span class="simple-content-tag">
+                              &#32;·&#32;{{ childComment.commentTime }}&#32;·&#32;{{ childComment.ipAddressName }}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="simple-content-mini">
+                          <span v-if=" comment.id !== childComment.mainSubId" class="cask-text-thirdly-color">
+                            @{{ childComment.mainSubUserName }}:
+                          </span>
+                          {{ childComment.commentContent }}
+                        </div>
+                        <div class="row justify-end">
+                          <q-btn flat dense label="回复" class="q-px-md"
+                                 style="text-decoration: underline; color: #629DD1"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <q-separator v-if="childIndex < comment.childData.length - 1" size="0.05rem" spaced=".1rem"
+                                 style="margin-right: 32px; margin-left: 32px"/>
+                    <div v-else class="row justify-center q-mb-md">
+                      <q-btn push color="blue-grey-7" @click="replyComment()" label="吾有一言，请诸位静听"/>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
 
             </div>
 
@@ -142,6 +204,7 @@ let commentTree = ref([
     commentContent: "",
     commentTime: "",
     ipAddressName: "",
+    floorNumber: 1,
     commentUserAvatar: "",
     likeNum: 0,
     isLike: 0,
@@ -174,6 +237,9 @@ function refreshCommentTree(inputMainId) {
   })
 }
 
+function replyComment() {
+  console.log("134242")
+}
 
 onMounted(() => {
   initData();
