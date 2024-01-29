@@ -58,6 +58,7 @@
 
 
         <div v-for="(comment, index) in commentTree" :key="index">
+
           <div class="row">
 
             <div class="col-2 column items-center q-mt-md">
@@ -66,19 +67,37 @@
                   <q-avatar size="130px" style="filter: blur(3px);">
                     <q-img :src="comment.commentUserAvatar"/>
                   </q-avatar>
-                  <q-btn round color="white" :to="`/space?id=${comment.commentUserId}`" style="margin-top: -125.5px">
+                  <q-btn round color="translate"
+                         @click="goToUserSpace(comment.commentUserId)" style="margin-top: -125.5px">
                     <q-avatar size="120px">
                       <q-img :src="comment.commentUserAvatar"/>
                     </q-avatar>
                   </q-btn>
                 </div>
               </div>
-              <div class="simple-bold-little-title-secondary" style="margin-top: .8rem">
+              <div class="simple-bold-little-title-secondary text-center to-space-user-id"
+                   style="margin-top: .8rem; " @click="goToUserSpace(comment.commentUserId)">
                 {{ comment.commentUserName }}
+              </div>
+              <div class="q-mb-md">
+                <q-badge v-if="null != comment.commentUserRoleType" class="q-mx-xs q-py-xs q-px-sm"
+                         style="transform: translateY(-.13rem)"
+                         :color="getRoleTypeObj(comment.commentUserRoleType).color"
+                         :label="getRoleTypeObj(comment.commentUserRoleType).label">
+                  <q-icon
+                      :name="getRoleTypeObj(comment.commentUserRoleType).logo"
+                      class="q-ml-xs"
+                  />
+                </q-badge>
+                <q-badge v-if="null != comment.commentUserGender" class="q-mx-xs q-py-xs q-px-sm"
+                         style="transform: translateY(-.13rem)"
+                         :color="getGenderObj(comment.commentUserGender).color"
+                         :label="getGenderObj(comment.commentUserGender).label">
+                </q-badge>
               </div>
             </div>
 
-            <div class="column justify-between col q-pt-lg q-pb-sm q-px-md simple-content">
+            <div class="justify-between col q-pt-lg q-px-md simple-content">
 
               <div style="min-height: 8rem">
                 {{ comment.commentContent }}
@@ -93,67 +112,94 @@
                   <q-btn v-if="0 === comment.childData.length" flat dense class="q-ml-sm q-pa-sm"
                          @click="replyComment()"
                          style="text-decoration: underline; color: #629DD1;" label="回复"/>
-                  <q-btn v-else flat dense class="q-ml-sm q-py-sm q-px-md" @click="replyComment()"
+                  <q-btn v-else-if="comment.webSubClose" flat dense class="q-ml-sm q-pa-sm"
+                         @click="comment.webSubClose = false"
+                         style="text-decoration: underline; color: #629DD1;"
+                         :label="`回复(${comment.childData.length})`"/>
+                  <q-btn v-else flat dense class="q-ml-sm q-py-sm q-px-md" @click="comment.webSubClose = true"
                          style="text-decoration: underline; color: #629DD1; background-color: #eee;
                           border-radius: .5rem .5rem 0 0" label="收起回复"/>
                 </div>
+                <Transition name="resize-fade">
+                  <div v-if="0 !== comment.childData.length && !comment.webSubClose" class="q-pa-xs q-mb-md"
+                       style="background-color: #eee; border-radius: 1rem 0 1rem 1rem;">
 
-                <div v-if="0 !== comment.childData.length" class="q-pa-xs"
-                     style="background-color: #eee; border-radius: 1rem 0 1rem 1rem">
-
-                  <div v-for="(childComment, childIndex) in comment.childData" :key="childIndex" class="q-mt-md">
-                    <div class="row justify-center">
-                      <div class="column items-center" style="width: 80px">
-                        <div class="column items-center">
-                          <q-avatar size="45px" style="filter: blur(2px);">
-                            <q-img :src="childComment.commentUserAvatar"/>
-                          </q-avatar>
-                          <q-btn :to="`/space?id=${childComment.commentUserId}`" color="translate" round
-                                 style="margin-top: -42.5px">
-                            <q-avatar size="40px">
+                    <div v-for="(childComment, childIndex) in comment.childData" :key="childIndex" class="q-mt-md">
+                      <div class="row justify-center">
+                        <div class="column items-center" style="width: 80px">
+                          <div class="column items-center">
+                            <q-avatar size="45px" style="filter: blur(2px);">
                               <q-img :src="childComment.commentUserAvatar"/>
                             </q-avatar>
-                          </q-btn>
-                        </div>
-                      </div>
-                      <div class="col-10">
-                        <div>
-                          <div class="simple-bold-little-title-mini">
-                            {{ childComment.commentUserName }}
-                            <span class="simple-content-tag">
-                              &#32;·&#32;{{ childComment.commentTime }}&#32;·&#32;{{ childComment.ipAddressName }}
-                            </span>
+                            <q-btn @click="goToUserSpace(childComment.commentUserId)" color="translate" round
+                                   style="margin-top: -42.5px">
+                              <q-avatar size="40px">
+                                <q-img :src="childComment.commentUserAvatar"/>
+                              </q-avatar>
+                            </q-btn>
                           </div>
                         </div>
-                        <div class="simple-content-mini">
-                          <span v-if=" comment.id !== childComment.mainSubId" class="cask-text-thirdly-color">
+                        <div class="col-10">
+                          <div>
+                            <div class="simple-bold-little-title-mini">
+                            <span @click="goToUserSpace(childComment.commentUserId)"
+                                  class="q-mr-xs to-space-user-id">
+                              {{ childComment.commentUserName }}
+                            </span>
+                              <q-badge v-if="null != childComment.commentUserRoleType"
+                                       :color="getRoleTypeObj(childComment.commentUserRoleType).color"
+                                       :label="getRoleTypeObj(childComment.commentUserRoleType).label">
+                              </q-badge>
+                              <span class="simple-content-tag">
+                              &#32;·&#32;{{ childComment.commentTime }}&#32;·&#32;{{ childComment.ipAddressName }}
+                            </span>
+                            </div>
+                          </div>
+                          <div class="simple-content-mini">
+                            <span v-if=" comment.id !== childComment.mainSubUserId"
+                                  @click="goToUserSpace(childComment.mainSubUserId)"
+                                  class="cask-text-thirdly-color to-space-user-id">
                             @{{ childComment.mainSubUserName }}:
-                          </span>
-                          {{ childComment.commentContent }}
+                            </span>
+                            {{ childComment.commentContent }}
+                          </div>
+                          <div class="row justify-end">
+                            <q-btn flat dense label="回复" class="q-px-md"
+                                   @click="comment.webReplyMainSubId = childComment.id;
+                                   comment.webReplyMainSubName = childComment.commentUserName"
+                                   style="text-decoration: underline; color: #629DD1"/>
+                          </div>
                         </div>
-                        <div class="row justify-end">
-                          <q-btn flat dense label="回复" class="q-px-md"
-                                 style="text-decoration: underline; color: #629DD1"/>
-                        </div>
+                      </div>
+
+                      <q-separator v-if="childIndex < comment.childData.length - 1" size="0.05rem" spaced=".1rem"
+                                   style="margin-right: 32px; margin-left: 32px"/>
+                      <div v-else-if="!comment.webReplyMainSubId" class="row justify-center q-mb-md">
+                        <q-btn push style="background-color: #355540; color: white"
+                               @click="comment.webReplyMainSubId = comment.id" label="吾有一言，请诸位静听"/>
                       </div>
                     </div>
 
-                    <q-separator v-if="childIndex < comment.childData.length - 1" size="0.05rem" spaced=".1rem"
-                                 style="margin-right: 32px; margin-left: 32px"/>
-                    <div v-else class="row justify-center q-mb-md">
-                      <q-btn push color="blue-grey-7" @click="replyComment()" label="吾有一言，请诸位静听"/>
+                    <div v-if="comment.webReplyMainSubId">
+                      <q-input
+                          v-model="comment.webReplyMainSubName" type="textarea"
+                          class="q-my-md q-mx-xl cask-textarea-input-base" borderless
+                          :input-style="{fontSize: '1rem', color:'black', opacity:'0.75',
+                          letterSpacing: '.023rem', lineHeight:'1.3rem',
+                          border: '2.5px solid #888', backgroundColor:'#ddd', margin: '0.5rem',
+                          padding: '1rem', resize: 'none',height: '8rem', borderRadius: '12px',
+                          overflowWrap: 'anywhere'} "/>
                     </div>
-                  </div>
 
-                </div>
+                  </div>
+                </Transition>
               </div>
 
 
             </div>
-
           </div>
 
-          <q-separator spaced="0.5rem" size="0.05rem" style="margin-right: 32px; margin-left: 32px"/>
+          <q-separator spaced=".5rem" size="0.05rem" style="margin-right: 32px; margin-left: 32px"/>
 
         </div>
 
@@ -163,6 +209,8 @@
 
 
     <CopyrightFooter/>
+
+
     <q-page-sticky position="left" :offset="[25, 25]">
       <CaskWebFab/>
     </q-page-sticky>
@@ -181,6 +229,9 @@ import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData} from "@/utils/store";
 import {getCommentTree} from "@/api/comment";
 import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
+import {getGenderObj} from "@/utils/enums/gender-opt";
+import {getRoleTypeObj} from "@/utils/enums/role-type"
+import {useRouter} from "vue-router";
 
 // const props = defineProps({
 //   mainId: {
@@ -189,6 +240,8 @@ import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
 //   },
 // })
 
+//视频组跳转
+const thisRouter = useRouter()
 //filter
 let commentTypeList = ref(["updateLog", "userComment"])
 //comment tree
@@ -199,6 +252,9 @@ let commentOriginObj = ref({
 })
 let commentTree = ref([
   {
+    webSubClose: null,
+    webReplyMainSubId: null,
+    webReplyMainSubName: null,
     commentUserId: "",
     commentUserName: "",
     commentContent: "",
@@ -208,8 +264,11 @@ let commentTree = ref([
     commentUserAvatar: "",
     likeNum: 0,
     isLike: 0,
+    commentUserGender: null,
+    commentUserRoleType: 0,
     childData: [{
       mainSubId: "",
+      mainSubUserId: "",
       mainSubUserName: "",
       likeNum: 0,
       isLike: 0,
@@ -217,6 +276,7 @@ let commentTree = ref([
     }],
   }
 ])
+let currentMainSubId = ref("")
 //user data
 let userData = ref({})
 
@@ -237,8 +297,18 @@ function refreshCommentTree(inputMainId) {
   })
 }
 
-function replyComment() {
-  console.log("134242")
+function replyComment(mainSubId) {
+  if (mainSubId) {
+    currentMainSubId.value = mainSubId
+  }
+}
+
+function goToUserSpace(userId) {
+  let userSpaceUrl = thisRouter.resolve({
+    path: `/space`,
+    query: {id: userId}
+  })
+  window.open(userSpaceUrl.href, "_blank")
 }
 
 onMounted(() => {
@@ -263,6 +333,21 @@ onUnmounted(() => {
 .index-img
   z-index: -1
 
+
+.resize-fade-enter-active
+  transition: all 0.5s ease-out
+
+.resize-fade-leave-active
+  max-height: 20rem
+  transition: all 0.5s ease-out
+
+.resize-fade-enter-from,
+.resize-fade-leave-to
+  max-height: 0
+  opacity: 0
+  transform: translateY(-20rem)
+
+
 .message-board-main
   position: relative
   margin: -15% 10% 5% 10%
@@ -281,5 +366,11 @@ onUnmounted(() => {
   margin-bottom: 1rem
   opacity: 0.8
   font-weight: 400
+
+.to-space-user-id:hover
+  cursor: pointer
+  opacity: 0.8
+//text-decoration: underline
+
 
 </style>

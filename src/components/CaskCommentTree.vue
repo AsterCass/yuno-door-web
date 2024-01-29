@@ -15,7 +15,7 @@
               <q-avatar size="60px" style="filter: blur(3px);">
                 <q-img :src="comment.commentUserAvatar"/>
               </q-avatar>
-              <q-btn round color="white" :to="`/space?id=${comment.commentUserId}`" style="margin-top: -57.5px">
+              <q-btn round color="translate" :to="`/space?id=${comment.commentUserId}`" style="margin-top: -57.5px">
                 <q-avatar size="55px">
                   <q-img :src="comment.commentUserAvatar"/>
                 </q-avatar>

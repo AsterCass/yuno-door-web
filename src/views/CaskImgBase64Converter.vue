@@ -239,28 +239,5 @@ function warnMsg(msg) {
   opacity: 0.8
   font-weight: 400
 
-.cask-textarea-input-base
-
-  .textarea
-    resize: none
-
-  ::-webkit-scrollbar
-    overflow: visible
-    z-index: 12
-    background: transparent
-    height: 12px
-    width: 14px
-
-  ::-webkit-scrollbar-thumb
-    width: 10px
-    background-color: $cask_cactus
-    border-radius: 10px
-    z-index: 12
-    border: 4px solid rgba(0, 0, 0, 0)
-    background-clip: padding-box
-    transition: background-color .28s ease-in-out
-    margin: 4px
-    min-height: 32px
-    min-width: 32px
 
 </style>
