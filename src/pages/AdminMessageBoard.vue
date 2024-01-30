@@ -217,12 +217,20 @@
 
         </div>
 
-        <div class="row justify-center q-my-xl">
+        <div v-if="dataLoaded" class="row justify-center q-my-xl">
           <q-pagination
               v-model="commentPageNo" :max="commentPageSize" class="roboto-slab"
               color="green-10" gutter="10px" :max-pages="8" size="1rem"
               boundary-numbers direction-links
           />
+        </div>
+        <div v-else style="margin: 5rem 0">
+          <div class="row justify-center">
+            <q-spinner-facebook size="100px" color="light-green-8"/>
+          </div>
+          <div class="text-center simple-bold-little-title-secondary" style="margin-top: 1rem!important;">
+            数据加载中...
+          </div>
         </div>
 
         <div class="row">
@@ -300,8 +308,10 @@ import emitter from "@/utils/bus";
 
 //notify
 const notify = useQuasar().notify
-//视频组跳转
+//router
 const thisRouter = useRouter()
+//data load
+let dataLoaded = ref(false)
 //filter
 let commentTypeList = ref(["updateLog", "userComment"])
 //comment tree
@@ -372,6 +382,7 @@ function refreshCommentTree(inputMainId) {
       commentOriginObj.value = res.data.data
       commentSum.value = commentOriginObj.value.sum
       commentTree.value = commentTree2TwoLevelTree(commentOriginObj.value.tree)
+      dataLoaded.value = true
     }
   })
 }
