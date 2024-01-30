@@ -186,6 +186,14 @@ $background-image: linear-gradient(195deg, #42424a, #191919)) {
   @include cask-simple-btn(0rem, 2.5rem, 6rem, linear-gradient(195deg, #C8E6C8, #A5D6A7))
 }
 
+.cask-simple-btn-margin-blue-small {
+  @include cask-simple-btn(.2rem .8rem 1rem .8rem, 2.2em, 4.5rem, linear-gradient(195deg, $cask_third, $cask_base_blue_8))
+}
+
+.cask-simple-btn-margin-sec-small {
+  @include cask-simple-btn(.2rem .8rem 1rem .5rem, 2.2em, 4.5rem, linear-gradient(195deg, $cask_cactus, $cask_plantation))
+}
+
 .cask-simple-btn-margin-pri {
   @include cask-simple-btn(0rem, 2.5rem, 6rem, linear-gradient(195deg, #42424a, #191919))
 }
