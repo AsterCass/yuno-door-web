@@ -41,7 +41,7 @@
               <!--              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-comment-dots"/>-->
               <!--              <q-icon class="q-mx-sm" size="xs" name="fa-regular fa-heart"/>-->
 
-              <q-checkbox :model-value="false" @click="updateReplyComment(comment)"
+              <q-checkbox :model-value="false" @click="updateReplyComment(comment, null)"
                           :label="comment.childData.length.toString()" unchecked-icon="fa-regular fa-comment"/>
               <q-checkbox :model-value="1 === comment.isLike" @click="updateUserLike(comment)"
                           :label="comment.likeNum.toString()" color="red"
@@ -79,7 +79,7 @@
                       {{ childComment.commentContent }}
                     </div>
                     <div class="row justify-end">
-                      <q-checkbox :model-value="false" @click="updateReplyComment(childComment)"
+                      <q-checkbox :model-value="false" @click="updateReplyComment(comment, childComment)"
                                   :label="childComment.replyNum.toString()" unchecked-icon="fa-regular fa-comment"/>
                       <q-checkbox :model-value="1 === childComment.isLike" @click="updateUserLike(childComment)"
                                   :label="childComment.likeNum.toString()" color="red"
@@ -172,6 +172,7 @@ const props = defineProps({
 })
 //reply content
 let replySubMainId = ref(props.mainId)
+let replySecondaryId = ref(props.mainId)
 let replySubUserName = ref("")
 let replySubContent = ref("")
 let commentContent = ref("")
@@ -215,10 +216,17 @@ function initData() {
   commentTree.value = [];
 }
 
-function updateReplyComment(comment) {
-  replySubMainId.value = comment.id
-  replySubUserName.value = comment.commentUserName
-  replySubContent.value = comment.commentContent
+function updateReplyComment(comment, childComment) {
+  if (childComment) {
+    replySubMainId.value = childComment.id
+    replySubUserName.value = childComment.commentUserName
+    replySubContent.value = childComment.commentContent
+  } else {
+    replySubMainId.value = comment.id
+    replySubUserName.value = comment.commentUserName
+    replySubContent.value = comment.commentContent
+  }
+  replySecondaryId.value = comment.id
   const target = document.getElementById("cask-comment-reply");
   target.scrollIntoView({
     behavior: "smooth",
@@ -229,6 +237,7 @@ function updateReplyComment(comment) {
 
 function cancelReplySub() {
   replySubMainId.value = props.mainId
+  replySecondaryId.value = props.mainId
   replySubUserName.value = ""
   replySubContent.value = ""
 }
@@ -271,7 +280,7 @@ function caskCommentTreeLoginMethod(isLogin) {
 }
 
 function replyCommentMethod() {
-  let replyNewData = {mainId: props.mainId, mainSubId: replySubMainId.value};
+  let replyNewData = {mainId: props.mainId, mainSubId: replySubMainId.value, secondaryId: replySecondaryId.value};
   if (!checkReply(commentContent.value)) {
     commentWarningNotify("输入内容不允许为空，且不能超过500字符")
     return
