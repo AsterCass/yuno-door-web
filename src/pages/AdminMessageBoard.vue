@@ -51,179 +51,206 @@
       <div class="message-board-main" style="z-index: 0">
 
         <div class="code-generator-tag-title" style="margin-bottom: 2rem">
-          <div class="row items-center">
+          <div class="row items-center" id="website-board-title">
             <q-icon class="q-mx-sm q-mr-md" name="fa-solid fa-clipboard" size="1em"/>
             网站留言板
           </div>
         </div>
 
-        <div v-for="(comment, index) in commentTree" :key="index">
+        <div v-if="dataLoaded">
+          <div v-for="(comment, index) in commentTree" :key="index">
 
-          <div class="row">
-            <div class="col-2 column items-center q-mt-md">
-              <div class="column items-center" style="width: 160px">
-                <div class="column items-center">
-                  <q-avatar size="130px" style="filter: blur(3px);">
-                    <q-img :src="comment.commentUserAvatar"/>
-                  </q-avatar>
-                  <q-btn round color="translate"
-                         @click="goToUserSpace(comment.commentUserId)" style="margin-top: -125.5px">
-                    <q-avatar size="120px">
+            <div class="row">
+              <div class="col-2 column items-center q-mt-md">
+                <div class="column items-center" style="width: 160px">
+                  <div class="column items-center">
+                    <q-avatar size="130px" style="filter: blur(3px);">
                       <q-img :src="comment.commentUserAvatar"/>
                     </q-avatar>
-                  </q-btn>
+                    <q-btn round color="translate"
+                           @click="goToUserSpace(comment.commentUserId)" style="margin-top: -125.5px">
+                      <q-avatar size="120px">
+                        <q-img :src="comment.commentUserAvatar"/>
+                      </q-avatar>
+                    </q-btn>
+                  </div>
+                </div>
+                <div class="simple-bold-little-title-secondary text-center to-space-user-id"
+                     style="margin-top: .8rem; " @click="goToUserSpace(comment.commentUserId)">
+                  {{ comment.commentUserName }}
+                </div>
+                <div class="q-mb-md">
+                  <q-badge v-if="null != comment.commentUserRoleType" class="q-mx-xs q-py-xs q-px-sm"
+                           style="transform: translateY(-.13rem)"
+                           :color="getRoleTypeObj(comment.commentUserRoleType).color"
+                           :label="getRoleTypeObj(comment.commentUserRoleType).label">
+                    <q-icon
+                        :name="getRoleTypeObj(comment.commentUserRoleType).logo"
+                        class="q-ml-xs"
+                    />
+                  </q-badge>
+                  <q-badge v-if="null != comment.commentUserGender" class="q-mx-xs q-py-xs q-px-sm"
+                           style="transform: translateY(-.13rem)"
+                           :color="getGenderObj(comment.commentUserGender).color"
+                           :label="getGenderObj(comment.commentUserGender).label">
+                  </q-badge>
                 </div>
               </div>
-              <div class="simple-bold-little-title-secondary text-center to-space-user-id"
-                   style="margin-top: .8rem; " @click="goToUserSpace(comment.commentUserId)">
-                {{ comment.commentUserName }}
-              </div>
-              <div class="q-mb-md">
-                <q-badge v-if="null != comment.commentUserRoleType" class="q-mx-xs q-py-xs q-px-sm"
-                         style="transform: translateY(-.13rem)"
-                         :color="getRoleTypeObj(comment.commentUserRoleType).color"
-                         :label="getRoleTypeObj(comment.commentUserRoleType).label">
-                  <q-icon
-                      :name="getRoleTypeObj(comment.commentUserRoleType).logo"
-                      class="q-ml-xs"
-                  />
-                </q-badge>
-                <q-badge v-if="null != comment.commentUserGender" class="q-mx-xs q-py-xs q-px-sm"
-                         style="transform: translateY(-.13rem)"
-                         :color="getGenderObj(comment.commentUserGender).color"
-                         :label="getGenderObj(comment.commentUserGender).label">
-                </q-badge>
-              </div>
-            </div>
 
-            <div class="justify-between col q-pt-lg q-px-md simple-content">
+              <div class="justify-between col q-pt-lg q-px-md simple-content">
 
-              <div style="min-height: 8rem">
-                {{ comment.commentContent }}
-              </div>
+                <div style="min-height: 8rem">
+                  {{ comment.commentContent }}
+                </div>
 
-              <div>
-                <div class="row justify-end q-mt-md simple-content-semi">
-                  <div class="row items-center">
-                    {{ comment.ipAddressName }}&#32;·&#32;{{ comment.floorNumber }}楼
-                    &#32;·&#32;{{ comment.commentTime }}
-                  </div>
-                  <q-btn v-if="(null == comment.webSubClose || comment.webSubClose) && 0 === comment.childData.length"
-                         flat dense class="q-ml-sm q-pa-sm"
-                         @click="comment.webSubClose = false; comment.webReplyMainSubId=comment.id"
-                         style="color: #629DD1;border-radius: .5rem" label="回复"/>
-                  <q-btn v-else-if="comment.webSubClose && 0 !== comment.childData.length" flat dense
-                         class="q-ml-sm q-pa-sm"
-                         @click="comment.webSubClose = false"
-                         style="color: #629DD1;"
-                         :label="`回复(${comment.childData.length})`"/>
-                  <q-btn v-else flat dense class="q-ml-sm q-py-sm q-px-md" @click="comment.webSubClose = true"
-                         style="color: #629DD1; background-color: #eee;
+                <div>
+                  <div class="row justify-end q-mt-md simple-content-semi">
+                    <div class="row items-center">
+                      {{ comment.ipAddressName }}&#32;·&#32;{{ comment.floorNumber }}楼
+                      &#32;·&#32;{{ comment.commentTime }}
+                    </div>
+                    <q-btn
+                        v-if="(null == comment.webSubClose || comment.webSubClose) && 0 === comment.webChildData.length"
+                        flat dense class="q-ml-sm q-pa-sm"
+                        @click="comment.webSubClose = false;
+                         comment.webReplyMainSubId=comment.id;
+                         comment.webReplySecondaryId=comment.id;"
+                        style="color: #629DD1;border-radius: .5rem" label="回复"/>
+                    <q-btn v-else-if="comment.webSubClose && 0 !== comment.webChildData.length" flat dense
+                           class="q-ml-sm q-pa-sm"
+                           @click="comment.webSubClose = false"
+                           style="color: #629DD1;"
+                           :label="`回复(${comment.webChildData.length})`"/>
+                    <q-btn v-else flat dense class="q-ml-sm q-py-sm q-px-md" @click="comment.webSubClose = true"
+                           style="color: #629DD1; background-color: #eee;
                           border-radius: .5rem .5rem 0 0" label="收起回复"/>
 
-                </div>
-                <Transition name="resize-fade">
-                  <div v-if="!comment.webSubClose" style="background-color: #eee; border-radius: 1rem 0 1rem 1rem;">
-                    <div v-if="0 !== comment.childData.length" class="q-pb-xs q-px-xs q-pt-lg">
-                      <div v-for="(childComment, childIndex) in comment.childData" :key="childIndex" class="q-mt-md">
-                        <div class="row justify-center">
-                          <div class="column items-center" style="width: 80px">
-                            <div class="column items-center">
-                              <q-avatar size="45px" style="filter: blur(2px);">
-                                <q-img :src="childComment.commentUserAvatar"/>
-                              </q-avatar>
-                              <q-btn @click="goToUserSpace(childComment.commentUserId)" color="translate" round
-                                     style="margin-top: -42.5px">
-                                <q-avatar size="40px">
+                  </div>
+                  <Transition name="resize-fade">
+                    <div v-if="!comment.webSubClose" style="background-color: #eee; border-radius: 1rem 0 1rem 1rem;">
+                      <div v-if="0 !== comment.webChildData.length" class="q-pt-lg">
+                        <div v-for="(childComment, childIndex) in comment.webChildData" :key="childIndex"
+                             class="q-mt-md">
+
+                          <div class="row justify-center">
+                            <div class="column items-center" style="width: 80px">
+                              <div class="column items-center">
+                                <q-avatar size="45px" style="filter: blur(2px);">
                                   <q-img :src="childComment.commentUserAvatar"/>
                                 </q-avatar>
-                              </q-btn>
+                                <q-btn @click="goToUserSpace(childComment.commentUserId)" color="translate" round
+                                       style="margin-top: -42.5px">
+                                  <q-avatar size="40px">
+                                    <q-img :src="childComment.commentUserAvatar"/>
+                                  </q-avatar>
+                                </q-btn>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-10">
-                            <div>
-                              <div class="simple-bold-little-title-mini">
+                            <div class="col-10">
+                              <div>
+                                <div class="simple-bold-little-title-mini">
                             <span @click="goToUserSpace(childComment.commentUserId)"
                                   class="q-mr-xs to-space-user-id">
                               {{ childComment.commentUserName }}
                             </span>
-                                <q-badge v-if="null != childComment.commentUserRoleType"
-                                         :color="getRoleTypeObj(childComment.commentUserRoleType).color"
-                                         :label="getRoleTypeObj(childComment.commentUserRoleType).label">
-                                </q-badge>
-                                <span class="simple-content-tag">
+                                  <q-badge v-if="null != childComment.commentUserRoleType"
+                                           :color="getRoleTypeObj(childComment.commentUserRoleType).color"
+                                           :label="getRoleTypeObj(childComment.commentUserRoleType).label">
+                                  </q-badge>
+                                  <span class="simple-content-tag">
                               &#32;·&#32;{{ childComment.commentTime }}&#32;·&#32;{{ childComment.ipAddressName }}
                             </span>
+                                </div>
                               </div>
-                            </div>
-                            <div class="simple-content-mini">
-                            <span v-if=" comment.id !== childComment.mainSubUserId"
+                              <div class="simple-content-mini">
+                            <span v-if="childComment.mainSubUserId && comment.id !== childComment.mainSubUserId"
                                   @click="goToUserSpace(childComment.mainSubUserId)"
                                   class="cask-text-thirdly-color to-space-user-id">
                             @{{ childComment.mainSubUserName }}:
                             </span>
-                              {{ childComment.commentContent }}
-                            </div>
-                            <div class="row justify-end">
-                              <q-btn flat dense label="回复" class="q-px-md"
-                                     @click="comment.webReplyMainSubId = childComment.id;
+                                {{ childComment.commentContent }}
+                              </div>
+                              <div class="row justify-end">
+                                <q-btn flat dense label="回复" class="q-px-md"
+                                       @click="comment.webReplyMainSubId = childComment.id;
+                                     comment.webReplySecondaryId = comment.id;
                                    comment.webReplyMainSubName = childComment.commentUserName;
                                    comment.webReplyMainContext = childComment.commentContent;"
-                                     style="color: #629DD1;border-radius: .5rem"/>
+                                       style="color: #629DD1;border-radius: .5rem"/>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <q-separator v-if="childIndex < comment.childData.length - 1" size="0.05rem" spaced=".1rem"
-                                     style="margin-right: 32px; margin-left: 32px"/>
-                        <div v-else-if="!comment.webReplyMainSubId" class="row justify-center q-mb-md">
-                          <q-btn push style="background-color: #355540; color: white"
-                                 @click="comment.webReplyMainSubId = comment.id" label="吾有一言，请诸位静听"/>
+                          <q-separator v-if="childIndex < comment.webChildData.length - 1" size="0.05rem" spaced=".1rem"
+                                       style="margin-right: 32px; margin-left: 32px"/>
+                          <div v-else-if="!comment.webReplyMainSubId">
+
+                            <div class="row justify-center">
+                              <q-btn push style="background-color: #355540; color: white"
+                                     @click="comment.webReplyMainSubId = comment.id;
+                                 comment.webReplySecondaryId = comment.id;" label="吾有一言，请诸位静听"/>
+                            </div>
+
+                            <div v-if="comment.webChildData.length !== comment.childData.length"
+                                 class="row justify-center for-show-all-child-data q-mt-md"
+                                 style="height: 20px; background-color: #ccc; border-radius: 0 0 1rem 1rem;"
+                                 @click="comment.webChildData = comment.childData">
+                              <q-icon name="fa-solid fa-caret-down" size="20px"/>
+                            </div>
+
+                            <div v-else class="q-pb-md"/>
+
+                          </div>
+
+
                         </div>
                       </div>
-                    </div>
-                    <div v-if="comment.webReplyMainSubId" class="q-pb-xs q-px-xs q-pt-lg">
+                      <div v-if="comment.webReplyMainSubId" class="q-pb-xs q-px-xs q-pt-lg">
                       <span v-if="comment.webReplyMainSubName" class="q-mx-xl q-px-md cask-text-thirdly-color">
                         @{{ comment.webReplyMainSubName }}&#32;:
                       </span>
-                      <q-input
-                          v-model="comment.webReplyContext" type="textarea"
-                          :placeholder="`${comment.webReplyMainSubName ?
+                        <q-input
+                            v-model="comment.webReplyContext" type="textarea"
+                            :placeholder="`${comment.webReplyMainSubName ?
                           '回复：' + comment.webReplyMainContext : '' }`"
-                          class="q-mx-xl cask-textarea-input-base" borderless
-                          :input-style="{fontSize: '1rem', color:'black', opacity:'0.75',
+                            class="q-mx-xl cask-textarea-input-base" borderless
+                            :input-style="{fontSize: '1rem', color:'black', opacity:'0.75',
                           letterSpacing: '.023rem', lineHeight:'1.3rem',
                           border: '2.5px solid #888', backgroundColor:'#ddd', margin: '0.5rem',
                           padding: '1rem', resize: 'none',height: '8rem', borderRadius: '12px',
                           overflowWrap: 'anywhere'} "/>
-                      <div class="row justify-end q-mx-xl">
-                        <q-btn v-if="comment.webReplyMainSubName"
-                               class="cask-simple-btn-margin-blue-small" label="取消 @"
-                               @click="comment.webReplyMainSubId = comment.id; comment.webReplyMainSubName=''"/>
-                        <q-btn class="cask-simple-btn-margin-sec-small" label="提交"
-                               @click="submitComment(comment)"/>
+                        <div class="row justify-end q-mx-xl">
+                          <q-btn v-if="comment.webReplyMainSubName"
+                                 class="cask-simple-btn-margin-blue-small" label="取消 @"
+                                 @click="comment.webReplyMainSubId = comment.id;
+                               comment.webReplySecondaryId = comment.id;
+                               comment.webReplyMainSubName='';"/>
+                          <q-btn class="cask-simple-btn-margin-sec-small" :label="submitText"
+                                 :disable="onSubmitting" @click="submitComment(comment);"/>
+                        </div>
                       </div>
+
+                      <div v-if="0 !== comment.webChildData.length || comment.webReplyMainSubId" class="q-my-md"/>
                     </div>
+                  </Transition>
+                </div>
 
-                    <div v-if="0 !== comment.childData.length || comment.webReplyMainSubId" class="q-my-md"/>
-                  </div>
-                </Transition>
               </div>
-
             </div>
+
+            <q-separator spaced=".5rem" size="0.05rem" style="margin-right: 32px; margin-left: 32px"/>
+
           </div>
-
-          <q-separator spaced=".5rem" size="0.05rem" style="margin-right: 32px; margin-left: 32px"/>
-
         </div>
 
         <div v-if="dataLoaded" class="row justify-center q-my-xl">
           <q-pagination
-              v-model="commentPageNo" :max="commentPageSize" class="roboto-slab"
+              v-model="commentPageNo" :max="commentPages" class="roboto-slab"
               color="green-10" gutter="10px" :max-pages="8" size="1rem"
-              boundary-numbers direction-links
+              boundary-numbers direction-links @update:modelValue="refreshCommentTree()"
           />
         </div>
+
         <div v-else style="margin: 5rem 0">
           <div class="row justify-center">
             <q-spinner-facebook size="100px" color="light-green-8"/>
@@ -268,8 +295,8 @@
                           padding: '1rem', resize: 'none',height: '15rem', borderRadius: '12px',
                           overflowWrap: 'anywhere'} "/>
             <div class="row justify-end q-mx-md q-mb-md">
-              <q-btn class="cask-simple-btn-margin-sec" label="提交"
-                     @click="submitComment()"/>
+              <q-btn class="cask-simple-btn-margin-sec" :label="submitText"
+                     :disable="onSubmitting" @click="submitComment()"/>
             </div>
           </div>
 
@@ -298,8 +325,7 @@ import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import {onMounted, onUnmounted, ref} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData} from "@/utils/store";
-import {getCommentTree} from "@/api/comment";
-import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
+import {getCommentWebsite, replyCommentWebsite} from "@/api/comment";
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {useRouter} from "vue-router";
@@ -312,12 +338,13 @@ const notify = useQuasar().notify
 const thisRouter = useRouter()
 //data load
 let dataLoaded = ref(false)
+let onSubmitting = ref(false)
+let submitText = ref("提交")
 //filter
 let commentTypeList = ref(["updateLog", "userComment"])
 //comment tree
 let commentPageNo = ref(1)
-let commentPageSize = ref(20)
-let commentSum = ref(0)
+let commentPages = ref(1)
 let commentOriginObj = ref({
   tree: [],
   sum: 0
@@ -326,9 +353,11 @@ let commentTree = ref([
   {
     webSubClose: null,
     webReplyMainSubId: null,
+    webReplySecondaryId: null,
     webReplyMainSubName: null,
     webReplyMainContext: null,
     webReplyContext: null,
+    webChildData: null,
     commentUserId: "",
     commentUserName: "",
     commentContent: "",
@@ -354,13 +383,24 @@ let websiteReplyContext = ref("")
 //user data
 let userData = ref({})
 
+//导航跳转
+function anchorTogo(id) {
+  const target = document.getElementById(id);
+  if (target) {
+    target.scrollIntoView({
+      behavior: "auto",
+      block: "center",
+      inline: "nearest",
+    });
+  }
+}
+
 function initData() {
   userData.value = getLoginData();
   if (!userData.value.id) {
     userData.value.avatar = "https://picsum.photos/100/100"
     userData.value.nickName = "游客"
   }
-  commentSum.value = 0;
   commentTree.value = [];
 }
 
@@ -372,29 +412,97 @@ function caskCommentTreeLoginMethod(isLogin) {
     userData.value.avatar = "https://picsum.photos/100/100"
     userData.value.nickName = "游客"
   }
-  refreshCommentTree("AT1638054363974995");
+  refreshCommentTree();
 }
 
-function refreshCommentTree(inputMainId) {
-  getCommentTree(inputMainId).then(res => {
+function refreshCommentTree(navigateTo1 = false, rebuild = true) {
+  //reset data
+  if (rebuild) {
+    dataLoaded.value = false
+    commentTree.value = [];
+    anchorTogo("website-board-title")
+  }
+  if (navigateTo1) {
+    commentPageNo.value = 1
+  }
+  //request
+  getCommentWebsite({size: 5, page: commentPageNo.value - 1}).then(res => {
     const status = res.data.status
     if (200 === status) {
       commentOriginObj.value = res.data.data
-      commentSum.value = commentOriginObj.value.sum
-      commentTree.value = commentTree2TwoLevelTree(commentOriginObj.value.tree)
+      commentTree.value = commentOriginObj.value.content
+      commentPages.value = commentOriginObj.value.totalPages
+      for (let obj of commentTree.value) {
+        if (obj.childData.length > 0) {
+          obj.webChildData = obj.childData.slice(0, 5)
+        } else {
+          obj.webChildData = []
+        }
+      }
       dataLoaded.value = true
     }
+    onSubmitting.value = false
+    submitText.value = "提交"
   })
 }
 
 function submitComment(comment) {
-  console.log(comment)
-  notify({
-    message: "评论成功",
-    position: 'top',
-    type: 'positive',
-    timeout: 1500
-  })
+  onSubmitting.value = true
+  submitText.value = "提交中..."
+  if (comment) {
+    if (!comment.webReplyContext) {
+      notify({
+        message: "评论内容不能为空",
+        position: 'top',
+        type: 'warning',
+        timeout: 1500
+      })
+    }
+    replyCommentWebsite({
+      commentContent: comment.webReplyContext,
+      secondaryId: comment.webReplySecondaryId,
+      mainSubId: comment.webReplyMainSubId,
+    }).then(res => {
+      const status = res.data.status
+      if (200 === status) {
+        notify({
+          message: "评论成功",
+          position: 'top',
+          type: 'positive',
+          timeout: 1500
+        })
+        refreshCommentTree(false, false)
+      } else {
+        onSubmitting.value = false
+        submitText.value = "提交"
+      }
+    })
+  } else {
+    if (!websiteReplyContext.value) {
+      notify({
+        message: "评论内容不能为空",
+        position: 'top',
+        type: 'warning',
+        timeout: 1500
+      })
+    }
+    replyCommentWebsite({commentContent: websiteReplyContext.value}).then(res => {
+      const status = res.data.status
+      if (200 === status) {
+        notify({
+          message: "评论成功",
+          position: 'top',
+          type: 'positive',
+          timeout: 1500
+        })
+        refreshCommentTree(true)
+        websiteReplyContext.value = ""
+      } else {
+        onSubmitting.value = false
+        submitText.value = "提交"
+      }
+    })
+  }
 }
 
 function goToUserSpace(userId) {
@@ -416,7 +524,7 @@ function goToUserSpace(userId) {
 
 onMounted(() => {
   initData();
-  refreshCommentTree("AT1638054363974995");
+  refreshCommentTree();
   //底色渲染
   addStyle("background-color: rgb(239, 242, 245)")
   emitter.on("loginMessageEvent", caskCommentTreeLoginMethod)
@@ -471,6 +579,10 @@ onUnmounted(() => {
   margin-bottom: 1rem
   opacity: 0.8
   font-weight: 400
+
+.for-show-all-child-data:hover
+  cursor: pointer
+  background-color: #ddd !important
 
 .to-space-user-id:hover
   cursor: pointer
