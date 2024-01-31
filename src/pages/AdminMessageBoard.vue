@@ -33,8 +33,10 @@
         </div>
         <div class="col-2" style="z-index: 1; margin-right: -29%; margin-top: 5.5%; height: 100px">
           <div class="column items-end q-mt-xl">
-            <q-toggle keep-color color="green-10" label="更新日志" val="updateLog" v-model="commentTypeList"/>
-            <q-toggle keep-color color="brown-10" label="用户评论" val="userComment" v-model="commentTypeList"/>
+            <q-toggle keep-color color="green-10" label="更新日志" val="updateLog"
+                      v-model="commentTypeList" @update:modelValue="updateCommentType"/>
+            <q-toggle keep-color color="brown-10" label="用户评论" val="userComment"
+                      v-model="commentTypeList" @update:modelValue="updateCommentType"/>
           </div>
         </div>
         <div class="col-5"
@@ -342,6 +344,7 @@ let onSubmitting = ref(false)
 let submitText = ref("提交")
 //filter
 let commentTypeList = ref(["updateLog", "userComment"])
+let commentType = ref(null)
 //comment tree
 let commentPageNo = ref(1)
 let commentPages = ref(1)
@@ -426,7 +429,11 @@ function refreshCommentTree(navigateTo1 = false, rebuild = true) {
     commentPageNo.value = 1
   }
   //request
-  getCommentWebsite({size: 5, page: commentPageNo.value - 1}).then(res => {
+  getCommentWebsite({
+    size: 10,
+    commentType: commentType.value,
+    page: commentPageNo.value - 1
+  }).then(res => {
     const status = res.data.status
     if (200 === status) {
       commentOriginObj.value = res.data.data
@@ -503,6 +510,17 @@ function submitComment(comment) {
       }
     })
   }
+}
+
+function updateCommentType(list) {
+  if (2 === list.length) {
+    commentType.value = null
+  } else if (0 === list.length) {
+    commentType.value = -1
+  } else {
+    commentType.value = list[0] === "userComment" ? 0 : 1
+  }
+  refreshCommentTree()
 }
 
 function goToUserSpace(userId) {
