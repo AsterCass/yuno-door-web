@@ -255,6 +255,7 @@
 
         <div v-if="dataLoaded" class="row justify-center q-my-xl">
           <q-pagination
+              v-if="0 !== commentTypeList.length"
               v-model="commentPageNo" :max="commentPages" class="roboto-slab"
               color="green-10" gutter="10px" :max-pages="8" size="1rem"
               boundary-numbers direction-links @update:modelValue="refreshCommentTree()"
