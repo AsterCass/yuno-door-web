@@ -164,7 +164,7 @@
                             </span>
                                 </div>
                               </div>
-                              <div class="simple-content-mini">
+                              <div class="simple-content-mini q-mt-xs">
                             <span v-if="childComment.mainSubUserId && comment.id !== childComment.mainSubUserId"
                                   @click="goToUserSpace(childComment.mainSubUserId)"
                                   class="cask-text-thirdly-color to-space-user-id">
@@ -207,7 +207,7 @@
 
                         </div>
                       </div>
-                      <div v-if="comment.webReplyMainSubId" class="q-pb-xs q-px-xs q-pt-lg">
+                      <div v-if="comment.webReplyMainSubId" class="q-pt-lg">
                       <span v-if="comment.webReplyMainSubName" class="q-mx-xl q-px-md cask-text-thirdly-color">
                         @{{ comment.webReplyMainSubName }}&#32;:
                       </span>
@@ -230,6 +230,14 @@
                           <q-btn class="cask-simple-btn-margin-sec-small" :label="submitText"
                                  :disable="onSubmitting" @click="submitComment(comment);"/>
                         </div>
+
+                        <div v-if="comment.webChildData.length !== comment.childData.length"
+                             class="row justify-center for-show-all-child-data"
+                             style="height: 20px; background-color: #ccc; border-radius: 0 0 1rem 1rem;"
+                             @click="comment.webChildData = comment.childData">
+                          <q-icon name="fa-solid fa-caret-down" size="20px"/>
+                        </div>
+
                       </div>
 
                       <div v-if="0 !== comment.webChildData.length || comment.webReplyMainSubId" class="q-my-md"/>
@@ -382,6 +390,7 @@ let commentTree = ref([
     }],
   }
 ])
+let lastCommentId = ref("")
 let websiteReplyContext = ref("")
 //user data
 let userData = ref({})
@@ -441,7 +450,11 @@ function refreshCommentTree(navigateTo1 = false, rebuild = true) {
       commentPages.value = commentOriginObj.value.totalPages
       for (let obj of commentTree.value) {
         if (obj.childData.length > 0) {
-          obj.webChildData = obj.childData.slice(0, 5)
+          if (obj.id !== lastCommentId.value) {
+            obj.webChildData = obj.childData.slice(0, 5)
+          } else {
+            obj.webChildData = obj.childData
+          }
         } else {
           obj.webChildData = []
         }
@@ -478,6 +491,7 @@ function submitComment(comment) {
           type: 'positive',
           timeout: 1500
         })
+        lastCommentId.value = comment.id
         refreshCommentTree(false, false)
       } else {
         onSubmitting.value = false
@@ -520,7 +534,7 @@ function updateCommentType(list) {
   } else {
     commentType.value = list[0] === "userComment" ? 0 : 1
   }
-  refreshCommentTree()
+  refreshCommentTree(true)
 }
 
 function goToUserSpace(userId) {
