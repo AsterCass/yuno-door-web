@@ -471,59 +471,67 @@ function submitComment(comment) {
   onSubmitting.value = true
   submitText.value = "提交中..."
   if (comment) {
-    if (!comment.webReplyContext) {
+    if (!comment.webReplyContext || 0 === comment.webReplyContext.trim().length) {
       notify({
         message: "评论内容不能为空",
         position: 'top',
         type: 'warning',
         timeout: 1500
       })
+      onSubmitting.value = false
+      submitText.value = "提交"
+    } else {
+      comment.webReplyContext = comment.webReplyContext.trim()
+      replyCommentWebsite({
+        commentContent: comment.webReplyContext,
+        secondaryId: comment.webReplySecondaryId,
+        mainSubId: comment.webReplyMainSubId,
+      }).then(res => {
+        const status = res.data.status
+        if (200 === status) {
+          notify({
+            message: "评论成功",
+            position: 'top',
+            type: 'positive',
+            timeout: 1500
+          })
+          lastCommentId.value = comment.id
+          refreshCommentTree(false, false)
+        } else {
+          onSubmitting.value = false
+          submitText.value = "提交"
+        }
+      })
     }
-    replyCommentWebsite({
-      commentContent: comment.webReplyContext,
-      secondaryId: comment.webReplySecondaryId,
-      mainSubId: comment.webReplyMainSubId,
-    }).then(res => {
-      const status = res.data.status
-      if (200 === status) {
-        notify({
-          message: "评论成功",
-          position: 'top',
-          type: 'positive',
-          timeout: 1500
-        })
-        lastCommentId.value = comment.id
-        refreshCommentTree(false, false)
-      } else {
-        onSubmitting.value = false
-        submitText.value = "提交"
-      }
-    })
   } else {
-    if (!websiteReplyContext.value) {
+    if (!websiteReplyContext.value || 0 === websiteReplyContext.value.trim().length) {
       notify({
         message: "评论内容不能为空",
         position: 'top',
         type: 'warning',
         timeout: 1500
       })
+      onSubmitting.value = false
+      submitText.value = "提交"
+    } else {
+      websiteReplyContext.value = websiteReplyContext.value.trim()
+      replyCommentWebsite({commentContent: websiteReplyContext.value}).then(res => {
+        const status = res.data.status
+        if (200 === status) {
+          notify({
+            message: "评论成功",
+            position: 'top',
+            type: 'positive',
+            timeout: 1500
+          })
+          refreshCommentTree(true)
+          websiteReplyContext.value = ""
+        } else {
+          onSubmitting.value = false
+          submitText.value = "提交"
+        }
+      })
     }
-    replyCommentWebsite({commentContent: websiteReplyContext.value}).then(res => {
-      const status = res.data.status
-      if (200 === status) {
-        notify({
-          message: "评论成功",
-          position: 'top',
-          type: 'positive',
-          timeout: 1500
-        })
-        refreshCommentTree(true)
-        websiteReplyContext.value = ""
-      } else {
-        onSubmitting.value = false
-        submitText.value = "提交"
-      }
-    })
   }
 }
 
