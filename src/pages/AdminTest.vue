@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import SockJS from "sockjs-client";
+import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
 
 export default {

@@ -340,6 +340,7 @@
 
   </q-layout>
 
+  <CaskTalkCard/>
   <CaskUploadAvatar :user-data="userData"/>
   <CopyrightFooter/>
 
@@ -348,12 +349,7 @@
 <script setup>
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
-import {
-  computed, defineProps,
-  onMounted,
-  onUnmounted,
-  ref, watch
-} from "vue";
+import {computed, defineProps, onMounted, onUnmounted, ref, watch} from "vue";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import {getLoginData, refreshLoginMessage, webIsLogin} from "@/utils/store";
@@ -368,6 +364,7 @@ import {customPage} from "@/utils/page";
 import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {ZodiacSign} from "@/utils/date-to-zodiac";
+import CaskTalkCard from "@/components/CaskTalkCard.vue";
 
 //notify
 const notify = useQuasar().notify

@@ -18,19 +18,18 @@ yarn serve
 
 * 用户系统支持注销、通知系统、账号设置、我的评论
 * 视频系统支持弹幕发送
-* 工具系统支持表情包包浆，图片和base64相互转换
+* 工具系统支持表情包包浆
 * 支持音乐系统
 * 支持无感验证码
-* 支持网站留言板
 
 ## 功能支持
 
 * 用户系统：目前支持注册、登录、密码重置，资料完善，个人页展示，好友系统，我的文章等等功能
 * 文章系统：支持后台文章上传、文章标签，前台文章检索、详情等功能
-* 评论系统：支持登录/非登录用户评论，登录用户点赞，评论回复，评论层级迭代
+* 评论系统：支持登录/非登录用户评论，登录用户点赞，评论回复，评论层级迭代，支持网站留言板功能模块
 * 视频系统：支持后台视频上传、整理分集、弹幕文件加载等，前台视频检索，观看，视频倍速、自动下集、弹幕等全局设置
 * 游戏系统：简单游戏展示、推荐
-* 工具系统：支持steam游戏史低/详情查询，支持在线时间戳转换，支持在线生成二维码，支持DDL转kotlin类，支持常见加密
+* 工具系统：支持steam游戏史低/详情查询，支持在线时间戳转换，支持在线生成二维码，支持DDL转kotlin类，支持常见加密，支持图片和base64相互转换
 
 ## 项目文件结构
 
@@ -83,4 +82,9 @@ yarn serve
     4. 修改apiUrl的生成逻辑，代码位置：`[]).slice(0);`
        文件位置：[danmaku.js](https://github.com/DIYgod/DPlayer/blob/master/src/js/danmaku.js)，
        修改为apiUrl不使用奇怪的自定义生成逻辑，直接返回videoId
-    5. 暂无
+2. qrcode的path
+    1. 禁止输出Suspense实验性提示，即使是在开发环境
+3. sockjs-client的path
+    1. 注释`global.addEventListener(event, listener, false);`仅用于构建`SockJS`不需要事件支持，
+       并且该种写法已经过时，参考[Window: unload event](https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event)
+       该[issue](https://github.com/sockjs/sockjs-client/issues/646)目前（2024-02-06）处于打开状态，暂未得到回复
