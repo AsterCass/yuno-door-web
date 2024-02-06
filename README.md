@@ -82,9 +82,9 @@ yarn serve
     4. 修改apiUrl的生成逻辑，代码位置：`[]).slice(0);`
        文件位置：[danmaku.js](https://github.com/DIYgod/DPlayer/blob/master/src/js/danmaku.js)，
        修改为apiUrl不使用奇怪的自定义生成逻辑，直接返回videoId
-2. qrcode的path
+2. qrcode的patch
     1. 禁止输出Suspense实验性提示，即使是在开发环境
-3. sockjs-client的path
+3. sockjs-client的patch
     1. 注释`global.addEventListener(event, listener, false);`仅用于构建`SockJS`不需要事件支持，
        并且该种写法已经过时，参考[Window: unload event](https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event)
        该[issue](https://github.com/sockjs/sockjs-client/issues/646)目前（2024-02-06）处于打开状态，暂未得到回复
