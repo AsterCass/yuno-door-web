@@ -13,20 +13,29 @@
       </div>
       <div class="col q-ml-md col-12 col-lg">
         <h6 class="col-12">
-          {{ gameIntro.dealName }}
+          {{ null === gameIntro.gameName ? gameIntro.dealName : gameIntro.gameName }}
         </h6>
 
-        <div class="q-my-xs col-6">
+        <div class="q-my-xs col-6" v-if="0 !== gameIntro.curPrice">
           <div class="cur-price">
             当前国区价格：{{ gameIntro.curPrice }} 元
           </div>
-          <div class="lowest-price">
+          <div class="lowest-price" v-if="null !==  gameIntro.lowestPrice">
             最低国区价格：{{ gameIntro.lowestPrice }} 元
           </div>
-          <div>
+          <div v-if="null !==  gameIntro.lowestPriceTime">
             首次最低价格时间：{{ gameIntro.lowestPriceTime }}
           </div>
+          <div v-if="null != gameIntro.review"
+               v-html="gameIntro.review.replace('。', '')"
+               class="text-right" style="font-size: .8rem; color: #d2a017"></div>
         </div>
+        <div class="q-my-xs col-6" v-else>
+          <div class="free-price">
+            免费开玩
+          </div>
+        </div>
+
 
         <div class="col-6 row justify-end">
           <q-btn class="admin-steam-game-card-store-btn q-ma-md" no-caps target="_blank"
@@ -56,12 +65,14 @@ import emitter from "@/utils/bus";
 const props = defineProps({
   gameIntro: {
     steamId: "",
+    gameName: "",
     imageUrl: "",
     dealName: "",
     lowestPriceTime: "",
     storeUrl: "",
     curPrice: 0.0,
     lowestPrice: 0.0,
+    review: "",
   },
   needCheck: {
     type: Boolean,
@@ -119,6 +130,11 @@ onMounted(() => {
 
   .lowest-price
     color: $cask_second_deep
+
+  .free-price
+    color: $cask_third
+    font-weight: 600
+    font-size: 1.2rem
 
   h6
     color: black
