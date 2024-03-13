@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <ul class="copyright">
-      <li>&copy; 2020-2023 astercasc.com 版权所有 互联网ICP备案：
+      <li>&copy; 2020-2024 astercasc.com 版权所有 互联网ICP备案：
         <a target="_blank" href="https://beian.miit.gov.cn/">浙ICP备2022023127号</a>
       </li>
       <li>
@@ -15,9 +15,6 @@
       <li>
         <q-icon name="fa-brands fa-qq"/>
         QQ: 404919617
-      </li>
-      <li>
-        ASC AWebsite Version: 1.25.0
       </li>
     </ul>
   </div>

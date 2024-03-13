@@ -190,7 +190,17 @@ function searchGameListMethod(searchGameKeyword) {
   searchGames(param).then(res => {
     if (200 === res.status && 200 === res.data.status) {
       curGameList.value.push(...res.data.data)
-      needCheckImgUrl.value = true
+      //20240313 改为直接从steam拉取图片数据，不再需要校验图片合法性
+      needCheckImgUrl.value = false
+      inLoadData.value = false
+    } else {
+      notify({
+        message: "呜呜呜😭~小服务器流量访问超限了，客官待会再来吧",
+        position: 'top',
+        type: 'warning',
+        timeout: 3000
+      })
+      needCheckImgUrl.value = false
       inLoadData.value = false
     }
   })
@@ -209,10 +219,11 @@ function showGameDetailMethod(steamId) {
     } else if (200 === res.status) {
       gameDetailShow.value = false
       notify({
-        message: res.data.message,
+        message: "呜呜呜😭~解析失败了，客官请到steam商店或查看详情吧",
         position: 'top',
-        type: 'warning',
-        timeout: 1000
+        color: "green-10",
+        textColor: "white",
+        timeout: 3000
       })
     } else {
       gameDetailShow.value = false
