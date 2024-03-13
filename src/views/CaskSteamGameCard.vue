@@ -17,14 +17,23 @@
         </h6>
 
         <div class="q-my-xs col-6" v-if="0 !== gameIntro.curPrice">
-          <div class="cur-price">
-            当前国区价格：{{ gameIntro.curPrice }} 元
+          <div class="cur-price" v-if="null !== gameIntro.regularPrice">
+            常规国区价格：{{ gameIntro.regularPrice }} 元
+          </div>
+          <div class="cur-price" v-else>
+            常规国区价格：未收录
           </div>
           <div class="lowest-price" v-if="null !==  gameIntro.lowestPrice">
             最低国区价格：{{ gameIntro.lowestPrice }} 元
           </div>
+          <div class="lowest-price" v-else>
+            最低国区价格：未收录
+          </div>
           <div v-if="null !==  gameIntro.lowestPriceTime">
             首次最低价格时间：{{ gameIntro.lowestPriceTime }}
+          </div>
+          <div v-else>
+            首次最低价格时间：未收录
           </div>
           <div v-if="null != gameIntro.review"
                v-html="gameIntro.review.replace('。', '')"
@@ -71,6 +80,7 @@ const props = defineProps({
     lowestPriceTime: "",
     storeUrl: "",
     curPrice: 0.0,
+    regularPrice: 0.0,
     lowestPrice: 0.0,
     review: "",
   },
