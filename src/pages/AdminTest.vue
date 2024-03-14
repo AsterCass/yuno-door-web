@@ -62,12 +62,12 @@ export default {
     send() {
       console.log("Send message:" + this.send_message);
       if (this.stompClient && this.stompClient.connected) {
-        const msg = {userId: "666", sendMsg: this.send_message};
-        this.stompClient.send("/socket/message/send", JSON.stringify(msg), {token: "777xxx"});
+        const msg = {userId: "777", sendMsg: this.send_message};
+        this.stompClient.send("/socket/message/send", JSON.stringify(msg), {token: "777"});
       }
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8004/chat-websocket");
+      this.socket = new SockJS("https://api.astercasc.com/yui/chat-websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           {},
