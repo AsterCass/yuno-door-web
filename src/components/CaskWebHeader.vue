@@ -6,7 +6,7 @@
         <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-house" label="Home" to="/"/>
 
         <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-photo-film" label="Media"
-               v-on:mouseover="mediaMenuTouchOver" v-on:mouseleave="mediaMenuTouchLeave" @click="mediaMenuShow=true">
+               v-on:mouseleave="mediaMenuTouchLeave" @click="mediaMenuShow=true">
           <q-menu :model-value="mediaMenuShow"
                   v-on:mouseover="mediaMenuTouchOver" v-on:mouseleave="mediaMenuTouchLeave"
                   style="background-color:rgba(0,0,0,0);box-shadow:none;backdrop-filter: none"
@@ -29,7 +29,7 @@
         </q-btn>
 
         <q-btn class="headerBtn" flat dense stack no-caps icon="fa-solid fa-toolbox" label="Kit"
-               v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave" @click="kitMenuShow=true">
+               v-on:mouseleave="kitMenuTouchLeave" @click="kitMenuShow=true">
           <q-menu :model-value="kitMenuShow"
                   v-on:mouseover="kitMenuTouchOver" v-on:mouseleave="kitMenuTouchLeave"
                   style="background-color:rgba(0,0,0,0);box-shadow:none;backdrop-filter: none"
