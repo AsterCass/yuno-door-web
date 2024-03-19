@@ -1,10 +1,10 @@
 <template>
-  <div class="q-mt-md row justify-center">
+  <div class="q-mt-md row justify-center navigation-fab-main">
 
     <q-fab
         class="q-fab-bt"
         label-position="bottom"
-        glossy
+        square glossy
         icon="fa-solid fa-flag-checkered"
         direction="down"
         hide-label
@@ -304,6 +304,13 @@ function fabKitInDeveloping() {
 
   .q-btn {
     margin: 0 !important;
+  }
+}
+
+
+.navigation-fab-main {
+  .q-fab--form-square {
+    border-radius: 1rem;
   }
 }
 

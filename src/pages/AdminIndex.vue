@@ -38,6 +38,10 @@
       <CaskWebFab/>
     </q-page-sticky>
 
+    <q-page-sticky position="bottom-right" :offset="[50, 75]">
+      <CaskWebChatFab/>
+    </q-page-sticky>
+
   </q-layout>
 </template>
 
@@ -47,10 +51,10 @@ import CopyrightFooter from '@/components/CopyrightFooter.vue'
 import CaskWebHeader from '@/components/CaskWebHeader.vue'
 import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskAdminShow from "@/views/CaskAdminShow.vue";
-import {useQuasar} from "quasar";
+import {QSpinnerGears, useQuasar} from "quasar";
 import emitter from "@/utils/bus";
-import {QSpinnerGears} from "quasar";
 import {getLoadGarbleLang} from "@/utils/enums/load-garble";
+import CaskWebChatFab from "@/components/CaskWebChatFab.vue";
 
 
 const load = useQuasar().loading
