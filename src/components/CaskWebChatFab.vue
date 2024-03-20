@@ -16,8 +16,8 @@
             <div v-for="(item, index) in chattingData" :key="index"
                  v-on:mouseover="item.webShowCloseBtn = true" v-on:mouseleave="item.webShowCloseBtn = false">
               <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
-                      :focused="item.chatId === webChattingFocusChatId"
-                      @click="webChattingFocusChatId = item.chatId">
+                      :focused="item.chatId === webChattingFocusChat.chatId"
+                      @click="webChattingFocusChat = item">
                 <div class="row items-center">
                   <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${item.userId}`">
                     <q-avatar size="50px">
@@ -52,9 +52,85 @@
             </div>
           </q-list>
         </q-scroll-area>
+
         <q-separator vertical inset/>
 
+        <div class="col column chat-main-card-frame">
+          <div class="chat-main-card-frame-header">
+            <div class="row items-center">
+              <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${webChattingFocusChat.userId}`">
+                <q-avatar size="70px">
+                  <q-img :src="webChattingFocusChat.chatAvatar"/>
+                </q-avatar>
+              </q-btn>
+              <div>
+                <div class="simple-bold-little-title-secondary">
+                  {{ webChattingFocusChat.chatName }}
+                </div>
+                <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                         :color="getGenderObj(webChattingFocusChat.userGender).color"
+                         :label="getGenderObj(webChattingFocusChat.userGender).label">
+                </q-badge>
+                <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                         :color="getRoleTypeObj(webChattingFocusChat.userRoleType).color"
+                         :label="getRoleTypeObj(webChattingFocusChat.userRoleType).label">
+                  <q-icon
+                      :name="getRoleTypeObj(webChattingFocusChat.userRoleType).logo"
+                      class="q-ml-xs"
+                  />
+                </q-badge>
+              </div>
+            </div>
+          </div>
+          <q-separator spaced="8px" size="0.125rem" style="opacity: 0.5" inset
+                       color="green-10"
+          />
 
+          <div class="col-grow chat-main-card-frame-body">
+            <div id="chat-body-infinite-id" style="max-height: 25rem; overflow: auto;">
+              <q-infinite-scroll @load="loadMoreChatRecord" :offset="250"
+                                 scroll-target="#chat-body-infinite-id" reverse>
+                <template v-slot:loading>
+                  <div class="row justify-center q-my-md">
+                    <q-spinner-dots color="light-green-10" size="40px"/>
+                  </div>
+                </template>
+                <div v-for="(item, index) in webChattingFocusChat.userChattingData" :key="index"
+                     class="q-mx-sm">
+                  <q-chat-message
+                      :name="item.sendUserNickName"
+                      :avatar="item.sendUserAvatar"
+                      :text="[item.sendMsg]"
+                      text-color="grey-1"
+                      bg-color="light-green-10"
+                      :sent="false"
+                  />
+                </div>
+              </q-infinite-scroll>
+            </div>
+
+
+          </div>
+
+          <div class="row chat-main-card-frame-input">
+            <q-input
+                v-model="webChattingFocusChat.webInputText" type="textarea"
+                @keydown.enter.prevent="sendChatMsg"
+                placeholder="使用Enter发送，Ctrl+Enter换行"
+                class="col-grow q-ml-md cask-textarea-input-base" borderless
+                :input-style="{fontSize: '.95rem', color:'black', opacity:'0.75',
+                          letterSpacing: '.023rem', lineHeight:'1.3rem', fontFamily:'Roboto Slab, sans-serif',
+                          border: '2.5px solid #888', backgroundColor:'#ddd', margin: '.8rem 0 ',
+                          padding: '.6rem', resize: 'none',height: '4.5rem', borderRadius: '12px',
+                          overflowWrap: 'anywhere'} ">
+            </q-input>
+            <div class="row items-center">
+              <q-btn round unelevated flat color="green-10" icon="fa-solid fa-paper-plane"
+                     @click="sendChatMsg"/>
+            </div>
+          </div>
+
+        </div>
 
 
       </q-card>
@@ -71,60 +147,80 @@
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {ref} from "vue";
+import {delay} from "@/utils/delay-exe";
 
-let webChattingFocusChatId = ref("YCT1");
+let webChattingFocusChat = ref({
+  chatId: "YCT1",
+  chatType: 0,
+  userId: "YU1",
+  chatName: "AsterCasc",
+  chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+  userGender: 7,
+  userRoleType: 1024,
+  userChattingData: [
+    {
+      chatTimeStamp: 0,
+      sendUserId: "YU1",
+      sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+      sendUserNickName: "AsterCasc",
+      sendMsg: "hello",
+    },
+    {
+      chatTimeStamp: 0,
+      sendUserId: "YU1",
+      sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+      sendUserNickName: "AsterCasc",
+      sendMsg: "你好啊啊啊啊",
+    },
+    {
+      chatTimeStamp: 0,
+      sendUserId: "YU1",
+      sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+      sendUserNickName: "AsterCasc",
+      sendMsg: "你好啊",
+    },
+  ],
+  webShowCloseBtn: false,
+  webInputText: "",
+});
 let chattingData = ref([
   {
     chatId: "YCT1",
     chatType: 0,
     userId: "YU1",
     chatName: "AsterCasc",
-    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/default/avatar-00.png",
+    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
     userGender: 7,
     userRoleType: 1024,
-    userChattingData: [
-      {
-        chatTimeStamp: 0,
-        sendUserId: "",
-        sendMsg: "",
-      }
-    ],
+    userChattingData: [],
     webShowCloseBtn: false,
+    webInputText: "",
   },
   {
     chatId: "YCT2",
     chatType: 0,
     userId: "YU1",
-    chatName: "AsterCasc",
-    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/default/avatar-01.png",
+    chatName: "这俩人都叠在一起了，应该不用我翻跟头了叭",
+    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU1656110669055152.gif",
     userGender: 0,
     userRoleType: 1,
-    userChattingData: [
-      {
-        chatTimeStamp: 0,
-        sendUserId: "",
-        sendMsg: "",
-      }
-    ],
+    userChattingData: [],
     webShowCloseBtn: false,
+    webInputText: "",
   },
   {
     chatId: "YCT3",
     chatType: 0,
     userId: "YU1",
-    chatName: "AsterCasc",
-    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/default/avatar-02.png",
+    chatName: "刹那握住了未来",
+    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU1650800808415219.jpg",
     userGender: 1,
     userRoleType: 2,
-    userChattingData: [
-      {
-        chatTimeStamp: 0,
-        sendUserId: "",
-        sendMsg: "",
-      }
-    ],
+    userChattingData: [],
     webShowCloseBtn: false,
+    webInputText: "",
   },
+
 ])
 
 
@@ -138,6 +234,70 @@ function animalOperate(isPause) {
     eleWave1.classList.remove('pause')
     eleWave2.classList.remove('pause')
   }
+}
+
+function sendChatMsg(event) {
+  if (event.ctrlKey) {
+    webChattingFocusChat.value.webInputText += '\n'
+  } else {
+    webChattingFocusChat.value.userChattingData.push(
+        {
+          chatTimeStamp: 0,
+          sendUserId: "YU1",
+          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+          sendUserNickName: "AsterCasc",
+          sendMsg: webChattingFocusChat.value.webInputText,
+        }
+    )
+    let scrollerDiv = document.getElementById("chat-body-infinite-id")
+    delay(100).then(() => {
+      scrollerDiv.scrollTo({top: scrollerDiv.scrollHeight, behavior: 'smooth'})
+    })
+    webChattingFocusChat.value.webInputText = ''
+  }
+}
+
+function loadMoreChatRecord(index, done) {
+  setTimeout(() => {
+    webChattingFocusChat.value.userChattingData.splice(0, 0,
+        {
+          chatTimeStamp: 0,
+          sendUserId: "YU1",
+          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+          sendUserNickName: "AsterCasc",
+          sendMsg: "你好啊BADLFJASDLFJS AFS",
+        },
+        {
+          chatTimeStamp: 0,
+          sendUserId: "YU1",
+          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+          sendUserNickName: "AsterCasc",
+          sendMsg: "你好啊BADLFJASDLFJS AFS",
+        },
+        {
+          chatTimeStamp: 0,
+          sendUserId: "YU1",
+          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+          sendUserNickName: "AsterCasc",
+          sendMsg: "你好啊BADLFJASDLFJS AFS",
+        },
+        {
+          chatTimeStamp: 0,
+          sendUserId: "YU1",
+          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+          sendUserNickName: "AsterCasc",
+          sendMsg: "你好啊BADLFJASDLFJS AFS",
+        },
+        {
+          chatTimeStamp: 0,
+          sendUserId: "YU1",
+          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
+          sendUserNickName: "AsterCasc",
+          sendMsg: "你好啊BADLFJASDLFJSAFS",
+        },
+    )
+    done()
+  }, 2000)
 }
 
 
@@ -156,9 +316,9 @@ function animalOperate(isPause) {
 }
 
 .chat-main-card {
-  height: 30rem;
+  height: 40rem;
   width: 60rem;
-  margin: 0 1.5rem 25rem 0;
+  margin: 0 1.5rem 35rem 0;
   padding: .5rem;
   border-radius: 1rem;
   background-color: rgba(255, 255, 255, 0.8);
@@ -178,6 +338,43 @@ function animalOperate(isPause) {
     }
   }
 }
+
+.chat-main-card-frame {
+  margin: .5rem;
+
+  .chat-main-card-frame-body {
+    padding: .5rem;
+    color: grey;
+    font-family: Roboto Slab, sans-serif;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    min-height: 20px;
+    white-space: pre-line;
+
+    ::-webkit-scrollbar {
+      overflow: visible;
+      z-index: 12;
+      background: transparent;
+      height: 12px;
+      width: 14px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      width: 10px;
+      background-color: $cask_cactus;
+      opacity: 0.1;
+      border-radius: 10px;
+      z-index: 12;
+      border: 4px solid rgba(0, 0, 0, 0);
+      background-clip: padding-box;
+      transition: background-color .28s ease-in-out;
+      margin: 4px;
+      min-height: 32px;
+      min-width: 32px;
+    }
+  }
+}
+
 
 .limit-user-nickname-length {
   width: 12rem;
@@ -237,6 +434,26 @@ function animalOperate(isPause) {
   100% {
     transform: scale(2);
     opacity: 0;
+  }
+}
+
+</style>
+
+
+<style lang="scss">
+
+.chat-main-card-frame-body {
+  .q-message-text:last-child {
+    min-height: 38px;
+    display: inline-block;
+  }
+
+  .q-message-text--sent {
+    float: right
+  }
+
+  .q-message-label {
+    margin: 0;
   }
 }
 
