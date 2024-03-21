@@ -103,7 +103,7 @@
                       :text="[item.sendMsg]"
                       text-color="grey-1"
                       bg-color="light-green-10"
-                      :sent="false"
+                      :sent="true"
                   />
                 </div>
               </q-infinite-scroll>

@@ -48,6 +48,7 @@
 <script>
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
+import {getLoginToken} from "@/utils/store";
 
 export default {
   name: "adminTest",
@@ -62,31 +63,31 @@ export default {
     send() {
       console.log("Send message:" + this.send_message);
       if (this.stompClient && this.stompClient.connected) {
-        const msg = {userId: "777", sendMsg: this.send_message};
+        const msg = {chatId: "UCT17706927965552189", chatType: 0, message: this.send_message};
         this.stompClient.send("/socket/message/send", JSON.stringify(msg), {token: "777"});
       }
     },
     connect() {
-      this.socket = new SockJS("https://api.astercasc.com/yui/chat-websocket");
+      this.socket = new SockJS("http://localhost:8000/yui/chat-websocket/socketAuthNoError?User-Token=" + getLoginToken());
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           {},
           frame => {
             this.connected = true;
             console.log(frame);
-            this.stompClient.subscribe("/user/777/message/receive", tick => {
+            this.stompClient.subscribe("/user/" + getLoginToken() + "/message/receive", tick => {
               console.log(tick);
               this.received_messages.push(tick.body);
             });
-            this.stompClient.subscribe("/notify/123/receive", tick => {
+            this.stompClient.subscribe("/group/123/receive", tick => {
               console.log(tick);
               this.received_messages.push(tick.body);
             });
-            this.stompClient.subscribe("/notify/456/receive", tick => {
+            this.stompClient.subscribe("/group/456/receive", tick => {
               console.log(tick);
               this.received_messages.push(tick.body);
             });
-            this.stompClient.subscribe("/notify/111/receive", tick => {
+            this.stompClient.subscribe("/group/111/receive", tick => {
               console.log(tick);
               this.received_messages.push(tick.body);
             });
