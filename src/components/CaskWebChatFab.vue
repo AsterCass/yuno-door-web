@@ -55,7 +55,7 @@
 
         <q-separator vertical inset/>
 
-        <div class="col column chat-main-card-frame">
+        <div v-if="webChattingFocusChat.chatId" class="col column chat-main-card-frame">
           <div class="chat-main-card-frame-header">
             <div class="row items-center">
               <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${webChattingFocusChat.userId}`">
@@ -88,7 +88,7 @@
 
           <div class="col-grow chat-main-card-frame-body">
             <div id="chat-body-infinite-id" style="max-height: 25rem; overflow: auto;">
-              <q-infinite-scroll @load="loadMoreChatRecord" :offset="250"
+              <q-infinite-scroll @load="loadMoreChatRecord" :offset="250" :disable="webChattingFocusChat.scrollDisable"
                                  scroll-target="#chat-body-infinite-id" reverse>
                 <template v-slot:loading>
                   <div class="row justify-center q-my-md">
@@ -98,12 +98,12 @@
                 <div v-for="(item, index) in webChattingFocusChat.userChattingData" :key="index"
                      class="q-mx-sm">
                   <q-chat-message
-                      :name="item.sendUserNickName"
+                      :name="item.sendUserNickname"
                       :avatar="item.sendUserAvatar"
-                      :text="[item.sendMsg]"
+                      :text="[item.message]"
                       text-color="grey-1"
                       bg-color="light-green-10"
-                      :sent="true"
+                      :sent="item.sendUserId === userData.id"
                   />
                 </div>
               </q-infinite-scroll>
@@ -146,86 +146,45 @@
 <script setup>
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {delay} from "@/utils/delay-exe";
 import emitter from "@/utils/bus";
+import {getWebLoginData, getWebLoginToken, webIsLogin} from "@/utils/store";
+import SockJS from "sockjs-client/dist/sockjs";
+import Stomp from "webstomp-client";
+import {useQuasar} from "quasar";
+import {moreMessage} from "@/api/chat";
 
-let userData = ref({
-  id: ""
-})
-
+// const BASE_ADD = process.env.VUE_APP_BASE_ADD
+//notify
+const notify = useQuasar().notify
+//user
+let userData = ref({})
+let userToken = ref("")
+//socket
+let socket = ref(null)
+let stompClient = ref(null)
+let socketConnected = ref(false)
+//chat
 let webChattingFocusChat = ref({
-  chatId: "YCT1",
-  chatType: 0,
-  userId: "YU1",
-  chatName: "AsterCasc",
-  chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-  userGender: 7,
-  userRoleType: 1024,
-  userChattingData: [
-    {
-      chatTimeStamp: 0,
-      sendUserId: "YU1",
-      sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-      sendUserNickName: "AsterCasc",
-      sendMsg: "hello",
-    },
-    {
-      chatTimeStamp: 0,
-      sendUserId: "YU1",
-      sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-      sendUserNickName: "AsterCasc",
-      sendMsg: "你好啊啊啊啊",
-    },
-    {
-      chatTimeStamp: 0,
-      sendUserId: "YU1",
-      sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-      sendUserNickName: "AsterCasc",
-      sendMsg: "你好啊",
-    },
-  ],
-  webShowCloseBtn: false,
-  webInputText: "",
+  chatId: "",
+  userChattingData: [],
+  scrollDisable: false,
 });
 let chattingData = ref([
   {
-    chatId: "YCT1",
+    chatId: "UCT17706927965552189",
     chatType: 0,
-    userId: "YU1",
-    chatName: "AsterCasc",
-    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-    userGender: 7,
-    userRoleType: 1024,
-    userChattingData: [],
-    webShowCloseBtn: false,
-    webInputText: "",
-  },
-  {
-    chatId: "YCT2",
-    chatType: 0,
-    userId: "YU1",
-    chatName: "这俩人都叠在一起了，应该不用我翻跟头了叭",
-    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU1656110669055152.gif",
-    userGender: 0,
-    userRoleType: 1,
-    userChattingData: [],
-    webShowCloseBtn: false,
-    webInputText: "",
-  },
-  {
-    chatId: "YCT3",
-    chatType: 0,
-    userId: "YU1",
+    userId: "YU1650800808415219",
     chatName: "刹那握住了未来",
     chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU1650800808415219.jpg",
-    userGender: 1,
+    userGender: 0,
     userRoleType: 2,
     userChattingData: [],
     webShowCloseBtn: false,
     webInputText: "",
+    webScrollDisable: false
   },
-
 ])
 
 
@@ -245,84 +204,118 @@ function sendChatMsg(event) {
   if (event.ctrlKey) {
     webChattingFocusChat.value.webInputText += '\n'
   } else {
-    webChattingFocusChat.value.userChattingData.push(
-        {
-          chatTimeStamp: 0,
-          sendUserId: "YU1",
-          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-          sendUserNickName: "AsterCasc",
-          sendMsg: webChattingFocusChat.value.webInputText,
-        }
-    )
-    let scrollerDiv = document.getElementById("chat-body-infinite-id")
-    delay(100).then(() => {
-      scrollerDiv.scrollTo({top: scrollerDiv.scrollHeight, behavior: 'smooth'})
-    })
+    if (userToken.value) {
+      socketSend(webChattingFocusChat.value.chatId, webChattingFocusChat.value.webInputText)
+    } else {
+      notify({
+        message: "未登录用户暂时不支持发送消息喔，您的相关建议或者意见可以在网站留言板中留言🤭",
+        position: 'top-right',
+        type: 'warning',
+        timeout: 5000
+      })
+    }
     webChattingFocusChat.value.webInputText = ''
   }
 }
 
 function loadMoreChatRecord(index, done) {
-  setTimeout(() => {
-    webChattingFocusChat.value.userChattingData.splice(0, 0,
-        {
-          chatTimeStamp: 0,
-          sendUserId: "YU1",
-          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-          sendUserNickName: "AsterCasc",
-          sendMsg: "你好啊BADLFJASDLFJS AFS",
-        },
-        {
-          chatTimeStamp: 0,
-          sendUserId: "YU1",
-          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-          sendUserNickName: "AsterCasc",
-          sendMsg: "你好啊BADLFJASDLFJS AFS",
-        },
-        {
-          chatTimeStamp: 0,
-          sendUserId: "YU1",
-          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-          sendUserNickName: "AsterCasc",
-          sendMsg: "你好啊BADLFJASDLFJS AFS",
-        },
-        {
-          chatTimeStamp: 0,
-          sendUserId: "YU1",
-          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-          sendUserNickName: "AsterCasc",
-          sendMsg: "你好啊BADLFJASDLFJS AFS",
-        },
-        {
-          chatTimeStamp: 0,
-          sendUserId: "YU1",
-          sendUserAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/cat2.gif",
-          sendUserNickName: "AsterCasc",
-          sendMsg: "你好啊BADLFJASDLFJSAFS",
-        },
-    )
-    done()
-  }, 2000)
+  let lastMsgId = ""
+  if (webChattingFocusChat.value.userChattingData && 0 !== webChattingFocusChat.value.userChattingData.length) {
+    lastMsgId = webChattingFocusChat.value.userChattingData[0].messageId
+  }
+  moreMessage({lastMessage: lastMsgId, chatId: webChattingFocusChat.value.chatId}).then(res => {
+    const status = res.data.status
+    if (200 !== status) {
+      return
+    }
+    if (null != res.data.data && 0 !== res.data.data.length) {
+      let inputData = res.data.data.reverse()
+      webChattingFocusChat.value.userChattingData.splice(0, 0,
+          ...inputData)
+      done()
+    } else {
+      webChattingFocusChat.value.scrollDisable = true
+    }
+  })
+
 }
 
 
 function loginMessage(isSuccess) {
-  console.log(isSuccess)
+  if (isSuccess) {
+    userData.value = getWebLoginData()
+    userToken.value = getWebLoginToken()
+  } else {
+    userData.value = {}
+    userToken.value = ""
+  }
 }
 
+function baseDataInit() {
+  if (webIsLogin()) {
+    userData.value = getWebLoginData()
+    userToken.value = getWebLoginToken()
+  }
+}
 
-function refreshLoginMessage(data) {
-  console.log(data)
+function socketInit() {
+  if (userToken.value) {
+    // socket.value = new SockJS(BASE_ADD + "yui/chat-websocket/socketAuthNoError?User-Token=" + userToken.value)
+    socket.value = new SockJS("http://localhost:8000/yui/chat-websocket/socketAuthNoError?User-Token=" + userToken.value);
+    stompClient.value = Stomp.over(socket.value)
+    stompClient.value.connect(
+        {},
+        () => {
+          socketConnected.value = true;
+          stompClient.value.subscribe("/user/" + userToken.value + "/message/receive", callback => {
+            const data = JSON.parse(callback.body)
+            for (let singleChatting of chattingData.value) {
+              if (singleChatting.chatId === data.fromChatId) {
+                singleChatting.userChattingData.push(
+                    {
+                      chatTimeStamp: 0,
+                      sendUserId: data.sendUserId,
+                      sendUserAvatar: data.sendUserAvatar,
+                      sendUserNickname: data.sendUserNickname,
+                      message: data.sendMessage,
+                    })
+                let scrollerDiv = document.getElementById("chat-body-infinite-id")
+                delay(100).then(() => {
+                  scrollerDiv.scrollTo({top: scrollerDiv.scrollHeight, behavior: 'smooth'})
+                })
+              }
+            }
+          });
+          stompClient.value.subscribe("/announcement/receive", () => {
+            // console.log(tick);
+          });
+        },
+        error => {
+          console.log(error);
+          socketConnected.value = false;
+        }
+    )
+  }
+}
+
+function socketSend(chatId, message) {
+  if (stompClient.value && stompClient.value.connected) {
+    const msg = {chatId: chatId, message: message};
+    stompClient.value.send("/socket/message/send", JSON.stringify(msg));
+  }
 }
 
 
 onMounted(() => {
+  baseDataInit()
+  socketInit()
   emitter.on("loginMessageEvent", loginMessage)
-  emitter.on("refreshLoginMessageEvent", refreshLoginMessage)
-
-
-  console.log(userData.value)
 })
+
+onUnmounted(() => {
+  emitter.off("loginMessageEvent", loginMessage)
+})
+
 
 
 </script>
