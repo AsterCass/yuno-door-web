@@ -82,19 +82,12 @@
 //save user info
 import {checkMotto, checkName, checkNickName} from "@/utils/format-check";
 import {updateInfo} from "@/api/user";
-import {getLoginData, refreshLoginMessage} from "@/utils/store";
+import {focusUpdateWebUserData, getWebLoginData, webIsLogin} from "@/utils/store";
 import {useQuasar} from "quasar";
-import {defineProps, onMounted, onUnmounted, ref} from "vue";
-import {getGenderObj} from "@/utils/enums/gender-opt";
+import {onMounted, onUnmounted, ref} from "vue";
+import {genderOptEnum, getGenderObj} from "@/utils/enums/gender-opt";
 import emitter from "@/utils/bus";
-import {genderOptEnum} from "@/utils/enums/gender-opt";
 
-
-const props = defineProps({
-  userData: {
-    type: Object,
-  }
-})
 //notify
 const notify = useQuasar().notify
 //user data
@@ -155,7 +148,7 @@ function saveProfile() {
       })
       //这里如果使用false，保存后不刷新页面，会导致：同页面下，将页面上拉至顶，再鼠标碰触其他q-menu元素，
       // 如CaskWebHeader的头像，页面滚轮滑最下页面最下端，原因不明
-      refreshLoginMessage(true)
+      focusUpdateWebUserData(true)
     } else {
       regWarningNotify("保存失败：" + res.data.message)
     }
@@ -164,22 +157,22 @@ function saveProfile() {
 
 //init user info
 function initProfile() {
-  userData.value = props.userData
-  refGender.value = getGenderObj(props.userData.gender)
+  if (webIsLogin()) {
+    userData.value = getWebLoginData()
+    refGender.value = getGenderObj(userData.value.gender)
+  }
 }
 
 //reset user info
 function resetProfile() {
-  refreshLoginMessage()
+  focusUpdateWebUserData()
 }
 
 //登录事件
 function loginMessage(isOnLogin) {
   if (isOnLogin) {
-    let loginData
-    loginData = getLoginData()
-    userData.value = loginData
-    refGender.value = getGenderObj(loginData.gender)
+    userData.value = getWebLoginData()
+    refGender.value = getGenderObj(userData.value.gender)
   }
 }
 

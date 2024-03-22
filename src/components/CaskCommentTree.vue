@@ -149,7 +149,7 @@ import {getCommentTree, likeComment, replyComment} from "@/api/comment";
 import {commentTree2TwoLevelTree} from "@/utils/comment-tree";
 import {checkReply} from "@/utils/format-check";
 import emitter from "@/utils/bus";
-import {getLoginData, webIsLogin} from "@/utils/store";
+import {getWebLoginData, webIsLogin} from "@/utils/store";
 import {useQuasar} from "quasar";
 
 //notify
@@ -211,7 +211,7 @@ watch(() => props.mainId, (mainId) => {
 });
 
 function initData() {
-  userData.value = getLoginData();
+  userData.value = getWebLoginData();
   commentSum.value = 0;
   commentTree.value = [];
 }
@@ -271,7 +271,7 @@ function refreshCommentTree(inputMainId) {
 
 function caskCommentTreeLoginMethod(isLogin) {
   if (isLogin) {
-    userData.value = getLoginData();
+    userData.value = getWebLoginData();
     refreshCommentTree();
   } else {
     userData.value = {};

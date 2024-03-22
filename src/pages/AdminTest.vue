@@ -48,7 +48,6 @@
 <script>
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
-import {getLoginToken} from "@/utils/store";
 
 export default {
   name: "adminTest",
@@ -68,26 +67,18 @@ export default {
       }
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8000/yui/chat-websocket/socketAuthNoError?User-Token=" + getLoginToken());
+      this.socket = new SockJS("http://localhost:8000/yui/chat-websocket/socketAuthNoError?User-Token=" + "logintoken");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           {},
           frame => {
             this.connected = true;
             console.log(frame);
-            this.stompClient.subscribe("/user/" + getLoginToken() + "/message/receive", tick => {
+            this.stompClient.subscribe("/user/" + "logintoken" + "/message/receive", tick => {
               console.log(tick);
               this.received_messages.push(tick.body);
             });
-            this.stompClient.subscribe("/group/123/receive", tick => {
-              console.log(tick);
-              this.received_messages.push(tick.body);
-            });
-            this.stompClient.subscribe("/group/456/receive", tick => {
-              console.log(tick);
-              this.received_messages.push(tick.body);
-            });
-            this.stompClient.subscribe("/group/111/receive", tick => {
+            this.stompClient.subscribe("/announcement/receive", tick => {
               console.log(tick);
               this.received_messages.push(tick.body);
             });

@@ -1,5 +1,4 @@
 import {extend, LocalStorage} from 'quasar'
-import {updateLogin} from "@/utils/share-data"
 import {userDetail, userIsLogin, userLogout} from "@/api/user";
 import emitter from "@/utils/bus";
 
@@ -8,6 +7,8 @@ const LOGIN_TOKEN_KEY = "User-Token"
 const CURRENT_PLAY_VIDEO = "cur-video-data"
 const PERSON_VIDEO_SETTING = "person-video-setting"
 
+
+//============================== video ==============================
 
 export function addCurVideoSetting(data) {
     let oldData = getCurVideoSetting()
@@ -37,53 +38,33 @@ export function getCurVideoData() {
     return videoData
 }
 
+//============================== login web ==============================
+
+export function setWebLoginData(data, userToken) {
+    LocalStorage.set(LOGIN_LOCAL_KEY, data)
+    LocalStorage.set(LOGIN_TOKEN_KEY, userToken)
+}
+
 export function webIsLogin() {
     const hasLoginData = LocalStorage.has(LOGIN_LOCAL_KEY)
     const hasLoginToken = LocalStorage.has(LOGIN_TOKEN_KEY)
     return hasLoginData && hasLoginToken
 }
 
-export async function serviceIsLogin() {
-    const result = await userIsLogin()
-    return result.data.data
+export function webLogout() {
+    const currentWebIsLogin = webIsLogin();
+    LocalStorage.remove(LOGIN_LOCAL_KEY)
+    LocalStorage.remove(LOGIN_TOKEN_KEY)
+    if (currentWebIsLogin) {
+        emitter.emit("loginMessageEvent", false)
+    }
 }
 
-export function isLogin() {
-    serviceIsLogin().then(res => {
-        let webIsLoginStatus = webIsLogin()
-        let isLoginStatus = webIsLoginStatus && res
-        let needSendEvent = webIsLoginStatus !== res
-        if (!isLoginStatus) {
-            logout()
-        }
-        updateLogin(isLoginStatus)
-        if (needSendEvent) {
-            emitter.emit("loginMessageEvent", isLoginStatus)
-        }
-    })
+export function getWebLoginToken() {
+    return LocalStorage.getItem(LOGIN_TOKEN_KEY)
 }
 
-export function refreshLoginMessage(needReload) {
-    serviceIsLogin().then(res => {
-        let isLoginStatus = webIsLogin() && res
-        if (!isLoginStatus) {
-            logout()
-            emitter.emit("refreshLoginMessageEvent", null)
-        } else {
-            let id = getLoginData().id
-            userDetail(id).then(res => {
-                if (200 === res.data.status) {
-                    res.data.data.needReload = needReload
-                    emitter.emit("refreshLoginMessageEvent", res.data.data)
-                    LocalStorage.set(LOGIN_LOCAL_KEY, res.data.data)
-                }
-            })
-        }
-        updateLogin(isLoginStatus)
-    })
-}
-
-export function getLoginData() {
+export function getWebLoginData() {
     let loginData = LocalStorage.getItem(LOGIN_LOCAL_KEY)
     if (!loginData) {
         loginData = {}
@@ -91,19 +72,10 @@ export function getLoginData() {
     return loginData
 }
 
-export function getLoginToken() {
-    return LocalStorage.getItem(LOGIN_TOKEN_KEY)
-}
-
-export function setLoginData(data, userToken) {
-    LocalStorage.set(LOGIN_LOCAL_KEY, data)
-    LocalStorage.set(LOGIN_TOKEN_KEY, userToken)
-    updateLogin(true)
-}
+//============================== login server ==============================
 
 export function logout(id) {
     userLogout(id).then(res => {
-        updateLogin(false)
         LocalStorage.remove(LOGIN_LOCAL_KEY)
         LocalStorage.remove(LOGIN_TOKEN_KEY)
         if (200 === res.data.status) {
@@ -111,3 +83,27 @@ export function logout(id) {
         }
     })
 }
+
+export function focusUpdateWebUserData(needReload) {
+    serviceIsLogin().then(isLogin => {
+        if (!isLogin) {
+            webLogout()
+        } else {
+            userDetail().then(res => {
+                if (200 === res.data.status) {
+                    res.data.data.needReload = needReload
+                    LocalStorage.set(LOGIN_LOCAL_KEY, res.data.data)
+                    emitter.emit("refreshLoginMessageEvent", res.data.data)
+                }
+            })
+        }
+    })
+}
+
+export async function serviceIsLogin() {
+    const result = await userIsLogin()
+    return result.data.data
+}
+
+
+

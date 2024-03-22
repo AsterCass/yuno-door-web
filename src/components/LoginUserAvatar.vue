@@ -58,7 +58,7 @@
 //user data
 import {onMounted, onUnmounted, ref} from "vue";
 import emitter from "@/utils/bus";
-import {getLoginData, getLoginToken, isLogin, logout} from "@/utils/store";
+import {getWebLoginData, logout, webIsLogin} from "@/utils/store";
 import {delay} from "@/utils/delay-exe";
 import CaskLogin from "@/components/CaskLogin.vue";
 
@@ -67,7 +67,7 @@ let userData = ref({
   avatar: '',
   nickName: '',
 })
-let isLoginStatus = ref(true)
+let isLoginStatus = ref(false)
 //user menu
 let onDesignatedZone = ref(false)
 let userMenuShow = ref(false)
@@ -75,11 +75,6 @@ let userMenuShow = ref(false)
 //弹出登录框
 function showLoginDiaLog() {
   emitter.emit('showLoginDiaLogEven')
-}
-
-//登录操作
-function loginMethod() {
-  userData.value = getLoginData()
 }
 
 //登出操作
@@ -90,7 +85,7 @@ function logoutMethod() {
 //感知登录事件
 function loginMessage(isSuccess) {
   if (isSuccess) {
-    loginMethod()
+    userData.value = getWebLoginData()
     isLoginStatus.value = true
   } else {
     isLoginStatus.value = false
@@ -122,9 +117,9 @@ onMounted(() => {
   //login and data init
   emitter.on("loginMessageEvent", loginMessage)
   emitter.on("refreshLoginMessageEvent", refreshLoginMessage)
-  userData.value = getLoginData()
-  isLoginStatus.value = null != getLoginToken()
-  isLogin()
+  //user token
+  isLoginStatus.value = webIsLogin()
+  userData.value = getWebLoginData()
 })
 
 onUnmounted(() => {

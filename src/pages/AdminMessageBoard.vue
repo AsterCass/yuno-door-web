@@ -335,7 +335,7 @@ import CaskWebFab from "@/components/CaskWebFab.vue";
 import CaskWebHeader from "@/components/CaskWebHeader.vue";
 import {onMounted, onUnmounted, ref} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-import {getLoginData} from "@/utils/store";
+import {getWebLoginData} from "@/utils/store";
 import {getCommentWebsite, replyCommentWebsite} from "@/api/comment";
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
@@ -409,7 +409,7 @@ function anchorTogo(id) {
 }
 
 function initData() {
-  userData.value = getLoginData();
+  userData.value = getWebLoginData();
   if (!userData.value.id) {
     userData.value.avatar = "https://picsum.photos/100/100"
     userData.value.nickName = "游客"
@@ -419,7 +419,7 @@ function initData() {
 
 function caskCommentTreeLoginMethod(isLogin) {
   if (isLogin) {
-    userData.value = getLoginData();
+    userData.value = getWebLoginData();
   } else {
     userData.value = {};
     userData.value.avatar = "https://picsum.photos/100/100"

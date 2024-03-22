@@ -31,7 +31,7 @@ import {defineProps, onMounted, onUnmounted, ref, watch} from "vue";
 import {getAdminVideoCol, getPersonVideoCol} from "@/api/video";
 import emitter from "@/utils/bus";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-import {getLoginData} from "@/utils/store";
+import {getWebLoginData, webIsLogin} from "@/utils/store";
 import {customPage} from "@/utils/page";
 
 
@@ -102,29 +102,19 @@ function getCateVideo() {
 //登录通知
 function loginMessageEventVideoCol(isOnLogin) {
   if (isOnLogin) {
-    userData.value = getLoginData()
+    userData.value = getWebLoginData()
     updatePersonVideoCol()
   } else {
     myVideoColList.value = []
   }
 }
 
-//登录刷新通知
-function refreshUserDataEventVideoCol(data) {
-  if (data) {
-    userData.value = data
-    updatePersonVideoCol()
-  }
-}
-
-
 onMounted(() => {
+  loginMessageEventVideoCol(webIsLogin())
   //底色渲染
   addStyle("background-color: rgb(239, 242, 245)")
   //登录事件
   emitter.on("loginMessageEvent", loginMessageEventVideoCol)
-  //数据更新事件
-  emitter.on("refreshLoginMessageEvent", refreshUserDataEventVideoCol)
   //分类视频数据
   getCateVideo();
 })
@@ -134,8 +124,6 @@ onUnmounted(() => {
   removeStyle("background-color: rgb(239, 242, 245)")
   //删除登录事件
   emitter.off("loginMessageEvent", loginMessageEventVideoCol)
-  //删除数据更新事件
-  emitter.off("refreshLoginMessageEvent", refreshUserDataEventVideoCol)
 })
 
 

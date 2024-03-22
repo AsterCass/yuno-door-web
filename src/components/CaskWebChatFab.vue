@@ -146,8 +146,13 @@
 <script setup>
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {delay} from "@/utils/delay-exe";
+import emitter from "@/utils/bus";
+
+let userData = ref({
+  id: ""
+})
 
 let webChattingFocusChat = ref({
   chatId: "YCT1",
@@ -299,6 +304,25 @@ function loadMoreChatRecord(index, done) {
     done()
   }, 2000)
 }
+
+
+function loginMessage(isSuccess) {
+  console.log(isSuccess)
+}
+
+
+function refreshLoginMessage(data) {
+  console.log(data)
+}
+
+
+onMounted(() => {
+  emitter.on("loginMessageEvent", loginMessage)
+  emitter.on("refreshLoginMessageEvent", refreshLoginMessage)
+
+
+  console.log(userData.value)
+})
 
 
 </script>

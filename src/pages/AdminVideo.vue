@@ -118,8 +118,6 @@
 <script setup>
 import {onMounted, onUnmounted, ref} from 'vue'
 import LoginUserAvatar from "@/components/LoginUserAvatar.vue";
-import emitter from "@/utils/bus";
-import {getLoginData} from "@/utils/store";
 import {getAllVideoCol, getVideoListByColId} from "@/api/video";
 import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {useQuasar} from "quasar";
@@ -143,10 +141,6 @@ function videoColWarningNotify(notifyMessage) {
 //variable
 let leftDrawerOpen = ref(false)
 let searchColNameLike = ref('')
-//user data
-let userData = ref({
-  id: "",
-})
 //latest video
 let lastVideoColList = ref([
   {
@@ -170,22 +164,6 @@ const videoColCategory = [
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
-}
-
-//登录通知
-function loginMessageEventVideo(isOnLogin) {
-  if (isOnLogin) {
-    userData.value = getLoginData()
-  } else {
-    myVideoColList.value = []
-  }
-}
-
-//刷新数据
-function refreshUserDataEventVideo(data) {
-  if (data) {
-    userData.value = data
-  }
 }
 
 //最新视频
@@ -250,19 +228,12 @@ function clearVideoCollection() {
 onMounted(() => {
   //初始化最新视频数据
   initLatestVideo()
-  //登录事件
-  emitter.on("loginMessageEvent", loginMessageEventVideo)
-  //数据更新事件
-  emitter.on("refreshLoginMessageEvent", refreshUserDataEventVideo)
   //更新最新视频数据
   getLatestVideo();
 })
 
 onUnmounted(() => {
-  //删除登录事件
-  emitter.off("loginMessageEvent", loginMessageEventVideo)
-  //删除数据更新事件
-  emitter.off("refreshLoginMessageEvent", refreshUserDataEventVideo)
+
 })
 
 

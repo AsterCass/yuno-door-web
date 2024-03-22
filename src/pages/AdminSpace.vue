@@ -352,7 +352,7 @@ import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {computed, defineProps, onMounted, onUnmounted, ref, watch} from "vue";
 import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
-import {getLoginData, refreshLoginMessage, webIsLogin} from "@/utils/store";
+import {getWebLoginData, webIsLogin} from "@/utils/store";
 import emitter from "@/utils/bus";
 import CaskUploadAvatar from "@/components/CaskUploadAvatar.vue";
 import {useRouter} from "vue-router";
@@ -456,7 +456,13 @@ profileIntegrity = computed(() => {
 
 //reset user info
 function initUserProfile() {
-  refreshLoginMessage()
+  if (webIsLogin()) {
+    userData.value = getWebLoginData()
+  } else {
+    thisRouter.push({
+      path: '/notLogin'
+    })
+  }
 }
 
 //modify avatar
@@ -467,9 +473,7 @@ function modifyAvatar() {
 //登录事件
 function loginMessage(isOnLogin) {
   if (isOnLogin) {
-    let loginData
-    loginData = getLoginData()
-    userData.value = loginData
+    userData.value = getWebLoginData()
   } else {
     thisRouter.push({
       path: '/notLogin'

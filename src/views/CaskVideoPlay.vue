@@ -42,12 +42,11 @@
 import {defineProps, onMounted, onUnmounted, ref} from "vue";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
 import emitter from "@/utils/bus";
-import {addCurVideoData, getLoginData} from "@/utils/store";
+import {addCurVideoData, getWebLoginData} from "@/utils/store";
 import {useRouter} from "vue-router";
 import {getVideoListByColId, geVideoColDetail} from "@/api/video";
-import {useQuasar} from "quasar";
+import {extend, useQuasar} from "quasar";
 import CaskVideoPlayerD from "@/components/CaskVideoPlayerD.vue";
-import {extend} from "quasar";
 
 
 //router
@@ -98,7 +97,7 @@ let vdoColData = ref({})
 
 //数据初始化
 function initVideoPlayData() {
-  userData.value = getLoginData()
+  userData.value = getWebLoginData()
   vdoData.value = {}
 }
 
@@ -166,7 +165,7 @@ function playThisVideo(index) {
 //登录通知
 function loginMessageEventVideoPlay(isOnLogin) {
   if (isOnLogin) {
-    userData.value = getLoginData()
+    userData.value = getWebLoginData()
   } else {
     userData.value = {}
   }

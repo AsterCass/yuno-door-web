@@ -35,7 +35,7 @@ import {defineProps, onMounted, onUnmounted, ref, watch} from "vue";
 import emitter from "@/utils/bus";
 import {useQuasar} from "quasar";
 import {updateAvatar} from "@/api/user";
-import {refreshLoginMessage} from "@/utils/store";
+import {focusUpdateWebUserData} from "@/utils/store";
 
 //notify
 const notify = useQuasar().notify
@@ -75,7 +75,7 @@ function saveAvatar() {
   updateAvatar(formData).then(res => {
     if (200 === res.data.status) {
       //数据重新初始化
-      refreshLoginMessage(true)
+      focusUpdateWebUserData(true)
       isDatabaseAvatar.value = true
       uploadDialogShow.value = false
       notify({

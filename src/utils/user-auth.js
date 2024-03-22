@@ -1,5 +1,5 @@
 import {userLogin} from "@/api/user";
-import {setLoginData} from "@/utils/store";
+import {setWebLoginData} from "@/utils/store";
 import emitter from "@/utils/bus";
 
 
@@ -24,7 +24,7 @@ function authLogin(account, passwd, notify) {
                 type: 'positive',
                 timeout: 1000
             })
-            setLoginData(res.data.data, res.headers.get("User-Token"))
+            setWebLoginData(res.data.data, res.headers.get("User-Token"))
             emitter.emit("loginMessageEvent", true)
         }
     })
