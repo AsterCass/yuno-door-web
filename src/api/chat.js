@@ -7,3 +7,10 @@ export function moreMessage(params) {
         method: 'get',
     })
 }
+
+export function chattingUsers() {
+    return serviceShiro({
+        url: `/yui/user/chat/chattingUsers/authNoError`,
+        method: 'get',
+    })
+}

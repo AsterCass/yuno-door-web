@@ -60,7 +60,7 @@
             class="space-card-right"
         >
           <q-tab-panel name="profile">
-            <CaskUserProfile :user-data="userData"/>
+            <CaskUserProfile/>
           </q-tab-panel>
           <q-tab-panel name="article">
             <div class="space-right-coming-soon">

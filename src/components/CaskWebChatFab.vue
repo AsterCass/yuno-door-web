@@ -17,9 +17,9 @@
                  v-on:mouseover="item.webShowCloseBtn = true" v-on:mouseleave="item.webShowCloseBtn = false">
               <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
                       :focused="item.chatId === webChattingFocusChat.chatId"
-                      @click="webChattingFocusChat = item">
+                      @click="switchFocusChatting(item)">
                 <div class="row items-center">
-                  <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${item.userId}`">
+                  <q-btn round push flat color="white" class="q-mr-md">
                     <q-avatar size="50px">
                       <q-img :src="item.chatAvatar"/>
                     </q-avatar>
@@ -28,14 +28,14 @@
                     <div class="simple-bold-small-title-secondary q-ml-xs limit-user-nickname-length">
                       {{ item.chatName }}
                     </div>
-                    <div class="limit-user-nickname-length">
+                    <div v-if="item.chatUserId" class="limit-user-nickname-length">
                       <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                               :color="getGenderObj(item.userGender).color"
-                               :label="getGenderObj(item.userGender).label">
+                               :color="getGenderObj(item.chatUserGender).color"
+                               :label="getGenderObj(item.chatUserGender).label">
                       </q-badge>
                       <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                               :color="getRoleTypeObj(item.userRoleType).color"
-                               :label="getRoleTypeObj(item.userRoleType).label">
+                               :color="getRoleTypeObj(item.chatUserRoleType).color"
+                               :label="getRoleTypeObj(item.chatUserRoleType).label">
                       </q-badge>
                     </div>
                   </div>
@@ -58,7 +58,8 @@
         <div v-if="webChattingFocusChat.chatId" class="col column chat-main-card-frame">
           <div class="chat-main-card-frame-header">
             <div class="row items-center">
-              <q-btn round push color="white" class="q-mr-md" :to="`/space?id=${webChattingFocusChat.userId}`">
+              <q-btn round push flat color="white" class="q-mr-md"
+                     @click="jumpToUserDetail(webChattingFocusChat.chatUserId)">
                 <q-avatar size="70px">
                   <q-img :src="webChattingFocusChat.chatAvatar"/>
                 </q-avatar>
@@ -67,18 +68,20 @@
                 <div class="simple-bold-little-title-secondary">
                   {{ webChattingFocusChat.chatName }}
                 </div>
-                <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                         :color="getGenderObj(webChattingFocusChat.userGender).color"
-                         :label="getGenderObj(webChattingFocusChat.userGender).label">
-                </q-badge>
-                <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                         :color="getRoleTypeObj(webChattingFocusChat.userRoleType).color"
-                         :label="getRoleTypeObj(webChattingFocusChat.userRoleType).label">
-                  <q-icon
-                      :name="getRoleTypeObj(webChattingFocusChat.userRoleType).logo"
-                      class="q-ml-xs"
-                  />
-                </q-badge>
+                <div v-if="webChattingFocusChat.chatUserId">
+                  <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                           :color="getGenderObj(webChattingFocusChat.chatUserGender).color"
+                           :label="getGenderObj(webChattingFocusChat.chatUserGender).label">
+                  </q-badge>
+                  <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                           :color="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).color"
+                           :label="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).label">
+                    <q-icon
+                        :name="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).logo"
+                        class="q-ml-xs"
+                    />
+                  </q-badge>
+                </div>
               </div>
             </div>
           </div>
@@ -87,22 +90,25 @@
           />
 
           <div class="col-grow chat-main-card-frame-body">
-            <div id="chat-body-infinite-id" style="max-height: 25rem; overflow: auto;">
+            <div id="chat-body-infinite-id" style="max-height: 25rem;
+             overflow: auto;">
               <q-infinite-scroll @load="loadMoreChatRecord" :offset="250" :disable="webChattingFocusChat.scrollDisable"
-                                 scroll-target="#chat-body-infinite-id" reverse>
+                                 scroll-target="#chat-body-infinite-id" reverse debounce="10">
                 <template v-slot:loading>
                   <div class="row justify-center q-my-md">
                     <q-spinner-dots color="light-green-10" size="40px"/>
                   </div>
                 </template>
-                <div v-for="(item, index) in webChattingFocusChat.userChattingData" :key="index"
+                <div v-for="(item, index) in webChattingFocusChat.userChattingData"
+                     :key="index"
                      class="q-mx-sm">
                   <q-chat-message
+
                       :name="item.sendUserNickname"
                       :avatar="item.sendUserAvatar"
                       :text="[item.message]"
-                      text-color="grey-1"
-                      bg-color="light-green-10"
+                      :text-color="item.sendUserId === userData.id ? 'grey-1' : 'blue-grey-10' "
+                      :bg-color="item.sendUserId === userData.id ? 'light-green-10' : 'blue-grey-1' "
                       :sent="item.sendUserId === userData.id"
                   />
                 </div>
@@ -153,9 +159,13 @@ import {getWebLoginData, getWebLoginToken, webIsLogin} from "@/utils/store";
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
 import {useQuasar} from "quasar";
-import {moreMessage} from "@/api/chat";
+import {chattingUsers, moreMessage} from "@/api/chat";
+import {notifyTopRightWarning} from "@/utils/global-notify";
+import {useRouter} from "vue-router";
 
 // const BASE_ADD = process.env.VUE_APP_BASE_ADD
+//router
+const thisRouter = useRouter()
 //notify
 const notify = useQuasar().notify
 //user
@@ -169,24 +179,34 @@ let socketConnected = ref(false)
 let webChattingFocusChat = ref({
   chatId: "",
   userChattingData: [],
+  webUserChattingDataBak: [],
   scrollDisable: false,
 });
 let chattingData = ref([
   {
-    chatId: "UCT17706927965552189",
+    chatId: "",
     chatType: 0,
-    userId: "YU1650800808415219",
-    chatName: "刹那握住了未来",
-    chatAvatar: "https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-user/avatar/YU1650800808415219.jpg",
+    userId: "",
+    chatName: "",
+    chatAvatar: "",
     userGender: 0,
-    userRoleType: 2,
+    userRoleType: 0,
     userChattingData: [],
     webShowCloseBtn: false,
     webInputText: "",
-    webScrollDisable: false
+    webScrollDisable: false,
+    webUserChattingDataBak: [],
   },
 ])
 
+function jumpToUserDetail(userId) {
+  if (userId) {
+    thisRouter.push({
+      path: "/space",
+      query: {id: userId}
+    })
+  }
+}
 
 function animalOperate(isPause) {
   const eleWave1 = document.getElementById("wave-1")
@@ -200,6 +220,15 @@ function animalOperate(isPause) {
   }
 }
 
+function switchFocusChatting(item) {
+  if (webChattingFocusChat.value) {
+    webChattingFocusChat.value.webUserChattingDataBak = webChattingFocusChat.value.userChattingData
+  }
+  item.userChattingData = []
+  webChattingFocusChat.value = item
+  webChattingFocusChat.value.scrollDisable = false
+}
+
 function sendChatMsg(event) {
   if (event.ctrlKey) {
     webChattingFocusChat.value.webInputText += '\n'
@@ -207,22 +236,33 @@ function sendChatMsg(event) {
     if (userToken.value) {
       socketSend(webChattingFocusChat.value.chatId, webChattingFocusChat.value.webInputText)
     } else {
-      notify({
-        message: "未登录用户暂时不支持发送消息喔，您的相关建议或者意见可以在网站留言板中留言🤭",
-        position: 'top-right',
-        type: 'warning',
-        timeout: 5000
-      })
+      notifyTopRightWarning(
+          "未登录用户暂时不支持发送消息喔，您的相关建议或者意见可以在网站留言板中留言🤭", 5000, notify)
     }
     webChattingFocusChat.value.webInputText = ''
   }
 }
 
 function loadMoreChatRecord(index, done) {
+  //load from bak data
+  if (webChattingFocusChat.value.webUserChattingDataBak &&
+      0 !== webChattingFocusChat.value.webUserChattingDataBak.length) {
+    webChattingFocusChat.value.userChattingData.splice(0, 0,
+        ...webChattingFocusChat.value.webUserChattingDataBak);
+    webChattingFocusChat.value.webUserChattingDataBak = []
+    done()
+    return
+  }
+  //get last msg
   let lastMsgId = ""
   if (webChattingFocusChat.value.userChattingData && 0 !== webChattingFocusChat.value.userChattingData.length) {
+    if (webChattingFocusChat.value.userChattingData.length < 10) {
+      webChattingFocusChat.value.scrollDisable = true
+      return
+    }
     lastMsgId = webChattingFocusChat.value.userChattingData[0].messageId
   }
+  //load from server
   moreMessage({lastMessage: lastMsgId, chatId: webChattingFocusChat.value.chatId}).then(res => {
     const status = res.data.status
     if (200 !== status) {
@@ -240,22 +280,37 @@ function loadMoreChatRecord(index, done) {
 
 }
 
-
 function loginMessage(isSuccess) {
-  if (isSuccess) {
+  baseDataInit(isSuccess)
+  socketInit()
+}
+
+function baseDataInit(webIsLogin) {
+  if (webIsLogin) {
     userData.value = getWebLoginData()
     userToken.value = getWebLoginToken()
   } else {
     userData.value = {}
     userToken.value = ""
   }
-}
-
-function baseDataInit() {
-  if (webIsLogin()) {
-    userData.value = getWebLoginData()
-    userToken.value = getWebLoginToken()
-  }
+  chattingUsers().then(res => {
+    if (res.data && 200 === res.data.status && res.data.data && 0 !== res.data.data.length) {
+      chattingData.value = res.data.data
+      chattingData.value.forEach(data => {
+        if (!data.userChattingData) {
+          data.userChattingData = []
+        } else {
+          data.userChattingData = data.userChattingData.reverse()
+        }
+        data.webShowCloseBtn = false
+        data.webInputText = ""
+        data.webScrollDisable = false
+      })
+      if (0 !== chattingData.value[0].userChattingData.length) {
+        webChattingFocusChat.value = chattingData.value[0]
+      }
+    }
+  })
 }
 
 function socketInit() {
@@ -279,9 +334,9 @@ function socketInit() {
                       sendUserNickname: data.sendUserNickname,
                       message: data.sendMessage,
                     })
-                let scrollerDiv = document.getElementById("chat-body-infinite-id")
+                let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
                 delay(100).then(() => {
-                  scrollerDiv.scrollTo({top: scrollerDiv.scrollHeight, behavior: 'smooth'})
+                  chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
                 })
               }
             }
@@ -289,12 +344,19 @@ function socketInit() {
           stompClient.value.subscribe("/announcement/receive", () => {
             // console.log(tick);
           });
+          stompClient.value.subscribe("/error/receive", callback => {
+            notifyTopRightWarning(callback.body, 3000, notify)
+          });
         },
-        error => {
-          console.log(error);
+        () => {
           socketConnected.value = false;
         }
     )
+  } else {
+    if (stompClient.value) {
+      stompClient.value.disconnect();
+    }
+    socketConnected.value = false;
   }
 }
 
@@ -307,7 +369,7 @@ function socketSend(chatId, message) {
 
 
 onMounted(() => {
-  baseDataInit()
+  baseDataInit(webIsLogin())
   socketInit()
   emitter.on("loginMessageEvent", loginMessage)
 })
@@ -335,7 +397,7 @@ onUnmounted(() => {
 .chat-main-card {
   height: 40rem;
   width: 60rem;
-  margin: 0 1.5rem 35rem 0;
+  margin: 0 1.5rem 28rem 0;
   padding: .5rem;
   border-radius: 1rem;
   background-color: rgba(255, 255, 255, 0.8);
@@ -460,6 +522,7 @@ onUnmounted(() => {
 <style lang="scss">
 
 .chat-main-card-frame-body {
+
   .q-message-text:last-child {
     min-height: 38px;
     display: inline-block;
