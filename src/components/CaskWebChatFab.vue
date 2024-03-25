@@ -103,7 +103,7 @@
                      :key="index"
                      class="q-mx-sm">
                   <q-chat-message
-
+                      :label="item.webChatLabel ? item.webChatLabel : ''"
                       :name="item.sendUserNickname"
                       :avatar="item.sendUserAvatar"
                       :text="[item.message]"
@@ -162,6 +162,7 @@ import {useQuasar} from "quasar";
 import {chattingUsers, moreMessage} from "@/api/chat";
 import {notifyTopRightWarning} from "@/utils/global-notify";
 import {useRouter} from "vue-router";
+import {messageTimeLabelBuilder, messageTimeLabelInput} from "@/utils/message-time-label";
 
 // const BASE_ADD = process.env.VUE_APP_BASE_ADD
 //router
@@ -222,6 +223,7 @@ function animalOperate(isPause) {
 
 function switchFocusChatting(item) {
   if (webChattingFocusChat.value) {
+    messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
     webChattingFocusChat.value.webUserChattingDataBak = webChattingFocusChat.value.userChattingData
   }
   item.userChattingData = []
@@ -272,6 +274,7 @@ function loadMoreChatRecord(index, done) {
       let inputData = res.data.data.reverse()
       webChattingFocusChat.value.userChattingData.splice(0, 0,
           ...inputData)
+      messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
       done()
     } else {
       webChattingFocusChat.value.scrollDisable = true
@@ -308,6 +311,7 @@ function baseDataInit(webIsLogin) {
       })
       if (0 !== chattingData.value[0].userChattingData.length) {
         webChattingFocusChat.value = chattingData.value[0]
+        messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
       }
     }
   })
@@ -326,14 +330,13 @@ function socketInit() {
             const data = JSON.parse(callback.body)
             for (let singleChatting of chattingData.value) {
               if (singleChatting.chatId === data.fromChatId) {
-                singleChatting.userChattingData.push(
-                    {
-                      chatTimeStamp: 0,
-                      sendUserId: data.sendUserId,
-                      sendUserAvatar: data.sendUserAvatar,
-                      sendUserNickname: data.sendUserNickname,
-                      message: data.sendMessage,
-                    })
+                messageTimeLabelInput(singleChatting.userChattingData, {
+                  chatTimeStamp: 0,
+                  sendUserId: data.sendUserId,
+                  sendUserAvatar: data.sendUserAvatar,
+                  sendUserNickname: data.sendUserNickName,
+                  message: data.sendMessage,
+                })
                 let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
                 delay(100).then(() => {
                   chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
