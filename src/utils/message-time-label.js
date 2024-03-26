@@ -2,7 +2,6 @@ import {date} from "quasar";
 
 
 export function messageTimeLabelInput(list, obj) {
-
     if (list) {
         if (0 === list.length) {
             list.push(obj)
@@ -14,15 +13,18 @@ export function messageTimeLabelInput(list, obj) {
             if (waitLastSec < 600) {
                 obj.webChatLabel = ""
             } else {
-                //todo need sendDate in backend
+                console.log(obj.sendDate)
                 let sendDateTime = new Date(obj.sendDate).getTime()
                 let waitSec = (nowDateTime - sendDateTime) / 1000
+                console.log(sendDateTime, waitSec)
                 if (waitSec < 60) {
                     obj.webChatLabel = "刚刚"
                 } else if (waitSec < 3600) {
                     obj.webChatLabel = Math.floor(waitSec / 60) + "分钟前"
-                } else if (waitSec < 3600 * 24) {
+                } else if (waitSec < 3600 * 3) {
                     obj.webChatLabel = Math.floor(waitSec / 3600) + "小时前"
+                } else if (waitSec < 3600 * 24) {
+                    obj.webChatLabel = date.formatDate(sendDateTime, 'HH:mm')
                 } else {
                     obj.webChatLabel = date.formatDate(sendDateTime, 'YYYY-MM-DD HH:mm')
                 }
@@ -50,8 +52,10 @@ export function messageTimeLabelBuilder(list) {
             list[count].webChatLabel = "刚刚"
         } else if (waitSec < 3600) {
             list[count].webChatLabel = Math.floor(waitSec / 60) + "分钟前"
-        } else if (waitSec < 3600 * 24) {
+        } else if (waitSec < 3600 * 3) {
             list[count].webChatLabel = Math.floor(waitSec / 3600) + "小时前"
+        } else if (waitSec < 3600 * 24) {
+            list[count].webChatLabel = date.formatDate(sendDateTime, 'HH:mm')
         } else {
             list[count].webChatLabel = date.formatDate(sendDateTime, 'YYYY-MM-DD HH:mm')
         }

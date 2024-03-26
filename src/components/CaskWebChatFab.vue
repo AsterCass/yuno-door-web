@@ -334,8 +334,9 @@ function socketInit() {
                   chatTimeStamp: 0,
                   sendUserId: data.sendUserId,
                   sendUserAvatar: data.sendUserAvatar,
-                  sendUserNickname: data.sendUserNickName,
+                  sendUserNickname: data.sendUserNickname,
                   message: data.sendMessage,
+                  sendDate: data.sendDate,
                 })
                 let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
                 delay(100).then(() => {
