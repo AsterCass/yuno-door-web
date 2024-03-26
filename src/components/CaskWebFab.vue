@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-md row justify-center navigation-fab-main">
+  <div class="q-mt-md row justify-center">
 
     <q-fab
         class="q-fab-bt"
@@ -10,8 +10,7 @@
         hide-label
     >
 
-      <q-fab-action label-class="bg-red-5 text-grey-1 text-weight-bold"
-                    label-style="opacity: .9!important"
+      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                     label="Home" hide-label external-label glossy class="q-fab-sub-left-bt"
                     to="/" icon="fa-solid fa-house"/>
 
@@ -33,65 +32,58 @@
       所以这里只能强制将label名称改成空字符串，关闭组件的时候再赋值回去
       不知道这个问题后续会不会修复-->
       <q-fab
-          label-class="bg-brown-6 text-grey-1 text-weight-bold"
-          label-style="opacity: .9!important"
-          :label="fabExternMap.get('Media').name" glossy class="fix-fab-action-for-fab-media"
+          label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+          :label="fabExternMap.get('Media').name" glossy class="fix-fab-action-for-fab-right"
           :external-label="fabExternMap.get('Media').labelVisible"
           icon="fa-solid fa-photo-film" direction="right" padding="sm"
           @update:modelValue="updateMediaFab"
           ref="mediaCollectionFab"
       >
-        <q-fab-action label-class="bg-brown-6 text-grey-1 text-weight-bold"
-                      padding="5px 25px" class="q-fab-sub-media-btn" style="margin: 0 1.5rem 0 1.5rem!important;"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin: 0 1.5rem 0 1.5rem!important;"
                       label="Essay题记" external-label label-position="bottom"
                       to="/essay/list" icon="fa-solid fa-book-bookmark"/>
-        <q-fab-action label-class="bg-brown-6 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
-                      padding="5px 25px" class="q-fab-sub-media-btn" style="margin-right: 1.5rem!important;"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Article备录" external-label label-position="bottom"
                       to="/article/list" icon="fa-solid fa-book"/>
-        <q-fab-action label-class="bg-brown-6 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
-                      padding="5px 25px" class="q-fab-sub-media-btn" style="margin-right: 1.5rem!important;"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Video视频" external-label label-position="bottom"
                       to="/video/collection" icon="fa-solid fa-clapperboard"/>
-        <q-fab-action label-class="bg-brown-6 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
-                      padding="5px 25px" class="q-fab-sub-media-btn" style="margin-right: 1.5rem!important;"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Music音乐" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-headphones"/>
       </q-fab>
 
 
-      <q-fab-action label-class="bg-orange-8 text-grey-1 text-weight-bold"
-                    label-style="opacity: .9!important"
-                    label="Board" hide-label external-label glossy class="q-fab-sub-board-bt"
+      <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                    label="Board" hide-label external-label glossy class="q-fab-sub-left-bt"
                     to="/board" icon="fa-solid fa-clipboard"/>
 
 
       <q-fab
-          label-class="bg-blue-8 text-grey-1 text-weight-bold"
-          label-style="opacity: .9!important"
+          label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
           :label="fabExternMap.get('Game').name" glossy class="fix-fab-action-for-fab-right"
           :external-label="fabExternMap.get('Game').labelVisible"
           icon="fa-solid fa-trophy" direction="right" padding="sm"
           @update:modelValue="updateGameFab"
           ref="gameCollectionFab"
       >
-        <q-fab-action label-class="bg-blue-8 text-grey-1 text-weight-bold"
-                      padding="5px 25px" class="q-fab-sub-game-btn" style="margin:0 1.5rem 0 1.5rem!important;"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin:0 1.5rem 0 1.5rem!important;"
                       label="Hextris" external-label label-position="bottom"
                       @click="toHex" icon="mdi-hexagon-slice-6"/>
-        <q-fab-action label-class="bg-blue-8 text-grey-1 text-weight-bold"
-                      padding="5px 25px" class="q-fab-sub-game-btn" style="margin-right: 1.5rem!important;"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Mikutap" external-label label-position="bottom"
                       @click="toMik" icon="fa-solid fa-music"/>
       </q-fab>
 
 
       <q-fab
-          label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-          label-style="opacity: .9!important"
+          label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
           :label="fabExternMap.get('Kit').name" glossy class="fix-fab-action-for-fab-left"
           :external-label="fabExternMap.get('Kit').labelVisible"
           icon="fa-solid fa-toolbox" direction="right" padding="sm"
@@ -99,43 +91,35 @@
           ref="kitCollectionFab"
       >
 
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin:0 1.5rem 0 1.5rem!important;"
                       label="Steam游戏查询" external-label label-position="bottom"
                       to="/tools/steam/search" icon="fa-brands fa-square-steam"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="SQL生成Kotlin类" external-label label-position="bottom"
                       to="/tools/code/sql2kotlin" icon="fa-solid fa-object-group"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="时间戳格式转换" external-label label-position="bottom"
                       to="/tools/timestamp" icon="fa-solid fa-clock-rotate-left"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="QR二维码生成" external-label label-position="bottom"
                       to="/tools/qrcode" icon="fa-solid fa-qrcode"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Md5加密" external-label label-position="bottom"
                       to="/tools/md5" icon="fa-solid fa-location-pin-lock"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Base64图片转换" external-label label-position="bottom"
                       to="/tools/imgBase64" icon="fa-solid fa-camera-rotate"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
-        <q-fab-action label-class="bg-deep-purple-5 text-grey-1 text-weight-bold"
-                      label-style="opacity: .9!important"
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="Audio在线剪辑" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
@@ -218,50 +202,29 @@ function fabKitInDeveloping() {
 @import "@/styles/cask.sass";
 
 .q-fab-bt {
-  color: rgba($cask_base_grey, 0.9);
-  background-color: rgb(50, 100, 100);
+  color: rgba($cask_dune, 0.9);
+  background-color: white;
   margin-bottom: 18rem;
   //opacity: 0.9;
 }
 
 .q-fab-sub-right-bt {
+  color: rgba($cask_dune, 0.9);
   margin-left: 2rem !important;
-  color: rgba($cask_base_grey, 0.9);
-  background-color: rgb(50, 100, 100);
+  background-color: white;
 }
 
 .q-fab-sub-left-bt {
   margin-right: 2rem !important;
-  color: rgba($cask_base_grey, 0.9);
-  background-color: rgb(239, 83, 80);
-}
-
-
-.q-fab-sub-media-btn {
-  color: rgba(#F1F2F3, 0.9);
-  background-color: rgb(121, 85, 72);
-  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: saturate(200%) blur(30px);
-}
-
-.q-fab-sub-board-bt {
-  margin-right: 2rem !important;
-  color: rgba($cask_base_grey, 0.9);
-  background-color: rgb(245, 124, 0);
-}
-
-.q-fab-sub-game-btn {
-  color: rgba(#F1F2F3, 0.9);
-  background-color: rgb(25, 118, 210);
-  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: saturate(200%) blur(30px);
+  background-color: white;
 }
 
 .q-fab-sub-sub-btn {
-  color: rgba(#F1F2F3, 0.9);
-  background-color: rgb(126, 87, 194);
+  color: $cask_dune;
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
   backdrop-filter: saturate(200%) blur(30px);
+
 }
 
 
@@ -271,24 +234,11 @@ function fabKitInDeveloping() {
 <style lang="scss">
 
 
-.fix-fab-action-for-fab-media {
-  margin-left: 1.75rem;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  color: rgba(#F1F2F3, 0.9);
-  background-color: rgb(121, 85, 72);
-
-  .q-btn {
-    margin: 0 !important;
-  }
-}
-
 .fix-fab-action-for-fab-right {
   margin-left: 1.75rem;
   margin-top: 5px;
   margin-bottom: 5px;
-  color: rgba(#F1F2F3, 0.9);
-  background-color: rgb(25, 118, 210);
+  background-color: white;
 
   .q-btn {
     margin: 0 !important;
@@ -299,18 +249,10 @@ function fabKitInDeveloping() {
   margin-right: 1.75rem;
   margin-top: 5px;
   margin-bottom: 5px;
-  color: rgba(#F1F2F3, 0.9);
-  background-color: rgb(126, 87, 194);
+  background-color: white;
 
   .q-btn {
     margin: 0 !important;
-  }
-}
-
-
-.navigation-fab-main {
-  .q-fab--form-square {
-    border-radius: 1rem;
   }
 }
 

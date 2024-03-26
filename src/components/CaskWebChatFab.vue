@@ -166,7 +166,7 @@ import {notifyTopRightWarning, notifyTopWarning} from "@/utils/global-notify";
 import {useRouter} from "vue-router";
 import {messageTimeLabelBuilder, messageTimeLabelInput} from "@/utils/message-time-label";
 
-// const BASE_ADD = process.env.VUE_APP_BASE_ADD
+const BASE_ADD = process.env.VUE_APP_BASE_ADD
 //router
 const thisRouter = useRouter()
 //notify
@@ -374,8 +374,8 @@ function baseDataInit(webIsLogin) {
 
 function socketInit() {
   if (userToken.value) {
-    // socket.value = new SockJS(BASE_ADD + "yui/chat-websocket/socketAuthNoError?User-Token=" + userToken.value)
-    socket.value = new SockJS("http://localhost:8000/yui/chat-websocket/socketAuthNoError?User-Token=" + userToken.value);
+    socket.value = new SockJS(BASE_ADD + "yui/chat-websocket/socketAuthNoError?User-Token=" + userToken.value)
+    // socket.value = new SockJS("http://localhost:8000/yui/chat-websocket/socketAuthNoError?User-Token=" + userToken.value);
     stompClient.value = Stomp.over(socket.value)
     stompClient.value.connect(
         {},
