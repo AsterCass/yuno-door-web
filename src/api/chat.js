@@ -14,3 +14,12 @@ export function chattingUsers() {
         method: 'get',
     })
 }
+
+
+export function privateInitChat(body) {
+    return serviceShiro({
+        url: `/yui/user/chat/private/auth`,
+        method: 'post',
+        data: body
+    })
+}

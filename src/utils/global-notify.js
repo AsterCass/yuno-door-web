@@ -7,7 +7,16 @@ function notifyTopRightWarning(msg, time, notify) {
     })
 }
 
+function notifyTopWarning(msg, time, notify) {
+    notify({
+        message: msg,
+        position: 'top',
+        type: 'warning',
+        timeout: time
+    })
+}
+
 
 export {
-    notifyTopRightWarning
+    notifyTopRightWarning, notifyTopWarning
 }

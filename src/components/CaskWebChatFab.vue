@@ -2,6 +2,7 @@
 
   <div class="q-mt-md row justify-center chat-fab-main">
     <q-fab
+        ref="webChatDynamicFab"
         class="q-chat-fab-bt"
         icon="fa-solid fa-headset"
         direction="left"
@@ -13,7 +14,7 @@
         <q-scroll-area class="chat-main-card-avatar-list"
                        :thumb-style="{background: '#447550', width: '5px', marginRight: '8px'}">
           <q-list>
-            <!--todo closeBtn set true on mouseover, backend add property isHied-->
+            <!--todo closeBtn set true on mouseover, backend add property isHide-->
             <div v-for="(item, index) in chattingData" :key="index"
                  v-on:mouseover="item.webShowCloseBtn = false" v-on:mouseleave="item.webShowCloseBtn = false">
               <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
@@ -160,8 +161,8 @@ import {getWebLoginData, getWebLoginToken, webIsLogin} from "@/utils/store";
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
 import {useQuasar} from "quasar";
-import {chattingUsers, moreMessage} from "@/api/chat";
-import {notifyTopRightWarning} from "@/utils/global-notify";
+import {chattingUsers, moreMessage, privateInitChat} from "@/api/chat";
+import {notifyTopRightWarning, notifyTopWarning} from "@/utils/global-notify";
 import {useRouter} from "vue-router";
 import {messageTimeLabelBuilder, messageTimeLabelInput} from "@/utils/message-time-label";
 
@@ -178,6 +179,7 @@ let socket = ref(null)
 let stompClient = ref(null)
 let socketConnected = ref(false)
 //chat
+let webChatDynamicFab = ref()
 let webChattingFocusChat = ref({
   chatId: "",
   userChattingData: [],
@@ -188,9 +190,9 @@ let chattingData = ref([
   {
     chatId: "",
     chatType: 0,
-    userId: "",
     chatName: "",
     chatAvatar: "",
+    chatUserId: "",
     userGender: 0,
     userRoleType: 0,
     userChattingData: [],
@@ -284,6 +286,45 @@ function loadMoreChatRecord(index, done) {
 
 }
 
+function startPrivateChatWith(toUserId) {
+  if (!toUserId) {
+    return
+  }
+  let alreadyLink = false;
+  if (chattingData.value && chattingData.value.length > 0) {
+    for (let count = 0; count < chattingData.value.length; ++count) {
+      if (chattingData.value[count].chatUserId === toUserId) {
+        alreadyLink = true;
+        switchFocusChatting(chattingData.value[count])
+        webChatDynamicFab.value.show()
+        break
+      }
+    }
+  }
+  if (!alreadyLink) {
+    privateInitChat({toUserId: toUserId}).then(res => {
+      if (res.data && 200 === res.data.status && res.data.data) {
+        //switch
+        let inputData = res.data.data
+        if (!inputData.userChattingData) {
+          inputData.userChattingData = []
+        } else {
+          inputData.userChattingData = inputData.userChattingData.reverse()
+        }
+        inputData.webShowCloseBtn = false
+        inputData.webInputText = ""
+        inputData.webScrollDisable = false
+        //input
+        switchFocusChatting(inputData)
+        chattingData.value.splice(0, 0, inputData)
+        webChatDynamicFab.value.show()
+      } else {
+        notifyTopWarning("对方不想和你聊天并扔来了一只狗🤯", 3000, notify)
+      }
+    })
+  }
+}
+
 function loginMessage(isSuccess) {
   baseDataInit(isSuccess)
   socketInit()
@@ -364,8 +405,10 @@ function socketSend(chatId, message) {
 
 function socketMsgReceiveDataParse(callback) {
   const data = JSON.parse(callback.body)
+  let alreadyLink = false
   for (let singleChatting of chattingData.value) {
     if (singleChatting.chatId === data.fromChatId) {
+      alreadyLink = true
       messageTimeLabelInput(singleChatting.userChattingData, {
         chatTimeStamp: 0,
         sendUserId: data.sendUserId,
@@ -378,7 +421,11 @@ function socketMsgReceiveDataParse(callback) {
       delay(100).then(() => {
         chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
       })
+      break
     }
+  }
+  if (!alreadyLink) {
+    baseDataInit(webIsLogin())
   }
 }
 
@@ -387,10 +434,12 @@ onMounted(() => {
   baseDataInit(webIsLogin())
   socketInit()
   emitter.on("loginMessageEvent", loginMessage)
+  emitter.on("toPrivateChatWith", startPrivateChatWith)
 })
 
 onUnmounted(() => {
   emitter.off("loginMessageEvent", loginMessage)
+  emitter.off("toPrivateChatWith", startPrivateChatWith)
 })
 
 

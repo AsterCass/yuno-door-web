@@ -112,8 +112,10 @@
             <q-img :src="inspectUserData.avatar"/>
           </q-avatar>
         </q-btn>
-        <div class="col ">
+        <div class="col">
           <div style="position: absolute; bottom: .25rem; right: 2.5rem">
+            <q-btn class="simple-content-mini q-mr-md" style="min-width: 5rem"
+                   label="私聊" color="light-blue-9" push @click="privateChat()"/>
             <q-btn v-if="0 === alreadyFollow" class="simple-content-mini" style="min-width: 5rem"
                    label="关注" color="light-green-10" push
                    @click="followMethod(true)" :disable="inFollowOperation"/>
@@ -338,6 +340,10 @@
     <div v-else class="page-main-card"/>
 
 
+    <q-page-sticky position="bottom-right" :offset="[50, 75]">
+      <CaskWebChatFab/>
+    </q-page-sticky>
+
   </q-layout>
 
   <CaskTalkCard/>
@@ -365,6 +371,8 @@ import CaskArticleListCard from "@/views/CaskArticleListCard.vue";
 import {getGenderObj} from "@/utils/enums/gender-opt";
 import {ZodiacSign} from "@/utils/date-to-zodiac";
 import CaskTalkCard from "@/components/CaskTalkCard.vue";
+import {notifyTopWarning} from "@/utils/global-notify";
+import CaskWebChatFab from "@/components/CaskWebChatFab.vue";
 
 //notify
 const notify = useQuasar().notify
@@ -497,17 +505,21 @@ function refreshUserData(data) {
   }
 }
 
+//私聊
+function privateChat() {
+  if (!webIsLogin()) {
+    notifyTopWarning("用户未登录，请登录", 2000, notify)
+    return
+  }
+  emitter.emit('toPrivateChatWith', inspectUserData.value.id)
+}
+
 // 关注/取关
 function followMethod(isFollow) {
   inFollowOperation.value = true
 
   if (!webIsLogin()) {
-    notify({
-      message: "用户未登录，请登录",
-      position: 'top',
-      type: 'warning',
-      timeout: 1000
-    })
+    notifyTopWarning("用户未登录，请登录", 2000, notify)
     inFollowOperation.value = false
     return
   }
