@@ -13,8 +13,9 @@
         <q-scroll-area class="chat-main-card-avatar-list"
                        :thumb-style="{background: '#447550', width: '5px', marginRight: '8px'}">
           <q-list>
+            <!--todo closeBtn set true on mouseover, backend add property isHied-->
             <div v-for="(item, index) in chattingData" :key="index"
-                 v-on:mouseover="item.webShowCloseBtn = true" v-on:mouseleave="item.webShowCloseBtn = false">
+                 v-on:mouseover="item.webShowCloseBtn = false" v-on:mouseleave="item.webShowCloseBtn = false">
               <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
                       :focused="item.chatId === webChattingFocusChat.chatId"
                       @click="switchFocusChatting(item)">
@@ -313,6 +314,9 @@ function baseDataInit(webIsLogin) {
         webChattingFocusChat.value = chattingData.value[0]
         messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
       }
+    } else {
+      chattingData.value = []
+      webChattingFocusChat.value = {}
     }
   })
 }
@@ -327,23 +331,10 @@ function socketInit() {
         () => {
           socketConnected.value = true;
           stompClient.value.subscribe("/user/" + userToken.value + "/message/receive", callback => {
-            const data = JSON.parse(callback.body)
-            for (let singleChatting of chattingData.value) {
-              if (singleChatting.chatId === data.fromChatId) {
-                messageTimeLabelInput(singleChatting.userChattingData, {
-                  chatTimeStamp: 0,
-                  sendUserId: data.sendUserId,
-                  sendUserAvatar: data.sendUserAvatar,
-                  sendUserNickname: data.sendUserNickname,
-                  message: data.sendMessage,
-                  sendDate: data.sendDate,
-                })
-                let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
-                delay(100).then(() => {
-                  chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
-                })
-              }
-            }
+            socketMsgReceiveDataParse(callback);
+          });
+          stompClient.value.subscribe("/user/all/message/receive", callback => {
+            socketMsgReceiveDataParse(callback);
           });
           stompClient.value.subscribe("/announcement/receive", () => {
             // console.log(tick);
@@ -368,6 +359,26 @@ function socketSend(chatId, message) {
   if (stompClient.value && stompClient.value.connected) {
     const msg = {chatId: chatId, message: message};
     stompClient.value.send("/socket/message/send", JSON.stringify(msg));
+  }
+}
+
+function socketMsgReceiveDataParse(callback) {
+  const data = JSON.parse(callback.body)
+  for (let singleChatting of chattingData.value) {
+    if (singleChatting.chatId === data.fromChatId) {
+      messageTimeLabelInput(singleChatting.userChattingData, {
+        chatTimeStamp: 0,
+        sendUserId: data.sendUserId,
+        sendUserAvatar: data.sendUserAvatar,
+        sendUserNickname: data.sendUserNickname,
+        message: data.sendMessage,
+        sendDate: data.sendDate,
+      })
+      let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
+      delay(100).then(() => {
+        chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
+      })
+    }
   }
 }
 
