@@ -4,7 +4,6 @@ import {date} from "quasar";
 function singleDateTimeBuilder(obj, nowDateTime) {
     let sendDateTime = new Date(obj.sendDate).getTime()
     let waitSec = (nowDateTime - sendDateTime) / 1000
-    console.log(sendDateTime, waitSec)
     if (waitSec < 60) {
         obj.webChatLabel = "刚刚"
     } else if (waitSec < 3600) {
