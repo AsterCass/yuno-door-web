@@ -14,9 +14,8 @@
         <q-scroll-area class="chat-main-card-avatar-list"
                        :thumb-style="{background: '#447550', width: '5px', marginRight: '8px'}">
           <q-list>
-            <!--todo closeBtn set true on mouseover, backend add property isHide-->
             <div v-for="(item, index) in chattingData" :key="index"
-                 v-on:mouseover="item.webShowCloseBtn = false" v-on:mouseleave="item.webShowCloseBtn = false">
+                 v-on:mouseover="item.webShowCloseBtn = true" v-on:mouseleave="item.webShowCloseBtn = false">
               <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
                       :focused="item.chatId === webChattingFocusChat.chatId"
                       @click="switchFocusChatting(item)">
@@ -47,6 +46,7 @@
                       round dense flat unelevated class="no-margin"
                       color="grey-8" size="12px"
                       icon="fa-solid fa-circle-xmark"
+                      @click="closeThisChat(item.chatId)"
                   />
                 </div>
               </q-item>
@@ -161,7 +161,7 @@ import {getWebLoginData, getWebLoginToken, webIsLogin} from "@/utils/store";
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
 import {useQuasar} from "quasar";
-import {chattingUsers, moreMessage, privateInitChat} from "@/api/chat";
+import {chattingUsers, hideChat, moreMessage, privateInitChat} from "@/api/chat";
 import {notifyTopRightWarning, notifyTopWarning} from "@/utils/global-notify";
 import {useRouter} from "vue-router";
 import {messageTimeLabelBuilder, messageTimeLabelInput} from "@/utils/message-time-label";
@@ -232,6 +232,16 @@ function switchFocusChatting(item) {
   item.userChattingData = []
   webChattingFocusChat.value = item
   webChattingFocusChat.value.scrollDisable = false
+}
+
+function closeThisChat(chatId) {
+  if (chatId === webChattingFocusChat.value.chatId) {
+    webChattingFocusChat.value = {}
+  }
+  if (chattingData.value) {
+    chattingData.value = chattingData.value.filter(item => item.chatId !== chatId);
+  }
+  hideChat({hideChatId: chatId})
 }
 
 function sendChatMsg(event) {

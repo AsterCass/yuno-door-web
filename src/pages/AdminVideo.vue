@@ -110,6 +110,11 @@
     </q-page-sticky>
 
 
+    <q-page-sticky position="bottom-right" :offset="[50, 75]">
+      <CaskWebChatFab/>
+    </q-page-sticky>
+
+
   </q-layout>
 
 
@@ -123,6 +128,7 @@ import CopyrightFooter from "@/components/CopyrightFooter.vue";
 import {useQuasar} from "quasar";
 import {useRouter} from "vue-router";
 import CaskWebFab from "@/components/CaskWebFab.vue";
+import CaskWebChatFab from "@/components/CaskWebChatFab.vue";
 
 //视频组跳转
 const thisRouter = useRouter()

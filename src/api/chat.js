@@ -23,3 +23,11 @@ export function privateInitChat(body) {
         data: body
     })
 }
+
+export function hideChat(params) {
+    return serviceShiro({
+        url: `/yui/user/chat/hide/auth`,
+        method: 'post',
+        params: params
+    })
+}

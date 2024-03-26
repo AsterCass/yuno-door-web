@@ -5,6 +5,10 @@
     <q-page-sticky position="left" :offset="[25, 25]">
       <CaskWebFab/>
     </q-page-sticky>
+
+    <q-page-sticky position="bottom-right" :offset="[50, 75]">
+      <CaskWebChatFab/>
+    </q-page-sticky>
     <CopyrightFooter/>
 
   </q-layout>
@@ -18,6 +22,7 @@ import {onMounted, onUnmounted, ref, defineProps} from "vue";
 import CaskArticleDetail from "@/views/CaskArticleDetail.vue";
 import emitter from "@/utils/bus";
 import {addStyle, removeStyle} from "@/utils/document-style-helper";
+import CaskWebChatFab from "@/components/CaskWebChatFab.vue";
 
 defineProps({
   articleId: {
