@@ -24,6 +24,7 @@
                     <q-avatar size="50px">
                       <q-img :src="item.chatAvatar"/>
                     </q-avatar>
+                    <q-badge v-show="!item.latestRead" color="red-8" rounded floating/>
                   </q-btn>
                   <div>
                     <div class="simple-bold-small-title-secondary q-ml-xs limit-user-nickname-length">
@@ -161,7 +162,7 @@ import {getWebLoginData, getWebLoginToken, webIsLogin} from "@/utils/store";
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
 import {useQuasar} from "quasar";
-import {chattingUsers, hideChat, moreMessage, privateInitChat} from "@/api/chat";
+import {chattingUsers, hideChat, moreMessage, privateInitChat, readMessage} from "@/api/chat";
 import {notifyTopRightWarning, notifyTopWarning} from "@/utils/global-notify";
 import {useRouter} from "vue-router";
 import {messageTimeLabelBuilder, messageTimeLabelInput} from "@/utils/message-time-label";
@@ -185,6 +186,7 @@ let webChattingFocusChat = ref({
   userChattingData: [],
   webUserChattingDataBak: [],
   scrollDisable: false,
+  latestRead: false,
 });
 let chattingData = ref([
   {
@@ -195,6 +197,7 @@ let chattingData = ref([
     chatUserId: "",
     userGender: 0,
     userRoleType: 0,
+    latestRead: false,
     userChattingData: [],
     webShowCloseBtn: false,
     webInputText: "",
@@ -202,13 +205,16 @@ let chattingData = ref([
     webUserChattingDataBak: [],
   },
 ])
+//fab
+let chatFabIsOpen = ref(false)
 
 function jumpToUserDetail(userId) {
   if (userId) {
-    thisRouter.push({
+    const userSpaceUrl = thisRouter.resolve({
       path: "/space",
       query: {id: userId}
     })
+    window.open(userSpaceUrl.href, "_blank")
   }
 }
 
@@ -216,11 +222,22 @@ function animalOperate(isPause) {
   const eleWave1 = document.getElementById("wave-1")
   const eleWave2 = document.getElementById("wave-2")
   if (isPause) {
+    chatFabIsOpen.value = true
     eleWave1.classList.toggle('pause');
     eleWave2.classList.toggle('pause');
   } else {
+    chatFabIsOpen.value = false
     eleWave1.classList.remove('pause')
     eleWave2.classList.remove('pause')
+  }
+  //read record
+  let firstChattingLen = webChattingFocusChat.value.userChattingData.length
+  if (0 !== firstChattingLen && !webChattingFocusChat.value.latestRead) {
+    webChattingFocusChat.value.latestRead = true
+    readMessage({
+      chatId: webChattingFocusChat.value.chatId,
+      messageId: webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
+    })
   }
 }
 
@@ -265,6 +282,19 @@ function loadMoreChatRecord(index, done) {
     webChattingFocusChat.value.userChattingData.splice(0, 0,
         ...webChattingFocusChat.value.webUserChattingDataBak);
     webChattingFocusChat.value.webUserChattingDataBak = []
+    //send read confirm
+    {
+      let item = webChattingFocusChat.value
+      if (!item.latestRead) {
+        item.latestRead = true
+        if (item.userChattingData.length > 0) {
+          readMessage({
+            chatId: item.chatId,
+            messageId: item.userChattingData[item.userChattingData.length - 1].messageId
+          })
+        }
+      }
+    }
     done()
     return
   }
@@ -288,6 +318,12 @@ function loadMoreChatRecord(index, done) {
       webChattingFocusChat.value.userChattingData.splice(0, 0,
           ...inputData)
       messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
+      webChattingFocusChat.value.latestRead = true
+      readMessage({
+        chatId: webChattingFocusChat.value.chatId,
+        messageId: webChattingFocusChat.value
+            .userChattingData[webChattingFocusChat.value.userChattingData.length - 1].messageId
+      })
       done()
     } else {
       webChattingFocusChat.value.scrollDisable = true
@@ -361,9 +397,17 @@ function baseDataInit(webIsLogin) {
         data.webInputText = ""
         data.webScrollDisable = false
       })
-      if (0 !== chattingData.value[0].userChattingData.length) {
+      let firstChattingLen = chattingData.value[0].userChattingData.length
+      if (0 !== firstChattingLen) {
         webChattingFocusChat.value = chattingData.value[0]
         messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
+        if (chatFabIsOpen.value && !webChattingFocusChat.value.latestRead) {
+          webChattingFocusChat.value.latestRead = true
+          readMessage({
+            chatId: webChattingFocusChat.value.chatId,
+            messageId: webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
+          })
+        }
       }
     } else {
       chattingData.value = []
@@ -421,12 +465,24 @@ function socketMsgReceiveDataParse(callback) {
       alreadyLink = true
       messageTimeLabelInput(singleChatting.userChattingData, {
         chatTimeStamp: 0,
+        messageId: data.sendMessageId,
         sendUserId: data.sendUserId,
         sendUserAvatar: data.sendUserAvatar,
         sendUserNickname: data.sendUserNickname,
         message: data.sendMessage,
         sendDate: data.sendDate,
       })
+      if (webChattingFocusChat.value.chatId === data.fromChatId && chatFabIsOpen.value) {
+        singleChatting.latestRead = true
+        if (data.sendUserId !== userData.value.id) {
+          readMessage({
+            chatId: data.fromChatId,
+            messageId: data.sendMessageId
+          })
+        }
+      } else {
+        singleChatting.latestRead = false
+      }
       let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
       delay(100).then(() => {
         chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})

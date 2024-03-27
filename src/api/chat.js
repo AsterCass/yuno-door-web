@@ -31,3 +31,12 @@ export function hideChat(params) {
         params: params
     })
 }
+
+
+export function readMessage(params) {
+    return serviceShiro({
+        url: `/yui/user/chat/read/message/auth`,
+        method: 'post',
+        params: params
+    })
+}
