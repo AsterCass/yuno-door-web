@@ -313,8 +313,10 @@ function animalOperate(isPause) {
     eleWave2.value.classList.remove('pause')
   }
   //read record
-  let firstChattingLen = webChattingFocusChat.value.userChattingData.length
-  if (0 !== firstChattingLen && !webChattingFocusChat.value.latestRead) {
+  if (webChattingFocusChat.value.userChattingData &&
+      0 !== webChattingFocusChat.value.userChattingData.length
+      && !webChattingFocusChat.value.latestRead) {
+    let firstChattingLen = webChattingFocusChat.value.userChattingData.length
     webChattingFocusChat.value.latestRead = true
     let readChatId = webChattingFocusChat.value.chatId
     let readMessageId = webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
@@ -630,10 +632,10 @@ onUnmounted(() => {
 
 .chat-main-card {
   height: 40rem;
-  width: 60rem;
-  margin: 0 1.5rem 28rem 0;
+  width: 70rem;
+  margin: 1rem 1.5rem 28rem 0;
   padding: .5rem;
-  border-radius: 1rem;
+  border-radius: 1rem !important;
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
   backdrop-filter: saturate(200%) blur(30px);
