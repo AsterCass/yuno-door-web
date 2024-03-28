@@ -142,12 +142,11 @@
                     <template v-slot:name>
                       <div style="font-size: 0.95rem">
                         {{ item.sendUserNickname }}
-                        <div v-show="webChatShowUserGenderAndRole">
-                          <q-badge class="q-ml-xs" style="font-size: 0.75rem"
+                        <q-badge v-show="webChatShowUserGenderAndRole" class="q-ml-xs" style="font-size: 0.75rem"
                                    :color="getGenderObj(item.sendUserGender).color"
                                    :label="getGenderObj(item.sendUserGender).label">
                           </q-badge>
-                          <q-badge class="q-ml-xs" style="font-size: 0.75rem"
+                        <q-badge v-show="webChatShowUserGenderAndRole" class="q-ml-xs" style="font-size: 0.75rem"
                                    :color="getRoleTypeObj(item.sendUserRoleType).color"
                                    :label="getRoleTypeObj(item.sendUserRoleType).label">
                             <q-icon
@@ -155,7 +154,6 @@
                                 class="q-ml-xs"
                             />
                           </q-badge>
-                        </div>
                       </div>
                     </template>
                   </q-chat-message>
