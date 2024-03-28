@@ -158,7 +158,13 @@ import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {onMounted, onUnmounted, ref} from "vue";
 import {delay} from "@/utils/delay-exe";
 import emitter from "@/utils/bus";
-import {getWebLoginData, getWebLoginToken, webIsLogin} from "@/utils/store";
+import {
+  getPersonChattingRead,
+  getWebLoginData,
+  getWebLoginToken,
+  savePersonChattingRead,
+  webIsLogin
+} from "@/utils/store";
 import SockJS from "sockjs-client/dist/sockjs";
 import Stomp from "webstomp-client";
 import {useQuasar} from "quasar";
@@ -207,6 +213,9 @@ let chattingData = ref([
 ])
 //fab
 let chatFabIsOpen = ref(false)
+let haveUnread = ref(true)
+const eleWave1 = ref(null)
+const eleWave2 = ref(null)
 
 function jumpToUserDetail(userId) {
   if (userId) {
@@ -218,27 +227,60 @@ function jumpToUserDetail(userId) {
   }
 }
 
+function checkAllRead() {
+  let isAllRead = true
+  if (chattingData.value && chattingData.value.length) {
+    for (let count = 0; count < chattingData.value.length; ++count) {
+      if (!chattingData.value[count].latestRead) {
+        isAllRead = false
+        break
+      }
+    }
+  }
+  if (isAllRead) {
+    haveUnread.value = false
+    if (!eleWave1.value.classList.contains('pause')) {
+      eleWave1.value.classList.toggle('pause')
+    }
+    if (!eleWave2.value.classList.contains('pause')) {
+      eleWave2.value.classList.toggle('pause')
+    }
+  } else {
+    haveUnread.value = true
+    if (!chatFabIsOpen.value) {
+      eleWave1.value.classList.remove('pause')
+      eleWave2.value.classList.remove('pause')
+    }
+  }
+}
+
 function animalOperate(isPause) {
-  const eleWave1 = document.getElementById("wave-1")
-  const eleWave2 = document.getElementById("wave-2")
   if (isPause) {
     chatFabIsOpen.value = true
-    eleWave1.classList.toggle('pause');
-    eleWave2.classList.toggle('pause');
+    if (!eleWave1.value.classList.contains('pause')) {
+      eleWave1.value.classList.toggle('pause')
+    }
+    if (!eleWave2.value.classList.contains('pause')) {
+      eleWave2.value.classList.toggle('pause')
+    }
   } else {
     chatFabIsOpen.value = false
-    eleWave1.classList.remove('pause')
-    eleWave2.classList.remove('pause')
+    eleWave1.value.classList.remove('pause')
+    eleWave2.value.classList.remove('pause')
   }
   //read record
   let firstChattingLen = webChattingFocusChat.value.userChattingData.length
   if (0 !== firstChattingLen && !webChattingFocusChat.value.latestRead) {
     webChattingFocusChat.value.latestRead = true
+    let readChatId = webChattingFocusChat.value.chatId
+    let readMessageId = webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
     readMessage({
-      chatId: webChattingFocusChat.value.chatId,
-      messageId: webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
+      chatId: readChatId,
+      messageId: readMessageId
     })
+    savePersonChattingRead(readChatId, readMessageId)
   }
+  checkAllRead()
 }
 
 function switchFocusChatting(item) {
@@ -294,6 +336,7 @@ function loadMoreChatRecord(index, done) {
           })
         }
       }
+      checkAllRead()
     }
     done()
     return
@@ -319,15 +362,19 @@ function loadMoreChatRecord(index, done) {
           ...inputData)
       messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
       webChattingFocusChat.value.latestRead = true
+      let readChatId = webChattingFocusChat.value.chatId
+      let readMessageId = webChattingFocusChat.value
+          .userChattingData[webChattingFocusChat.value.userChattingData.length - 1].messageId
       readMessage({
-        chatId: webChattingFocusChat.value.chatId,
-        messageId: webChattingFocusChat.value
-            .userChattingData[webChattingFocusChat.value.userChattingData.length - 1].messageId
+        chatId: readChatId,
+        messageId: readMessageId
       })
+      savePersonChattingRead(readChatId, readMessageId)
       done()
     } else {
       webChattingFocusChat.value.scrollDisable = true
     }
+    checkAllRead()
   })
 
 }
@@ -387,6 +434,7 @@ function baseDataInit(webIsLogin) {
   chattingUsers().then(res => {
     if (res.data && 200 === res.data.status && res.data.data && 0 !== res.data.data.length) {
       chattingData.value = res.data.data
+      let localMsgReadMap = getPersonChattingRead();
       chattingData.value.forEach(data => {
         if (!data.userChattingData) {
           data.userChattingData = []
@@ -396,6 +444,9 @@ function baseDataInit(webIsLogin) {
         data.webShowCloseBtn = false
         data.webInputText = ""
         data.webScrollDisable = false
+        if (!userData.value.id) {
+          data.latestRead = localMsgReadMap.get(data.chatId) === data.lastMessageId
+        }
       })
       let firstChattingLen = chattingData.value[0].userChattingData.length
       if (0 !== firstChattingLen) {
@@ -403,16 +454,20 @@ function baseDataInit(webIsLogin) {
         messageTimeLabelBuilder(webChattingFocusChat.value.userChattingData)
         if (chatFabIsOpen.value && !webChattingFocusChat.value.latestRead) {
           webChattingFocusChat.value.latestRead = true
+          let readChatId = webChattingFocusChat.value.chatId
+          let readMessageId = webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
           readMessage({
-            chatId: webChattingFocusChat.value.chatId,
-            messageId: webChattingFocusChat.value.userChattingData[firstChattingLen - 1].messageId
+            chatId: readChatId,
+            messageId: readMessageId
           })
+          savePersonChattingRead(readChatId, readMessageId)
         }
       }
     } else {
       chattingData.value = []
       webChattingFocusChat.value = {}
     }
+    checkAllRead()
   })
 }
 
@@ -483,6 +538,7 @@ function socketMsgReceiveDataParse(callback) {
       } else {
         singleChatting.latestRead = false
       }
+      checkAllRead()
       let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
       delay(100).then(() => {
         chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
@@ -499,6 +555,8 @@ function socketMsgReceiveDataParse(callback) {
 onMounted(() => {
   baseDataInit(webIsLogin())
   socketInit()
+  eleWave1.value = document.getElementById("wave-1")
+  eleWave2.value = document.getElementById("wave-2")
   emitter.on("loginMessageEvent", loginMessage)
   emitter.on("toPrivateChatWith", startPrivateChatWith)
 })

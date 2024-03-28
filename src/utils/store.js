@@ -6,7 +6,26 @@ const LOGIN_LOCAL_KEY = "yui-user-data"
 const LOGIN_TOKEN_KEY = "User-Token"
 const CURRENT_PLAY_VIDEO = "cur-video-data"
 const PERSON_VIDEO_SETTING = "person-video-setting"
+const PERSON_CHATTING_READ = "person-chatting-read"
 
+
+//============================== local chat ==============================
+
+export function savePersonChattingRead(chatId, lastMsgId) {
+    let chattingReadMap = getPersonChattingRead()
+    chattingReadMap.set(chatId, lastMsgId)
+    LocalStorage.set(PERSON_CHATTING_READ, JSON.stringify(Object.fromEntries(chattingReadMap)))
+}
+
+export function getPersonChattingRead() {
+    const chattingReadMapStr = LocalStorage.getItem(PERSON_CHATTING_READ)
+    let chattingReadMap = new Map()
+    if (chattingReadMapStr) {
+        const jsonObj = JSON.parse(chattingReadMapStr)
+        chattingReadMap = new Map(Object.entries(jsonObj))
+    }
+    return chattingReadMap
+}
 
 //============================== video ==============================
 
