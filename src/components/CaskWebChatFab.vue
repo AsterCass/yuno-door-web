@@ -1,196 +1,185 @@
 <template>
 
-  <div class="q-mt-md row justify-center chat-fab-main">
-    <q-fab
-        ref="webChatDynamicFab"
-        class="q-chat-fab-bt"
-        icon="fa-solid fa-headset"
-        direction="left"
-        hide-label
-        @show="animalOperate(true)"
-        @hide="animalOperate(false)"
-    >
-      <q-card class="row chat-main-card">
-        <div class="column" style="width: 20rem;margin: .5rem 0 .5rem .5rem;">
-          <q-scroll-area class="col-11 chat-main-card-avatar-list"
-                         :thumb-style="{background: '#447550', width: '5px', marginRight: '8px'}">
-            <q-list>
-              <div v-for="(item, index) in chattingData" :key="index"
-                   v-on:mouseover="item.webShowCloseBtn = true" v-on:mouseleave="item.webShowCloseBtn = false">
-                <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
-                        :focused="item.chatId === webChattingFocusChat.chatId"
-                        @click="switchFocusChatting(item)">
-                  <div class="row items-center">
-                    <q-btn round push flat color="white" class="q-mr-md">
-                      <q-avatar size="50px">
-                        <q-img :src="item.chatAvatar"/>
-                      </q-avatar>
-                      <q-badge v-show="!item.latestRead" color="red-8" rounded floating/>
-                    </q-btn>
-                    <div>
-                      <div class="simple-bold-small-title-secondary q-ml-xs limit-user-nickname-length">
-                        {{ item.chatName }}
-                      </div>
-                      <div v-if="item.chatUserId" class="limit-user-nickname-length">
-                        <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                                 :color="getGenderObj(item.chatUserGender).color"
-                                 :label="getGenderObj(item.chatUserGender).label">
-                        </q-badge>
-                        <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                                 :color="getRoleTypeObj(item.chatUserRoleType).color"
-                                 :label="getRoleTypeObj(item.chatUserRoleType).label">
-                        </q-badge>
-                      </div>
+  <q-dialog maximized position="standard" v-model="chatFabIsOpen"
+            no-focus no-refocus allow-focus-outside
+            @hide="animalOperate(false)">
+    <q-card class="row chat-main-card">
+      <div class="column" style="width: 22rem;margin: .5rem 0 .5rem .5rem;">
+        <q-scroll-area class="col-11 chat-main-card-avatar-list"
+                       :thumb-style="{background: '#447550', width: '5px', marginRight: '8px'}">
+          <q-list>
+            <div v-for="(item, index) in chattingData" :key="index"
+                 v-on:mouseover="item.webShowCloseBtn = true" v-on:mouseleave="item.webShowCloseBtn = false">
+              <q-item clickable v-ripple class="row justify-between chat-main-card-avatar-row"
+                      :focused="item.chatId === webChattingFocusChat.chatId"
+                      @click="switchFocusChatting(item)">
+                <div class="row items-center">
+                  <q-btn round push flat color="white" class="q-mr-md">
+                    <q-avatar size="50px">
+                      <q-img :src="item.chatAvatar"/>
+                    </q-avatar>
+                    <q-badge v-show="!item.latestRead" color="red-8" rounded floating/>
+                  </q-btn>
+                  <div>
+                    <div class="simple-bold-small-title-secondary q-ml-xs limit-user-nickname-length">
+                      {{ item.chatName }}
+                    </div>
+                    <div v-if="item.chatUserId" class="limit-user-nickname-length">
+                      <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                               :color="getGenderObj(item.chatUserGender).color"
+                               :label="getGenderObj(item.chatUserGender).label">
+                      </q-badge>
+                      <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                               :color="getRoleTypeObj(item.chatUserRoleType).color"
+                               :label="getRoleTypeObj(item.chatUserRoleType).label">
+                      </q-badge>
                     </div>
                   </div>
-                  <div class="row items-center" v-show="item.webShowCloseBtn">
-                    <q-btn
-                        round dense flat unelevated class="no-margin"
-                        color="grey-8" size="12px"
-                        icon="fa-solid fa-circle-xmark"
-                        @click="closeThisChat(item.chatId)"
-                    />
-                  </div>
-                </q-item>
-                <q-separator spaced="8px" size="0.125rem" style="opacity: 0.3" inset/>
+                </div>
+                <div class="row items-center" v-show="item.webShowCloseBtn">
+                  <q-btn
+                      round dense flat unelevated class="no-margin"
+                      color="grey-8" size="12px"
+                      icon="fa-solid fa-circle-xmark"
+                      @click="closeThisChat(item.chatId)"
+                  />
+                </div>
+              </q-item>
+              <q-separator spaced="8px" size="0.125rem" style="opacity: 0.3" inset/>
+            </div>
+          </q-list>
+        </q-scroll-area>
+        <div class="col-1 row items-center">
+          <q-toggle style="font-family: Roboto Slab, sans-serif; color: #629DD1"
+                    color="#629DD1"
+                    v-model="webChatShowUserGenderAndRole"
+                    label="聊天框中显示用户性别及身份"
+                    @click="savePersonChattingDetail({showGAR: webChatShowUserGenderAndRole})"
+          />
+        </div>
+      </div>
+
+      <q-separator vertical inset/>
+
+      <div v-if="webChattingFocusChat.chatId" class="col column chat-main-card-frame">
+        <div class="chat-main-card-frame-header">
+          <div class="row items-center">
+            <q-btn round push flat color="white" class="q-mr-md"
+                   @click="jumpToUserDetail(webChattingFocusChat.chatUserId)">
+              <q-avatar size="70px">
+                <q-img :src="webChattingFocusChat.chatAvatar"/>
+              </q-avatar>
+            </q-btn>
+            <div>
+              <div class="simple-bold-little-title-secondary">
+                {{ webChattingFocusChat.chatName }}
               </div>
-            </q-list>
-          </q-scroll-area>
-          <div class="col-1 row items-center">
-            <q-toggle style="font-family: Roboto Slab, sans-serif; color: #629DD1"
-                      color="#629DD1"
-                      v-model="webChatShowUserGenderAndRole"
-                      label="聊天框中显示用户性别及身份"
-            />
+              <div v-if="webChattingFocusChat.chatUserId">
+                <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                         :color="getGenderObj(webChattingFocusChat.chatUserGender).color"
+                         :label="getGenderObj(webChattingFocusChat.chatUserGender).label">
+                </q-badge>
+                <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
+                         :color="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).color"
+                         :label="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).label">
+                  <q-icon
+                      :name="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).logo"
+                      class="q-ml-xs"
+                  />
+                </q-badge>
+              </div>
+            </div>
           </div>
         </div>
+        <q-separator spaced="8px" size="0.125rem" style="opacity: 0.5" inset
+                     color="green-10"
+        />
 
-        <q-separator vertical inset/>
-
-        <div v-if="webChattingFocusChat.chatId" class="col column chat-main-card-frame">
-          <div class="chat-main-card-frame-header">
-            <div class="row items-center">
-              <q-btn round push flat color="white" class="q-mr-md"
-                     @click="jumpToUserDetail(webChattingFocusChat.chatUserId)">
-                <q-avatar size="70px">
-                  <q-img :src="webChattingFocusChat.chatAvatar"/>
-                </q-avatar>
-              </q-btn>
-              <div>
-                <div class="simple-bold-little-title-secondary">
-                  {{ webChattingFocusChat.chatName }}
-                </div>
-                <div v-if="webChattingFocusChat.chatUserId">
-                  <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                           :color="getGenderObj(webChattingFocusChat.chatUserGender).color"
-                           :label="getGenderObj(webChattingFocusChat.chatUserGender).label">
-                  </q-badge>
-                  <q-badge class="q-mx-xs q-py-xs q-px-sm" style="transform: translateY(-.13rem)"
-                           :color="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).color"
-                           :label="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).label">
-                    <q-icon
-                        :name="getRoleTypeObj(webChattingFocusChat.chatUserRoleType).logo"
-                        class="q-ml-xs"
-                    />
-                  </q-badge>
-                </div>
-              </div>
-            </div>
-          </div>
-          <q-separator spaced="8px" size="0.125rem" style="opacity: 0.5" inset
-                       color="green-10"
-          />
-
-          <div class="col-grow chat-main-card-frame-body">
-            <div id="chat-body-infinite-id" style="max-height: 25rem;
+        <div class="col-grow chat-main-card-frame-body">
+          <div id="chat-body-infinite-id" style="max-height: 25rem;
              overflow: auto;">
-              <q-infinite-scroll @load="loadMoreChatRecord" :offset="250" :disable="webChattingFocusChat.scrollDisable"
-                                 scroll-target="#chat-body-infinite-id" reverse debounce="10">
-                <template v-slot:loading>
-                  <div class="row justify-center q-my-md">
-                    <q-spinner-dots color="light-green-10" size="40px"/>
-                  </div>
-                </template>
-                <div v-for="(item, index) in webChattingFocusChat.userChattingData"
-                     :key="index"
-                     class="q-mx-sm">
-                  <q-chat-message
-                      :label="item.webChatLabel ? item.webChatLabel : ''"
-                      :text-color="item.sendUserId === userData.id ? 'grey-1' : 'blue-grey-10' "
-                      :bg-color="item.sendUserId === userData.id ? 'light-green-10' : 'blue-grey-1' "
-                      :sent="item.sendUserId === userData.id"
-                  >
-                    <template v-slot:avatar>
-                      <q-avatar style="cursor: pointer;" @click="jumpToUserDetail(item.sendUserId)">
-                        <q-img :src="item.sendUserAvatar"/>
-                      </q-avatar>
-                    </template>
-                    <template v-slot:stamp>
-                      <div v-show="item.webFocusThisMsg"
-                           v-on:mouseover="item.webFocusThisMsg=true"
-                           v-on:mouseleave="item.webFocusThisMsg=false">
-                        {{ item.sendDate }}
-                      </div>
-                    </template>
-                    <template v-slot:default>
-                      <div style="cursor: zoom-in"
-                           v-on:mouseover="item.webFocusThisMsg=true"
-                           v-on:mouseleave="item.webFocusThisMsg=false">
-                        {{ item.message }}
-                      </div>
-                    </template>
-                    <template v-slot:name>
-                      <div style="font-size: 0.95rem">
-                        {{ item.sendUserNickname }}
-                        <q-badge v-show="webChatShowUserGenderAndRole" class="q-ml-xs" style="font-size: 0.75rem"
-                                   :color="getGenderObj(item.sendUserGender).color"
-                                   :label="getGenderObj(item.sendUserGender).label">
-                          </q-badge>
-                        <q-badge v-show="webChatShowUserGenderAndRole" class="q-ml-xs" style="font-size: 0.75rem"
-                                   :color="getRoleTypeObj(item.sendUserRoleType).color"
-                                   :label="getRoleTypeObj(item.sendUserRoleType).label">
-                            <q-icon
-                                :name="getRoleTypeObj(item.sendUserRoleType).logo"
-                                class="q-ml-xs"
-                            />
-                          </q-badge>
-                      </div>
-                    </template>
-                  </q-chat-message>
+            <q-infinite-scroll @load="loadMoreChatRecord" :offset="250" :disable="webChattingFocusChat.scrollDisable"
+                               scroll-target="#chat-body-infinite-id" reverse debounce="10">
+              <template v-slot:loading>
+                <div class="row justify-center q-my-md">
+                  <q-spinner-dots color="light-green-10" size="40px"/>
                 </div>
-              </q-infinite-scroll>
-            </div>
-
-
+              </template>
+              <div v-for="(item, index) in webChattingFocusChat.userChattingData"
+                   :key="index"
+                   class="q-mx-sm">
+                <q-chat-message
+                    :label="item.webChatLabel ? item.webChatLabel : ''"
+                    :text-color="item.sendUserId === userData.id ? 'grey-4' : 'blue-grey-5' "
+                    :bg-color="item.sendUserId === userData.id ? 'light-green-10' : 'blue-grey-1' "
+                    :sent="item.sendUserId === userData.id"
+                >
+                  <template v-slot:avatar>
+                    <q-avatar style="cursor: pointer;" @click="jumpToUserDetail(item.sendUserId)">
+                      <q-img :src="item.sendUserAvatar"/>
+                    </q-avatar>
+                  </template>
+                  <template v-slot:default>
+                    <div style="cursor: zoom-in; font-weight: 500"
+                         v-on:mouseover="item.webFocusThisMsg=true"
+                         v-on:mouseleave="item.webFocusThisMsg=false">
+                      {{ item.message }}
+                    </div>
+                  </template>
+                  <template v-slot:name>
+                    <div style="font-size: 0.95rem; margin-top: .2rem">
+                      {{ item.sendUserNickname }}
+                      <q-badge v-show="webChatShowUserGenderAndRole" class="q-ml-xs" style="font-size: 0.75rem"
+                               :color="getGenderObj(item.sendUserGender).color"
+                               :label="getGenderObj(item.sendUserGender).label">
+                      </q-badge>
+                      <q-badge v-show="webChatShowUserGenderAndRole" class="q-ml-xs" style="font-size: 0.75rem"
+                               :color="getRoleTypeObj(item.sendUserRoleType).color"
+                               :label="getRoleTypeObj(item.sendUserRoleType).label">
+                        <q-icon :name="getRoleTypeObj(item.sendUserRoleType).logo" class="q-ml-xs"/>
+                      </q-badge>
+                      <q-badge v-show="item.webFocusThisMsg" class="q-ml-xs" text-color="grey-2" color="grey-8">
+                        {{ item.sendDate }}
+                      </q-badge>
+                    </div>
+                  </template>
+                </q-chat-message>
+              </div>
+            </q-infinite-scroll>
           </div>
 
-          <div class="row chat-main-card-frame-input">
-            <q-input
-                v-model="webChattingFocusChat.webInputText" type="textarea"
-                @keydown.enter.prevent="sendChatMsg"
-                placeholder="使用Enter发送，Ctrl+Enter换行"
-                class="col-grow q-ml-md cask-textarea-input-base" borderless
-                :input-style="{fontSize: '.95rem', color:'black', opacity:'0.75',
+
+        </div>
+
+        <div class="row chat-main-card-frame-input">
+          <q-input
+              v-model="webChattingFocusChat.webInputText" type="textarea"
+              @keydown.enter.prevent="sendChatMsg"
+              placeholder="使用Enter发送，Ctrl+Enter换行"
+              class="col-grow q-ml-md cask-textarea-input-base" borderless
+              :input-style="{fontSize: '.95rem', color:'rgb(50, 50, 50)', opacity:'0.75',
                           letterSpacing: '.023rem', lineHeight:'1.3rem', fontFamily:'Roboto Slab, sans-serif',
                           border: '2.5px solid #888', backgroundColor:'#ddd', margin: '.8rem 0 ',
-                          padding: '.6rem', resize: 'none',height: '4.5rem', borderRadius: '12px',
+                          padding: '.6rem', resize: 'none',height: '4.5rem', borderRadius: '12px', fontWeight:'520',
                           overflowWrap: 'anywhere'} ">
-            </q-input>
-            <div class="row items-center">
-              <q-btn round unelevated flat color="green-10" icon="fa-solid fa-paper-plane"
-                     @click="sendChatMsg"/>
-            </div>
+          </q-input>
+          <div class="row items-center">
+            <q-btn round unelevated flat color="green-10" icon="fa-solid fa-paper-plane"
+                   @click="sendChatMsg"/>
           </div>
-
         </div>
 
+      </div>
 
-      </q-card>
-    </q-fab>
+    </q-card>
+  </q-dialog>
 
 
+  <div class="q-mt-md row justify-center chat-fab-main">
     <div id="wave-1" class="wave"/>
     <div id="wave-2" class="wave"/>
+    <q-btn glossy push round @click="animalOperate(true)"
+           icon="fa-solid fa-headset" class="q-chat-fab-bt"/>
   </div>
 
 </template>
@@ -202,9 +191,11 @@ import {onMounted, onUnmounted, ref} from "vue";
 import {delay} from "@/utils/delay-exe";
 import emitter from "@/utils/bus";
 import {
+  getPersonChattingDetail,
   getPersonChattingRead,
   getWebLoginData,
   getWebLoginToken,
+  savePersonChattingDetail,
   savePersonChattingRead,
   webIsLogin
 } from "@/utils/store";
@@ -229,8 +220,7 @@ let socket = ref(null)
 let stompClient = ref(null)
 let socketConnected = ref(false)
 //chat
-let webChatShowUserGenderAndRole = ref(true)
-let webChatDynamicFab = ref()
+let webChatShowUserGenderAndRole = ref(getPersonChattingDetail().showGAR)
 let webChattingFocusChat = ref({
   chatId: "",
   userChattingData: [],
@@ -435,7 +425,7 @@ function startPrivateChatWith(toUserId) {
       if (chattingData.value[count].chatUserId === toUserId) {
         alreadyLink = true;
         switchFocusChatting(chattingData.value[count])
-        webChatDynamicFab.value.show()
+        chatFabIsOpen.value = true
         break
       }
     }
@@ -456,7 +446,7 @@ function startPrivateChatWith(toUserId) {
         //input
         switchFocusChatting(inputData)
         chattingData.value.splice(0, 0, inputData)
-        webChatDynamicFab.value.show()
+        chatFabIsOpen.value = true
       } else {
         notifyTopWarning("对方不想和你聊天并扔来了一只狗🤯", 3000, notify)
       }
@@ -588,9 +578,11 @@ function socketMsgReceiveDataParse(callback) {
       }
       checkAllRead()
       let chatScrollerDiv = document.getElementById("chat-body-infinite-id")
-      delay(100).then(() => {
-        chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
-      })
+      if (chatScrollerDiv) {
+        delay(100).then(() => {
+          chatScrollerDiv.scrollTo({top: chatScrollerDiv.scrollHeight, behavior: 'smooth'})
+        })
+      }
       break
     }
   }
@@ -669,28 +661,32 @@ onUnmounted(() => {
     min-height: 20px;
     white-space: pre-line;
 
-    ::-webkit-scrollbar {
-      overflow: visible;
-      z-index: 12;
-      background: transparent;
-      height: 12px;
-      width: 14px;
-    }
-
     ::-webkit-scrollbar-thumb {
-      width: 10px;
       background-color: $cask_cactus;
-      opacity: 0.1;
-      border-radius: 10px;
-      z-index: 12;
-      border: 4px solid rgba(0, 0, 0, 0);
-      background-clip: padding-box;
-      transition: background-color .28s ease-in-out;
-      margin: 4px;
-      min-height: 32px;
-      min-width: 32px;
     }
   }
+}
+
+::-webkit-scrollbar {
+  overflow: visible;
+  z-index: 12;
+  background: transparent;
+  height: 12px;
+  width: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: $cask_base_black;
+  opacity: 0.1;
+  border-radius: 10px;
+  z-index: 12;
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  transition: background-color .28s ease-in-out;
+  margin: 4px;
+  min-height: 32px;
+  min-width: 32px;
 }
 
 
@@ -774,6 +770,10 @@ onUnmounted(() => {
   .q-message-label {
     margin: 0;
   }
+}
+
+.q-body--dialog {
+  overflow-y: scroll !important;
 }
 
 </style>

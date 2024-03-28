@@ -324,6 +324,10 @@
       <CaskWebFab/>
     </q-page-sticky>
 
+    <q-page-sticky position="bottom-right" :offset="[50, 75]">
+      <CaskWebChatFab/>
+    </q-page-sticky>
+
   </q-layout>
 
 
@@ -342,6 +346,7 @@ import {getRoleTypeObj} from "@/utils/enums/role-type"
 import {useRouter} from "vue-router";
 import {useQuasar} from "quasar";
 import emitter from "@/utils/bus";
+import CaskWebChatFab from "@/components/CaskWebChatFab.vue";
 
 //notify
 const notify = useQuasar().notify

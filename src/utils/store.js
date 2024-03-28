@@ -7,9 +7,25 @@ const LOGIN_TOKEN_KEY = "User-Token"
 const CURRENT_PLAY_VIDEO = "cur-video-data"
 const PERSON_VIDEO_SETTING = "person-video-setting"
 const PERSON_CHATTING_READ = "person-chatting-read"
+const PERSON_CHATTING_DETAIL = "person-chatting-detail"
 
 
 //============================== local chat ==============================
+
+export function savePersonChattingDetail(data) {
+    let oldData = getPersonChattingDetail()
+    LocalStorage.set(PERSON_CHATTING_DETAIL, extend(true, oldData, data))
+    return getPersonChattingDetail()
+}
+
+export function getPersonChattingDetail() {
+    let personChattingDetail = LocalStorage.getItem(PERSON_CHATTING_DETAIL)
+    if (!personChattingDetail) {
+        personChattingDetail = {showGAR: true}
+    }
+    return personChattingDetail
+}
+
 
 export function savePersonChattingRead(chatId, lastMsgId) {
     let chattingReadMap = getPersonChattingRead()
