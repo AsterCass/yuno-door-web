@@ -1,6 +1,8 @@
 import {date} from "quasar";
 
 
+const emojiRegex = /\[#b[0-9][0-9]]/g;
+
 function singleDateTimeBuilder(obj, nowDateTime) {
     let sendDateTime = new Date(obj.sendDate).getTime()
     let waitSec = (nowDateTime - sendDateTime) / 1000
@@ -19,6 +21,23 @@ function singleDateTimeBuilder(obj, nowDateTime) {
 
 export function messageTimeLabelInput(list, obj) {
     if (list) {
+        //emoji
+        let message = obj.message
+        const emojiSet = new Set();
+        let matches;
+        while ((matches = emojiRegex.exec(message)) !== null) {
+            emojiSet.add(matches[0])
+        }
+        if (emojiSet.size > 0) {
+            for (let emoji of emojiSet) {
+                const createImg = document.createElement("img");
+                createImg.src = require("@/assets/emoji/bili/bili-" + emoji.substring(3, 5) + ".png")
+                createImg.style = "height: 1.5rem;margin: 0 .15rem -.35rem .15rem"
+                const imgElToString = createImg.outerHTML
+                obj.message = obj.message.replaceAll(emoji, imgElToString)
+            }
+        }
+        //date
         let nowDateTime = new Date()
         if (0 === list.length) {
             singleDateTimeBuilder(obj, nowDateTime);
@@ -64,6 +83,25 @@ export function messageTimeLabelBuilder(list) {
         if (waitLastSec && waitLastSec < 600) {
             list[count + 1].webChatLabel = ""
         }
+
+
+        let message = list[count].message
+        const emojiSet = new Set();
+        let matches;
+        while ((matches = emojiRegex.exec(message)) !== null) {
+            emojiSet.add(matches[0])
+        }
+        if (emojiSet.size > 0) {
+            for (let emoji of emojiSet) {
+                const createImg = document.createElement("img");
+                createImg.src = require("@/assets/emoji/bili/bili-" + emoji.substring(3, 5) + ".png")
+                createImg.style = "height: 1.5rem;margin: 0 .15rem -.35rem .15rem"
+                const imgElToString = createImg.outerHTML
+                list[count].message = list[count].message.replaceAll(emoji, imgElToString)
+            }
+        }
+
+
     }
 
 }

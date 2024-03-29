@@ -120,10 +120,10 @@
                     </q-avatar>
                   </template>
                   <template v-slot:default>
-                    <div style="cursor: zoom-in; font-weight: 500"
+                    <div style="cursor: zoom-in; font-weight: 500; line-height: 1.6"
                          v-on:mouseover="item.webFocusThisMsg=true"
                          v-on:mouseleave="item.webFocusThisMsg=false">
-                      {{ item.message }}
+                      <div v-html="item.message"/>
                     </div>
                   </template>
                   <template v-slot:name>
