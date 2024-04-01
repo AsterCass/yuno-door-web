@@ -2,6 +2,7 @@ import {date} from "quasar";
 
 
 const emojiRegex = /\[#b[0-9][0-9]]/g;
+const emojiCodeFormat = "[#b%s]"
 
 function singleDateTimeBuilder(obj, nowDateTime) {
     let sendDateTime = new Date(obj.sendDate).getTime()
@@ -104,4 +105,14 @@ export function messageTimeLabelBuilder(list) {
 
     }
 
+}
+
+
+export function getAllEmojiAddress() {
+    const imageFiles = require.context('@/assets/emoji/bili/', false, /\.(png|jpe?g|svg)$/);
+    return imageFiles.keys().map(key => key.replace('./', ''));
+}
+
+export function buildEmojiCode(num) {
+    return emojiCodeFormat.replace("%s", num)
 }

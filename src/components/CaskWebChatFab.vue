@@ -1,7 +1,6 @@
 <template>
 
   <q-dialog maximized position="standard" v-model="chatFabIsOpen"
-            no-focus no-refocus allow-focus-outside
             @hide="animalOperate(false)">
     <q-card class="row chat-main-card">
       <div class="column" style="width: 22rem;margin: .5rem 0 .5rem .5rem;">
@@ -147,30 +146,44 @@
               </div>
             </q-infinite-scroll>
           </div>
-
-
         </div>
 
         <div class="row chat-main-card-frame-input">
-          <q-input
-              v-model="webChattingFocusChat.webInputText" type="textarea"
-              @keydown.enter.prevent="sendChatMsg"
-              placeholder="使用Enter发送，Ctrl+Enter换行"
-              class="col-grow q-ml-md cask-textarea-input-base" borderless
-              :input-style="{fontSize: '.95rem', color:'rgb(50, 50, 50)', opacity:'0.75',
-                          letterSpacing: '.023rem', lineHeight:'1.3rem', fontFamily:'Roboto Slab, sans-serif',
-                          border: '2.5px solid #888', backgroundColor:'#ddd', margin: '.8rem 0 ',
-                          padding: '.6rem', resize: 'none',height: '4.5rem', borderRadius: '12px', fontWeight:'520',
-                          overflowWrap: 'anywhere'} ">
+          <q-input id="user-chat-input-textarea"
+                   v-model="webChattingFocusChat.webInputText" type="textarea"
+                   @keydown.enter.prevent="sendChatMsg"
+                   placeholder="使用Enter发送，Ctrl+Enter换行"
+                   class="col-grow q-ml-md cask-textarea-input-base" borderless
+                   input-class="cask-textarea-input-base-in"
+                   :input-style="{fontSize: '.95rem', color:'rgb(50, 50, 50)', opacity:'0.75',
+                                              letterSpacing: '.023rem', lineHeight:'1.3rem', fontFamily:'Roboto Slab, sans-serif',
+                                              border: '2.5px solid #888', backgroundColor:'#ddd', margin: '.8rem 0 ',
+                                              padding: '.6rem', resize: 'none',height: '4.5rem', borderRadius: '12px', fontWeight:'520',
+                                              overflowWrap: 'anywhere'} ">
           </q-input>
-          <div class="row items-center">
-            <q-btn round unelevated flat color="green-10" icon="fa-solid fa-paper-plane"
+          <div class="column justify-center q-mx-sm">
+            <q-btn round unelevated flat size=".8rem" color="green-10" icon="fa-solid fa-paper-plane"
                    @click="sendChatMsg"/>
+            <q-btn round unelevated flat size=".8rem" color="green-10" icon="fa-regular fa-face-smile"
+                   @click="openEmojiSelector"/>
           </div>
         </div>
 
       </div>
 
+    </q-card>
+  </q-dialog>
+
+
+  <q-dialog maximized class="emoji-selector" v-model="showEmojiSelector" position="bottom">
+    <q-card class="chat-emoji-selector-card">
+      <q-btn class="q-ma-xs" size=".8rem" flat unelevated round
+             @click="selectEmoji(item.substring(5,7))"
+             v-for="(item, index) in allEmojiData" :key="index">
+        <template v-slot:default>
+          <q-img :src="require(`@/assets/emoji/bili/${item}`)"/>
+        </template>
+      </q-btn>
     </q-card>
   </q-dialog>
 
@@ -205,7 +218,12 @@ import {useQuasar} from "quasar";
 import {chattingUsers, hideChat, moreMessage, privateInitChat, readMessage} from "@/api/chat";
 import {notifyTopRightWarning, notifyTopWarning} from "@/utils/global-notify";
 import {useRouter} from "vue-router";
-import {messageTimeLabelBuilder, messageTimeLabelInput} from "@/utils/message-time-label";
+import {
+  buildEmojiCode,
+  getAllEmojiAddress,
+  messageTimeLabelBuilder,
+  messageTimeLabelInput
+} from "@/utils/message-time-label";
 
 const BASE_ADD = process.env.VUE_APP_BASE_ADD
 //router
@@ -245,6 +263,9 @@ let chattingData = ref([
     webUserChattingDataBak: [],
   },
 ])
+let emojiInsertIndex = ref(0)
+let showEmojiSelector = ref(false)
+let allEmojiData = ref([])
 //fab
 let chatFabIsOpen = ref(false)
 let haveUnread = ref(true)
@@ -285,6 +306,33 @@ function checkAllRead() {
       eleWave1.value.classList.remove('pause')
       eleWave2.value.classList.remove('pause')
     }
+  }
+}
+
+function openEmojiSelector() {
+  showEmojiSelector.value = true
+  let textList = document.getElementsByClassName("cask-textarea-input-base-in")
+  if (textList && textList.length > 0) {
+    emojiInsertIndex.value = textList[0].selectionStart
+  }
+}
+
+function selectEmoji(emoji) {
+  showEmojiSelector.value = false;
+  //set position
+  let originInputText = webChattingFocusChat.value.webInputText
+  let index = emojiInsertIndex.value
+  let insertEmojiStr = buildEmojiCode(emoji)
+  webChattingFocusChat.value.webInputText =
+      originInputText.slice(0, index) + insertEmojiStr + originInputText.slice(index)
+  emojiInsertIndex.value = emojiInsertIndex.value + insertEmojiStr.length
+  //reset select site
+  let textList = document.getElementsByClassName("cask-textarea-input-base-in")
+  if (textList && textList.length > 0) {
+    delay(100).then(() => {
+      textList[0].focus()
+      textList[0].selectionStart = textList[0].selectionEnd = emojiInsertIndex.value;
+    })
   }
 }
 
@@ -525,7 +573,7 @@ function socketInit() {
           stompClient.value.subscribe("/announcement/receive", () => {
             // console.log(tick);
           });
-          stompClient.value.subscribe("/error/receive", callback => {
+          stompClient.value.subscribe("/user/" + userToken.value + "/error/receive", callback => {
             notifyTopRightWarning(callback.body, 3000, notify)
           });
         },
@@ -595,6 +643,7 @@ function socketMsgReceiveDataParse(callback) {
 onMounted(() => {
   baseDataInit(webIsLogin())
   socketInit()
+  allEmojiData.value = getAllEmojiAddress()
   eleWave1.value = document.getElementById("wave-1")
   eleWave2.value = document.getElementById("wave-2")
   emitter.on("loginMessageEvent", loginMessage)
@@ -647,6 +696,18 @@ onUnmounted(() => {
       color: $cask_cactus;
     }
   }
+}
+
+.chat-emoji-selector-card {
+  height: 14rem;
+  width: 60rem;
+  margin: 0 0 1.5rem 0;
+  padding: 1rem;
+  border-radius: 1rem !important;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 0 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  backdrop-filter: saturate(200%) blur(30px);
+
 }
 
 .chat-main-card-frame {
@@ -774,6 +835,12 @@ onUnmounted(() => {
 
 .q-body--dialog {
   overflow-y: scroll !important;
+}
+
+.emoji-selector {
+  .q-dialog__backdrop {
+    background: none !important;
+  }
 }
 
 </style>
