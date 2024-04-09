@@ -1,5 +1,10 @@
 <template>
 
+  <div class="row justify-end">
+    <q-btn class="simple-content-mini"
+           style="min-width: 5rem; margin: .5rem 1.5rem -1rem 0"
+           label="他人视角" color="blue-grey-9" push :to="`/space?id=${userData.id}`"/>
+  </div>
   <div class="space-right-title">
     基本资料
   </div>
@@ -206,9 +211,9 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 @import "@/styles/cask-dialog-style.scss";
+@import "@/styles/cask-little-mini-style";
 
 .space-right-title {
-  margin-top: 1rem;
   font-family: '华文行楷', sans-serif;
   text-align: center;
   font-size: 2.5rem;
