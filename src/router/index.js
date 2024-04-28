@@ -21,6 +21,8 @@ import CaskTimestampConverter from "@/views/CaskTimestampConverter.vue";
 import CaskQrcodeGenerator from "@/views/CaskQrcodeGenerator.vue";
 import CaskMd5Encrypt from "@/views/CaskMd5Encrypt.vue";
 import CaskImgBase64Converter from "@/views/CaskImgBase64Converter.vue";
+import CaskRgbHexConverter from "@/views/CaskRgbHexConverter.vue";
+import CaskMarkToHtmlPdf from "@/views/CaskMarkToHtmlPdf.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -104,6 +106,22 @@ const router = createRouter({
                     component: CaskSqlKotlinGenerator,
                     meta: {
                         title: 'AsterCasc-SQL转Kotlin类'
+                    },
+                },
+                {
+                    path: 'mkHtmlPdf',
+                    name: 'caskMarkToHtmlPdf',
+                    component: CaskMarkToHtmlPdf,
+                    meta: {
+                        title: 'AsterCasc-Markdown转Pdf&Html'
+                    },
+                },
+                {
+                    path: 'rgbHex',
+                    name: 'caskRgbHexConverter',
+                    component: CaskRgbHexConverter,
+                    meta: {
+                        title: 'AsterCasc-RGB十六进制颜色转换'
                     },
                 },
                 {

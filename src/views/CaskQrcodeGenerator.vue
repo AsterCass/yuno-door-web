@@ -156,15 +156,6 @@ let uploadImg = ref("开发中...")
 @import "@/styles/cask.sass"
 @import "@/styles/cask-little-mini-style.scss"
 
-.code-generator-tag-title
-  font-family: Roboto Slab, sans-serif
-  letter-spacing: -.05rem
-  font-size: 2.5rem
-  color: $cask_dark_jungle_green
-  margin-bottom: 1rem
-  opacity: 0.8
-  font-weight: 400
-
 </style>
 
 <style lang="sass">

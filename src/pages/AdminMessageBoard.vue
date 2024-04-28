@@ -617,15 +617,6 @@ onUnmounted(() => {
   padding: 1.5%
   min-height: 500px
 
-.code-generator-tag-title
-  font-family: Roboto Slab, sans-serif
-  letter-spacing: -.05rem
-  font-size: 2.5rem
-  color: $cask_dark_jungle_green
-  margin-bottom: 1rem
-  opacity: 0.8
-  font-weight: 400
-
 .for-show-all-child-data:hover
   cursor: pointer
   background-color: #ddd !important

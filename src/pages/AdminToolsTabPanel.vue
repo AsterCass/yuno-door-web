@@ -40,6 +40,10 @@
                      no-caps to="/tools/md5" class="tools-tab"/>
         <q-route-tab name="imgBase64" icon="fa-solid fa-camera-rotate" label="Base64图片转换"
                      no-caps to="/tools/imgBase64" class="tools-tab"/>
+        <q-route-tab name="mkHtmlPdf" icon="fa-solid fa-envelope-open-text" label="Markdown转换"
+                     no-caps to="/tools/mkHtmlPdf" class="tools-tab"/>
+        <q-route-tab name="rgbHex" icon="fa-solid fa-palette" label="RGB十六进制颜色转换"
+                     no-caps to="/tools/rgbHex" class="tools-tab"/>
 
       </q-tabs>
 

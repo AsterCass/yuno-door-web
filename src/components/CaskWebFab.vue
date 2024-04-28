@@ -117,6 +117,14 @@
                       to="/tools/imgBase64" icon="fa-solid fa-camera-rotate"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="Markdown转换" external-label label-position="bottom"
+                      to="/tools/mkHtmlPdf" icon="fa-solid fa-envelope-open-text"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
+                      label="RGB十六进制转换" external-label label-position="bottom"
+                      to="/tools/rgbHex" icon="fa-solid fa-palette"/>
+        <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
+                      padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
                       label="表情包电子包浆" external-label label-position="bottom"
                       @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
