@@ -249,21 +249,21 @@ import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 //notify
 const notify = useQuasar().notify
 
-let inputRgbCode = ref("rgb(68, 117, 80)")
-let inputRgbaCode = ref("rgba(68, 117, 80, 1)")
+let inputRgbCode = ref("rgb(180, 130, 40)")
+let inputRgbaCode = ref("rgba(180, 130, 40, 1)")
 
-let inputRed = ref('68')
-let inputGreen = ref('117')
-let inputBlue = ref('80')
+let inputRed = ref('180')
+let inputGreen = ref('130')
+let inputBlue = ref('40')
 let inputAlpha = ref("1.00")
-let hexOutput = ref("#447550")
+let hexOutput = ref("#b48228")
 
-let hexInput = ref("#447550")
-let outputRed = ref(68)
-let outputGreen = ref(117)
-let outputBlue = ref(80)
+let hexInput = ref("#2882b4")
+let outputRed = ref(40)
+let outputGreen = ref(130)
+let outputBlue = ref(180)
 let outputAlpha = ref("1.00")
-let outputRet = ref("rgb(68, 117, 80)")
+let outputRet = ref("rgb(40, 130, 180)")
 
 let rgbInputStyle = ref("number")
 
@@ -317,7 +317,6 @@ function convertToHex() {
 }
 
 function rgbaConvertToHex(redNum, greenNum, blueNum, alphaNum) {
-  console.log(redNum, greenNum, blueNum, alphaNum)
   //check
   if (redNum > 255 || greenNum > 255 || blueNum > 255 || alphaNum > 1) {
     notifyTopNegative("RGB输入格式错误，请检查", 1000, notify)
@@ -385,8 +384,8 @@ function hexToRgba() {
 @import "@/styles/cask-little-mini-style.scss"
 
 .rgb-hex-color-preview
-  width: 8rem
-  height: 2.5rem
+  width: 15rem
+  height: 1.5rem
   border-radius: 1rem
 
 </style>
