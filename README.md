@@ -29,7 +29,8 @@ yarn serve
 * 评论系统：支持登录/非登录用户评论，登录用户点赞，评论回复，评论层级迭代，支持网站留言板功能模块
 * 视频系统：支持后台视频上传、整理分集、弹幕文件加载等，前台视频检索，观看，视频倍速、自动下集、弹幕等全局设置
 * 游戏系统：简单游戏展示、推荐
-* 工具系统：支持steam游戏史低/详情查询，支持在线时间戳转换，支持在线生成二维码，支持DDL转kotlin类，支持常见加密，支持图片和base64相互转换
+* 工具系统：支持steam游戏史低/详情查询，支持在线时间戳转换，支持在线生成二维码，
+  支持DDL转kotlin类，支持常见加密，支持图片和base64相互转换，支持markdown转pdf/html，支持rgbHex互转
 
 ## 项目文件结构
 
@@ -49,6 +50,7 @@ yarn serve
 
 ## 包引用
 
+* pdfmake/html-to-pdfmake: pdf生成/转换
 * sockjs-client：websocket
 * webstomp-client：websocket
 * qrcode-vue3：二维码生成
