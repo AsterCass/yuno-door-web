@@ -11,20 +11,52 @@
 
     <div class="row justify-center" style="margin: 2% 2% 1% 2%; min-height: 30rem">
       <div class="row col-12">
-        <div id="htmlContent" class="col-6 bg-amber-1">
-          <div style="width: 800px;font-family: 'Microsoft YaHei UI',serif; padding: 20px;">
-            something just xx xx like this 中文
+
+
+        <div class="col">
+          <div class="row items-center justify-center q-mt-md q-mb-md">
+            <div class="simple-bold-title-secondary">
+              Markdown 输入
+            </div>
+          </div>
+
+          <div class="q-mx-lg">
+            <q-input v-model="inputMarkdown" class="q-ml-md col-9 cask-textarea-input-base"
+                     @update:model-value="changeInputMarkdown()"
+                     color="grey" hide-bottom-space borderless type="textarea"
+                     :input-style="{fontSize: '1.1rem', color:'black', opacity:'0.75',
+                       borderRadius: '.5rem', backgroundColor:'#ddd', margin: '0.5rem',
+                       padding: '1rem', resize: 'none',height: '30rem',
+                       overflowWrap: 'anywhere'} "/>
           </div>
         </div>
-        <div class="col-6">
-          <!--          <iframe v-show="base64URL !== '' " :src="base64URL" frameborder="0"-->
-          <!--                  style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;"-->
-          <!--                  allowfullscreen>-->
 
-          <!--          </iframe>-->
+        <q-separator class="col-1" spaced=".5rem" size="0.125rem" inset vertical/>
 
-          <div v-html="htmlRet" class="blogMarkDown"></div>
+        <div class="col">
+
+          <div class="row items-center justify-center q-mt-md q-mb-md">
+            <div class="simple-bold-title-secondary">
+              Html/PDF 样式
+            </div>
+          </div>
+
+
+          <div class="q-mx-lg q-mb-lg" style="height: 30rem; overflow: auto">
+            <div v-html="htmlRetInlined" class="outputHtml"></div>
+          </div>
+
+
+          <div class="row justify-center">
+            <div class="q-py-sm">
+              <q-btn class="cask-simple-btn-margin-pri" label="导出PDF文件" @click="exportPdf()"/>
+            </div>
+          </div>
+
+
         </div>
+
+
       </div>
 
     </div>
@@ -34,37 +66,42 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import htmlToPdfmake from 'html-to-pdfmake';
 import pdfMake from 'pdfmake/build/pdfmake';
 import {NotoScVfs} from '@/utils/pdf-font-base64';
-import markdownit from 'markdown-it'
-import {importStyle} from "@/utils/marked-factory";
-
+import {marked} from "@/utils/marked-factory";
+import htmlToPdfmake from "html-to-pdfmake";
+import juice from 'juice';
+import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
 
 // let base64URL = ref("")
 let htmlRet = ref("")
+let htmlRetInlined = ref("")
+let inputMarkdown = ref("### 数组初始化\n" +
+    "\n" +
+    "```c\n" +
+    "int a[4] = {20, 345, 700, 22};\n" +
+    "int b[10]={12, 19, 22 , 993, 344};\n" +
+    "int a2[3][4];\n" +
+    "int b2[5][3]={ {80,75,92}, {61,65,71}, {59,63,70}, {85,87,90}, {76,77,85} };\n" +
+    "int b3[5][3]={80, 75, 92, 61, 65, 71, 59, 63, 70, 85, 87, 90, 76, 77, 85};\n" +
+    "//初始化多于申请的内存会被赋值为0/'\\0'/0.0\n" +
+    "int nums[10] = {0};\n" +
+    "char str[10] = {0};\n" +
+    "float scores[10] = {0.0};\n" +
+    "int a[3][3] = {{1}, {2}, {3}};\n" +
+    "//自动获取内存空间大小\n" +
+    "int c[] = {1, 2, 3, 4, 5};\n" +
+    "char str1[] = \"something justl like this\";\n" +
+    "int a[][3] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; \n" +
+    "//变量指定大小\n" +
+    "int n;\n" +
+    "scanf(\"%d\", &n);\n" +
+    "int arr[n];\n" +
+    "```\n" +
+    "\n" +
+    "### 字符数组")
 
-
-onMounted(() => {
-
-  importStyle()
-
-  const md = markdownit('default', {
-    html: true,
-    linkify: true,
-    typographer: true,
-  })
-
-  md.renderer.rules.heading_open = (tokens, idx) => {
-    console.log(tokens, idx)
-    return '<' + tokens[idx].tag + ' style="color: blue; font-size: 24px;">';
-  };
-  htmlRet.value = md.render("## 前言");
-
-
-  console.log(htmlRet.value)
-
-
+function initToPdfSetting() {
   pdfMake.vfs = NotoScVfs;
   pdfMake.fonts = {
     NotoSc: {
@@ -74,25 +111,35 @@ onMounted(() => {
       bolditalics: 'NotoSc-Regular.ttf',
     },
   }
+}
 
-  let dataText = htmlToPdfmake(htmlRet.value);
+function changeInputMarkdown() {
+  htmlRet.value = marked.parse(inputMarkdown.value)
+  htmlRetInlined.value = juice(htmlRet.value, {
+    extraCss: markdownCss
+  })
+  console.log(htmlRetInlined.value)
+}
 
+function exportPdf() {
+  let dataText = htmlToPdfmake(htmlRetInlined.value, {
+    removeExtraBlanks: true
+  });
   console.log(dataText)
-
   const docDefinition = {
     content: dataText,
     defaultStyle: {
       font: 'NotoSc'
     },
-  };
+  }
 
-// Create a PDF document
   const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-
-// Download or display the PDF document
   pdfDocGenerator.download('document.pdf');
+}
 
 
+onMounted(() => {
+  initToPdfSetting()
 })
 
 
@@ -101,11 +148,5 @@ onMounted(() => {
 <style lang="sass" scoped>
 @import "@/styles/cask.sass"
 @import "@/styles/cask-little-mini-style.scss"
-
-
-</style>
-
-<style lang="sass">
-
 
 </style>

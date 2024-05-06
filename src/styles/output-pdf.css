@@ -1,0 +1,130 @@
+/*custom*/
+* {
+    color: green;
+    font-size: 1.1rem;
+}
+
+p {
+    opacity: 0.9;
+    line-height: 1.625;
+}
+
+ul {
+    margin: 0;
+}
+
+strong {
+    color: #B56536
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+
+h2 {
+    font-size: 2.1rem;
+    font-weight: 400;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+h3 {
+    font-size: 1.6rem;
+    font-weight: 350;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+h4 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+h5 {
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+h6 {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin: 0.5rem 0;
+    text-transform: unset;
+}
+
+pre {
+    background: transparent;
+}
+
+/*code*/
+
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em
+}
+
+code.hljs {
+    padding: 3px 5px
+}
+
+.hljs-comment, .hljs-meta {
+    color: #9699a3
+}
+
+.hljs-deletion, .hljs-doctag, .hljs-regexp, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-selector-pseudo, .hljs-tag, .hljs-template-tag, .hljs-variable.language_ {
+    color: #8c4351
+}
+
+.hljs-link, .hljs-literal, .hljs-number, .hljs-params, .hljs-template-variable, .hljs-type, .hljs-variable {
+    color: #965027
+}
+
+.hljs-attribute, .hljs-built_in {
+    color: #8f5e15
+}
+
+.hljs-keyword, .hljs-property, .hljs-subst, .hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+    color: #0f4b6e
+}
+
+.hljs-selector-tag {
+    color: #33635c
+}
+
+.hljs-addition, .hljs-bullet, .hljs-quote, .hljs-string, .hljs-symbol {
+    color: #485e30
+}
+
+.hljs-code, .hljs-formula, .hljs-section {
+    color: #34548a
+}
+
+.hljs-attr, .hljs-char.escape_, .hljs-keyword, .hljs-name, .hljs-operator {
+    color: #5a4a78
+}
+
+.hljs-punctuation {
+    color: #343b58
+}
+
+.hljs {
+    background: white;
+    color: #565a6e
+}
+
+.hljs-emphasis {
+    font-style: italic
+}
+
+.hljs-strong {
+    font-weight: 700
+}

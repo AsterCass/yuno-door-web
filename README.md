@@ -50,6 +50,8 @@ yarn serve
 
 ## 包引用
 
+* juice: 类样式直接嵌入页面元素（for pdfmkae.js）
+* raw-loader: 文件内容读取（for juice.js）
 * pdfmake/html-to-pdfmake: pdf生成/转换
 * sockjs-client：websocket
 * webstomp-client：websocket
