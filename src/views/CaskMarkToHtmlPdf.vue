@@ -26,7 +26,7 @@
                      color="grey" hide-bottom-space borderless type="textarea"
                      :input-style="{fontSize: '1.1rem', color:'black', opacity:'0.75',
                        borderRadius: '.5rem', backgroundColor:'#ddd', margin: '0.5rem',
-                       padding: '1rem', resize: 'none',height: '30rem',
+                       padding: '1rem', resize: 'none',height: '30rem', lineHeight: '1.4',
                        overflowWrap: 'anywhere'} "/>
           </div>
         </div>
@@ -47,7 +47,10 @@
           </div>
 
 
-          <div class="row justify-center">
+          <div class="row justify-evenly">
+            <div class="q-py-sm">
+              <q-btn class="cask-simple-btn-margin-pri" label="复制Html代码" @click="copyTextToClipboard()"/>
+            </div>
             <div class="q-py-sm">
               <q-btn class="cask-simple-btn-margin-pri" label="导出PDF文件" @click="exportPdf()"/>
             </div>
@@ -72,34 +75,51 @@ import {marked} from "@/utils/marked-factory";
 import htmlToPdfmake from "html-to-pdfmake";
 import juice from 'juice';
 import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
+import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
+import {useQuasar} from "quasar";
 
-// let base64URL = ref("")
+const notify = useQuasar().notify
+const preMarkdown =
+    `# 一级标题
+
+这里是一些表格
+
+| Parameter  | Required | Description                                                                                           |
+|------------|----------|-------------------------------------------------------------------------------------------------------|
+| \`markdown\` | Required | The markdown content to convert                                                                       |
+| \`css\`      | Optional | CSS styles to apply                                                                                   |
+| \`engine\`   | Optional | The PDF conversion engine, can be \`weasyprint\`, \`wkhtmltopdf\` or \`pdflatex\`, defaults to \`weasyprint\` |
+
+## 二级标题
+
+这里是一些代码
+
+\`\`\`java
+System.out.println("Hello World");
+\`\`\`
+以及一些内置代码\`int  a = 1;\`
+
+### 三级标题
+
+这里是一些链接[AsterCasc](www.astercasc.com)、[steam游戏史地查询](https://www.astercasc.com/tools/steam/search)
+
+#### 四级标题
+1. 这里是一些有序列表
+2. 对于元素进行排序
+#### 五级标题
+
+* 或许你也需要无需列表
+* 用于元素整理
+  * 以及一些子列表
+* 回到父级列表
+
+##### 六级标题
+
+最后这里是最为常见的**加重**语句`
+
 let htmlRet = ref("")
 let htmlRetInlined = ref("")
-let inputMarkdown = ref("### 数组初始化\n" +
-    "\n" +
-    "```c\n" +
-    "int a[4] = {20, 345, 700, 22};\n" +
-    "int b[10]={12, 19, 22 , 993, 344};\n" +
-    "int a2[3][4];\n" +
-    "int b2[5][3]={ {80,75,92}, {61,65,71}, {59,63,70}, {85,87,90}, {76,77,85} };\n" +
-    "int b3[5][3]={80, 75, 92, 61, 65, 71, 59, 63, 70, 85, 87, 90, 76, 77, 85};\n" +
-    "//初始化多于申请的内存会被赋值为0/'\\0'/0.0\n" +
-    "int nums[10] = {0};\n" +
-    "char str[10] = {0};\n" +
-    "float scores[10] = {0.0};\n" +
-    "int a[3][3] = {{1}, {2}, {3}};\n" +
-    "//自动获取内存空间大小\n" +
-    "int c[] = {1, 2, 3, 4, 5};\n" +
-    "char str1[] = \"something justl like this\";\n" +
-    "int a[][3] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; \n" +
-    "//变量指定大小\n" +
-    "int n;\n" +
-    "scanf(\"%d\", &n);\n" +
-    "int arr[n];\n" +
-    "```\n" +
-    "\n" +
-    "### 字符数组")
+let inputMarkdown = ref(preMarkdown)
 
 function initToPdfSetting() {
   pdfMake.vfs = NotoScVfs;
@@ -118,16 +138,36 @@ function changeInputMarkdown() {
   htmlRetInlined.value = juice(htmlRet.value, {
     extraCss: markdownCss
   })
-  console.log(htmlRetInlined.value)
+}
+
+function copyTextToClipboard() {
+  if (!navigator.clipboard) {
+    notifyTopNegative("拷贝失败", 1000, notify)
+    return;
+  }
+  navigator.clipboard.writeText(htmlRetInlined.value).then(function () {
+    notifyTopPositive("拷贝成功", 1000, notify)
+  }, function () {
+    notifyTopNegative("拷贝失败", 1000, notify)
+  });
 }
 
 function exportPdf() {
   let dataText = htmlToPdfmake(htmlRetInlined.value, {
-    removeExtraBlanks: true
+    removeExtraBlanks: true,
+    defaultStyles: {
+      p: {margin: [0, 5, 0, 5]},
+      blockquote: {margin: [0, 0, 0, 0]},
+    },
+    ignoreStyles: ['font-family']
   });
-  console.log(dataText)
+
+  const replacePat = /"text":" "/g
+  let dataTextStr = JSON.stringify(dataText)
+  dataTextStr = dataTextStr.replaceAll(replacePat, "\"text\":\"\"")
+
   const docDefinition = {
-    content: dataText,
+    content: JSON.parse(dataTextStr),
     defaultStyle: {
       font: 'NotoSc'
     },
@@ -140,6 +180,7 @@ function exportPdf() {
 
 onMounted(() => {
   initToPdfSetting()
+  changeInputMarkdown()
 })
 
 
