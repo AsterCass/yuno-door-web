@@ -70,13 +70,13 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import pdfMake from 'pdfmake/build/pdfmake';
-import {NotoScVfs} from '@/utils/pdf-font-base64';
 import {marked} from "@/utils/marked-factory";
 import htmlToPdfmake from "html-to-pdfmake";
 import juice from 'juice';
 import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
 import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 import {useQuasar} from "quasar";
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 const notify = useQuasar().notify
 const preMarkdown =
@@ -122,7 +122,7 @@ let htmlRetInlined = ref("")
 let inputMarkdown = ref(preMarkdown)
 
 function initToPdfSetting() {
-  pdfMake.vfs = NotoScVfs;
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
   pdfMake.fonts = {
     NotoSc: {
       normal: 'NotoSc-Regular.ttf',
