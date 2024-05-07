@@ -12,7 +12,7 @@
     "juice": "^10.0.0",
     "raw-loader": "^4.0.2",
     "html-to-pdfmake": "^2.5.7",
-    "pdfmake": "^0.2.10",
+    "pdfmake-cn": "^0.2.10",
     "sockjs-client": "^1.6.1",
     "webstomp-client": "^1.2.6",
     "qrcode-vue3": "^1.6.8",
