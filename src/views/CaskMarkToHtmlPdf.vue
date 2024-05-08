@@ -132,22 +132,22 @@ let exportBtnText = ref("导出PDF文件")
 
 function initToPdfSetting() {
   // pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.fonts = {
-    NotoSc: {
-      normal: 'NotoSc-Regular.ttf',
-      bold: 'NotoSc-Regular.ttf',
-      italics: 'NotoSc-Regular.ttf',
-      bolditalics: 'NotoSc-Regular.ttf',
-    },
-  }
   // pdfMake.fonts = {
   //   NotoSc: {
-  //     normal: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-  //     bold: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-  //     italics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-  //     bolditalics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+  //     normal: 'NotoSc-Regular.ttf',
+  //     bold: 'NotoSc-Regular.ttf',
+  //     italics: 'NotoSc-Regular.ttf',
+  //     bolditalics: 'NotoSc-Regular.ttf',
   //   },
   // }
+  pdfMake.fonts = {
+    NotoSc: {
+      normal: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      bold: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      italics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      bolditalics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+    },
+  }
 }
 
 function changeInputMarkdown() {
