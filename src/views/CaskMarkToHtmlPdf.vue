@@ -69,14 +69,14 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import pdfMake from 'pdfmake/build/pdfmake';
+import pdfMake from 'pdfmake-cn/build/pdfmake';
 import {marked} from "@/utils/marked-factory";
 import htmlToPdfmake from "html-to-pdfmake";
 import juice from 'juice';
 import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
 import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 import {useQuasar} from "quasar";
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfFonts from 'pdfmake-cn/build/vfs_fonts';
 
 const notify = useQuasar().notify
 const preMarkdown =
