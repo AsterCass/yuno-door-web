@@ -73,7 +73,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {pdfMake} from 'pdfmake-cn/build/pdfmake.min';
+import pdfMake from 'pdfmake-cn/build/pdfmake';
 import {marked} from "@/utils/marked-factory";
 import htmlToPdfmake from "html-to-pdfmake";
 import juice from 'juice';
@@ -142,10 +142,10 @@ function initToPdfSetting() {
   // }
   pdfMake.fonts = {
     NotoSc: {
-      normal: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-      bold: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-      italics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-      bolditalics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
+      bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
+      italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
+      bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
     },
   }
 }
