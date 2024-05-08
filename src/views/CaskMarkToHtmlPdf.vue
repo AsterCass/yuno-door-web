@@ -77,7 +77,7 @@ import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
 import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 import {useQuasar} from "quasar";
 
-const BASE_ADD = process.env.LOCAL_URL
+const LOCAL_URL = process.env.VUE_APP_SERVER_ADD
 const notify = useQuasar().notify
 const preMarkdown =
     `# 一级标题
@@ -133,10 +133,10 @@ function initToPdfSetting() {
   // }
   pdfMake.fonts = {
     NotoSc: {
-      normal: BASE_ADD + 'fonts/NotoSerifSC-Regular.otf',
-      bold: BASE_ADD + 'fonts/NotoSerifSC-Regular.otf',
-      italics: BASE_ADD + 'fonts/NotoSerifSC-Regular.otf',
-      bolditalics: BASE_ADD + 'fonts/NotoSerifSC-Regular.otf',
+      normal: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      bold: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      italics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      bolditalics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
     },
   }
 }
