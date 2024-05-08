@@ -1,6 +1,18 @@
 const {defineConfig} = require('@vue/cli-service')
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = defineConfig({
+    configureWebpack: {
+        plugins: [
+            new CompressionPlugin({
+                algorithm: 'gzip',
+                test: /\.(js|css|html)$/,
+                threshold: 10240,
+                minRatio: 0.9,
+                deleteOriginalAssets: false,
+            })
+        ]
+    },
     transpileDependencies: [
         'quasar'
     ],
@@ -20,6 +32,6 @@ module.exports = defineConfig({
             return definitions
         })
     },
-    publicPath: process.env.NODE_ENV === 'production' ? '/' : '/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 
 })
