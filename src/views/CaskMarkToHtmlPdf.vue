@@ -76,7 +76,6 @@ import juice from 'juice';
 import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
 import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 import {useQuasar} from "quasar";
-import pdfFonts from 'pdfmake-cn/build/vfs_fonts';
 
 const notify = useQuasar().notify
 const preMarkdown =
@@ -122,13 +121,12 @@ let htmlRetInlined = ref("")
 let inputMarkdown = ref(preMarkdown)
 
 function initToPdfSetting() {
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
   pdfMake.fonts = {
     NotoSc: {
-      normal: 'NotoSc-Regular.ttf',
-      bold: 'NotoSc-Regular.ttf',
-      italics: 'NotoSc-Regular.ttf',
-      bolditalics: 'NotoSc-Regular.ttf',
+      normal: 'https://www.astercasc.com/fonts/NotoSerifSC-Regular.otf',
+      bold: 'https://www.astercasc.com/fonts/NotoSerifSC-Regular.otf',
+      italics: 'https://www.astercasc.com/fonts/NotoSerifSC-Regular.otf',
+      bolditalics: 'https://www.astercasc.com/fonts/NotoSerifSC-Regular.otf',
     },
   }
 }
