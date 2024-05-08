@@ -42,9 +42,12 @@
           </div>
 
 
-          <div class="q-mx-lg q-mb-lg" style="height: 30rem; overflow: auto">
-            <div v-html="htmlRetInlined" class="outputHtml"></div>
+          <div class="q-mx-lg q-mb-lg cask-textarea-input-base">
+            <div style="height: 30rem; overflow: auto">
+              <div v-html="htmlRetInlined"></div>
+            </div>
           </div>
+
 
 
           <div class="row justify-evenly">
@@ -52,7 +55,8 @@
               <q-btn class="cask-simple-btn-margin-pri" label="复制Html代码" @click="copyTextToClipboard()"/>
             </div>
             <div class="q-py-sm">
-              <q-btn class="cask-simple-btn-margin-pri" label="导出PDF文件" @click="exportPdf()"/>
+              <q-btn class="cask-simple-btn-margin-pri" :disable="onExporting"
+                     :label="exportBtnText" @click="exportPdf()"/>
             </div>
           </div>
 
@@ -76,6 +80,7 @@ import juice from 'juice';
 import markdownCss from '!!raw-loader!@/styles/output-pdf.css';
 import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 import {useQuasar} from "quasar";
+// import pdfFonts from 'pdfmake-cn/build/vfs_fonts'
 
 const LOCAL_URL = process.env.VUE_APP_SERVER_ADD
 const notify = useQuasar().notify
@@ -121,24 +126,28 @@ let htmlRet = ref("")
 let htmlRetInlined = ref("")
 let inputMarkdown = ref(preMarkdown)
 
+let onExporting = ref(false)
+let isFirstExport = ref(true)
+let exportBtnText = ref("导出PDF文件")
+
 function initToPdfSetting() {
   // pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  // pdfMake.fonts = {
-  //   NotoSc: {
-  //     normal: 'NotoSc-Regular.ttf',
-  //     bold: 'NotoSc-Regular.ttf',
-  //     italics: 'NotoSc-Regular.ttf',
-  //     bolditalics: 'NotoSc-Regular.ttf',
-  //   },
-  // }
   pdfMake.fonts = {
     NotoSc: {
-      normal: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-      bold: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-      italics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
-      bolditalics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+      normal: 'NotoSc-Regular.ttf',
+      bold: 'NotoSc-Regular.ttf',
+      italics: 'NotoSc-Regular.ttf',
+      bolditalics: 'NotoSc-Regular.ttf',
     },
   }
+  // pdfMake.fonts = {
+  //   NotoSc: {
+  //     normal: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+  //     bold: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+  //     italics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+  //     bolditalics: LOCAL_URL + 'fonts/NotoSerifSC-Regular.otf',
+  //   },
+  // }
 }
 
 function changeInputMarkdown() {
@@ -161,6 +170,12 @@ function copyTextToClipboard() {
 }
 
 function exportPdf() {
+  if (isFirstExport.value) {
+    onExporting.value = true
+    exportBtnText.value = "首次到导出需要下载中文字体，请稍等"
+  }
+
+
   let dataText = htmlToPdfmake(htmlRetInlined.value, {
     removeExtraBlanks: true,
     defaultStyles: {
@@ -182,7 +197,13 @@ function exportPdf() {
   }
 
   const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-  pdfDocGenerator.download('document.pdf');
+  pdfDocGenerator.download('document.pdf', () => {
+    if (isFirstExport.value) {
+      onExporting.value = false
+      exportBtnText.value = "导出PDF文件"
+      isFirstExport.value = false
+    }
+  });
 }
 
 
