@@ -73,7 +73,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import pdfMake from 'pdfmake-cn/build/pdfmake';
+import {pdfMake} from 'pdfmake-cn/build/pdfmake.min';
 import {marked} from "@/utils/marked-factory";
 import htmlToPdfmake from "html-to-pdfmake";
 import juice from 'juice';
