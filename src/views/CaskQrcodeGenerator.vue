@@ -16,6 +16,9 @@
             <div class="simple-bold-title-secondary">
               二维码配置
             </div>
+            <div class="col-12 text-center simple-content-tag">
+              暂不支持中文值加密
+            </div>
           </div>
 
           <div class="row roboto-slab q-my-sm">
