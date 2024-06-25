@@ -56,6 +56,7 @@ yarn serve
 * sockjs-client：websocket
 * webstomp-client：websocket
 * qrcode-vue3：二维码生成
+* jsqr：二维码解析
 * sql-ddl-to-json-schema：DDL转基本json，用于自动生成类
 * fontsource/roboto-slab：字体
 * quasar/extras：quasar附加功能
