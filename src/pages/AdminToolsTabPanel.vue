@@ -44,6 +44,8 @@
                      no-caps to="/tools/mkHtmlPdf" class="tools-tab"/>
         <q-route-tab name="rgbHex" icon="fa-solid fa-palette" label="RGB十六进制颜色转换"
                      no-caps to="/tools/rgbHex" class="tools-tab"/>
+        <q-route-tab name="cnIdCard" icon="fa-solid fa-id-card" label="身份证生成"
+                     no-caps to="/tools/cnIdCard" class="tools-tab"/>
 
       </q-tabs>
 

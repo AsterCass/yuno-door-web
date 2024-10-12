@@ -125,12 +125,12 @@
                       to="/tools/rgbHex" icon="fa-solid fa-palette"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
-                      label="表情包电子包浆" external-label label-position="bottom"
-                      @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
+                      label="身份证生成" external-label label-position="bottom"
+                      to="/tools/cnIdCard" icon="fa-solid fa-id-card"/>
         <q-fab-action label-class="bg-grey-3 text-grey-10 text-weight-bold disabled"
                       padding="5px 25px" class="q-fab-sub-sub-btn" style="margin-right: 1.5rem!important;"
-                      label="Audio在线剪辑" external-label label-position="bottom"
-                      @click="fabKitInDeveloping" icon="fa-solid fa-scissors"/>
+                      label="表情包电子包浆" external-label label-position="bottom"
+                      @click="fabKitInDeveloping" icon="fa-solid fa-face-grin-tongue-wink"/>
       </q-fab>
 
 

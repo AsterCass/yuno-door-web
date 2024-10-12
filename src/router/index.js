@@ -23,6 +23,7 @@ import CaskMd5Encrypt from "@/views/CaskMd5Encrypt.vue";
 import CaskImgBase64Converter from "@/views/CaskImgBase64Converter.vue";
 import CaskRgbHexConverter from "@/views/CaskRgbHexConverter.vue";
 import CaskMarkToHtmlPdf from "@/views/CaskMarkToHtmlPdf.vue";
+import CaskCnIdCardGenerator from "@/views/CaskCnIdCardGenerator.vue";
 
 const router = createRouter({
     // history: createWebHashHistory(process.env.BASE_URL),
@@ -122,6 +123,14 @@ const router = createRouter({
                     component: CaskRgbHexConverter,
                     meta: {
                         title: 'AsterCasc-RGB十六进制颜色转换'
+                    },
+                },
+                {
+                    path: 'cnIdCard',
+                    name: 'caskCnIdCardGenerator',
+                    component: CaskCnIdCardGenerator,
+                    meta: {
+                        title: 'AsterCasc-在线身份证生成'
                     },
                 },
                 {
