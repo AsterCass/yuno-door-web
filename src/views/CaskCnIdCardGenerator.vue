@@ -153,7 +153,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {ref} from "vue";
 import {useQuasar} from "quasar";
 import {notifyTopNegative, notifyTopPositive} from "@/utils/global-notify";
 //notify
@@ -180,22 +180,79 @@ function copyTextToClipboard(text) {
 }
 
 function generateIdCardList() {
+  showIdCardRet.value = false
+  idCardList.value.length = 0
 
-  const birthDate = new Date(+(new Date()) - Math.floor(Math.random() * 100000000000));
-  const year = birthDate.getFullYear();
-  const month = (birthDate.getMonth() + 1).toString().padStart(2, '0');
-  const day = birthDate.getDate().toString().padStart(2, '0');
+  let count = 12
+  while (count > 0) {
+    let thisId = generateIdCard()
+    if (thisId === '') {
+      idCardList.value.length = 0
+      break
+    }
+    idCardList.value.push({id: thisId})
+    --count
+  }
+
+  showIdCardRet.value = true
+}
+
+function generateIdCard() {
+
+  //cityCode
+  let inputCityCode = customCityCode.value
+  if (cityCode.value !== '') {
+    inputCityCode = cityCode.value
+  }
+
+  //birth
+  let yearNum = 1950
+  let monthNum = 1
+  let dayNum = 1
+  if (birth.value === 'random') {
+    yearNum = yearNum + Math.floor(Math.random() * (70));
+    monthNum = monthNum + Math.floor(Math.random() * (12));
+    dayNum = dayNum + Math.floor(Math.random() * (28));
+  } else {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(customBirth.value)) {
+      notifyTopNegative("输入日期格式错误", 1000, notify)
+      return ""
+    }
+    const inputDate = new Date(customBirth.value)
+    if (isNaN(inputDate.getTime())) {
+      notifyTopNegative("输入日期格式错误", 1000, notify)
+      return ""
+    }
+    const [year, month, day] = customBirth.value.split("-").map(Number);
+    yearNum = year
+    monthNum = month
+    dayNum = day
+    if (inputDate.getFullYear() !== year || inputDate.getMonth() + 1 !== month || inputDate.getDate() !== day) {
+      notifyTopNegative("输入日期格式错误", 1000, notify)
+      return ""
+    }
+  }
+
+  const year = yearNum
+  const month = monthNum.toString().padStart(2, '0')
+  const day = dayNum.toString().padStart(2, '0')
 
   let randomSerial;
   if (gender.value === '1') {
-    randomSerial = Math.floor(Math.random() * 100).toString().padStart(2, '0') + Math.floor(Math.random() * 5) * 2 + 1; // 奇数代表男性
+    randomSerial = Math.floor(Math.random() * 100).toString().padStart(2, '0')
+        + (Math.floor(Math.random() * 5) * 2 + 1);
   } else if (gender.value === '0') {
-    randomSerial = Math.floor(Math.random() * 100).toString().padStart(2, '0') + Math.floor(Math.random() * 5) * 2; // 偶数代表女性
+    randomSerial = Math.floor(Math.random() * 100).toString().padStart(2, '0')
+        + Math.floor(Math.random() * 5) * 2;
+  } else if (gender.value === 'random') {
+    randomSerial = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
   } else {
-    randomSerial = Math.floor(Math.random() * 1000).toString().padStart(3, '0'); // 未指定性别时随机生成
+    notifyTopNegative("请输入生理性别 (╯▔皿▔)╯", 1000, notify)
+    return ""
   }
 
-  const id17 = `${cityCode.value}${year}${month}${day}${randomSerial}`;
+  const id17 = `${inputCityCode}${year}${month}${day}${randomSerial}`;
 
   const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
   const checkDigits = "10X98765432";
@@ -207,13 +264,9 @@ function generateIdCardList() {
 
   const checkIndex = sum % 11;
   const checkDigit = checkDigits[checkIndex];
+  return id17 + checkDigit
 
-  idCardList.value.length = 0
-  idCardList.value.push({id: id17 + checkDigit})
-
-  showIdCardRet.value = true
 }
-
 
 </script>
 
