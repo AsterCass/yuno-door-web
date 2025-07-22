@@ -36,6 +36,7 @@ export function userIsLogin() {
     return serviceShiro({
         url: `/yui/user/isLogin/authNoError`,
         method: 'get',
+        params: {path: window.location.href},
     })
 }
 
