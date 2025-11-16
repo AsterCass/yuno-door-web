@@ -69,13 +69,13 @@
 
       </div>
       <div class="col-4 row justify-center">
-        <q-toolbar-title shrink style="font-family: Roboto Slab, sans-serif;letter-spacing: -.01rem">
-          Aster Casc
-        </q-toolbar-title>
-        <q-btn class="q-mr-md" flat dense stack icon="fa-solid fa-sitemap" to="/profile">
-          <q-tooltip class="roboto-slab normal-letter-span bg-secondary" :offset="[0, 5]">
-            Website Profile
-          </q-tooltip>
+        <q-btn class="q-mr-md" flat  href="https://www.astercasc.com">
+          <div class="row items-center justify-center">
+            <div class="q-mr-sm" style="font-size: 14px">
+              当前为旧版页面，点击此处前往新版本页面
+            </div>
+            <q-icon name="fa-solid fa-arrow-right-to-bracket" size="15px"/>
+          </div>
         </q-btn>
       </div>
       <div class="col-4 row justify-end">
